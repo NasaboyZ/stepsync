@@ -1,0 +1,23 @@
+meta {
+  name: Creat Workout
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/workouts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+   "category": "lifting",
+    "description": "blabla"
+    
+  }
+}
