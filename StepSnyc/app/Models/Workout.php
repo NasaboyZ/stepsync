@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Support\Carbon;
 use Config\Model;
 use WendellAdriel\Lift\Attributes\Column;
@@ -22,8 +21,6 @@ class Workout extends Model
 
     #[Column]
     public int $repetitions;
-
-  
 
     #[Column]
     public int $user_id;

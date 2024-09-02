@@ -5,38 +5,34 @@ namespace App\Controllers;
 use App\Models\Workout;
 use Illuminate\Http\Request;
 
+
 class WorkoutsController {
   
   // Gibt alle Workouts des angemeldeten Benutzers zurück
   function index(Request $request) {
-    return \Auth::user()->workouts()->get();
+    return Workout::all();
   }
 
   // Erstellt ein neues Workout für den angemeldeten Benutzer
   function create(Request $request) {
     $payload = Workout::validate($request);
-    $workout = \Auth::user()->workouts()->create($payload);
+    $workout = Workout::create($payload);
     return $workout;
   }
 
-  // Aktualisiert ein Workout
-  function update(Request $request, $id) {
-    $workout = \Auth::user()->workouts()->find($id);
 
-    if (!$workout) {
-      return response()->json(['message' => 'Workout not found'], 404);
-    }
 
+  function update(Request $request) {
     $payload = Workout::validate($request);
-    $workout->update($payload);
-
-    return $workout;
+    // $Workout = Workout::create($payload);
+    $Workout = \Auth::user()->Workouts()->create($payload);
+    return $Workout;
 
   }
 
   // Löscht ein Workout
-  function destroy(Request $request, $id) {
-    $workout = \Auth::user()->workouts()->findOrFail($id);
+  function destroy(Request $request) {
+    $workout = \Auth::user()->workouts()->findOrFail($request->input("id"));
     $workout->delete();
     return response()->json(['message' => 'Workout deleted successfully']);
   }

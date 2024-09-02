@@ -1,10 +1,10 @@
 meta {
   name: Delete Workout
   type: http
-  seq: 4
+  seq: 3
 }
 
-get {
+delete {
   url: {{baseUrl}}/workouts
   body: json
   auth: none
@@ -16,10 +16,8 @@ headers {
 
 body:json {
   {
-      "category": "lifting",
-      "description": "blabla",
-      "weight": 100,
-      "repetitions": 10
+   "category": "lifting",
+    "description": "blabla"
+    
   }
-  
 }

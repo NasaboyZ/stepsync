@@ -45,8 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   Route::get('/workouts', [WorkoutsController::class, 'index']);
   Route::post('/workouts', [WorkoutsController::class, 'create']);  
-  Route::patch('/workouts/{id}', [WorkoutsController::class, 'update']);
-  Route::delete('/workouts/{id}', [WorkoutsController::class, 'destroy']);
+  Route::patch('/workouts', [WorkoutsController::class, 'update']);
+  Route::delete('/workouts', [WorkoutsController::class, 'destroy']);
 });
 
 // example endpoints
