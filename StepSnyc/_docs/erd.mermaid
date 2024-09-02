@@ -1,6 +1,13 @@
-
 erDiagram
-    User ||--o{ Article: ""
-    User ||--o{ Comment: ""
-    Article ||--o{ Comment: ""
-    Tag }o--o{ Article: ""
+    User ||--o{ Workout : "logs"
+    User ||--o{ BlogPost : "publishes"
+    BlogPost ||--o{ Recipe : "contains"
+    Recipe ||--o{ Ingredient : "includes"
+    User }o--o{ Challenge : "interacts"
+    Challenge }o--o{ User : "accepted or rejected"
+    
+    %% Für das Dashboard %%
+    User {
+        int completed_challenges
+        int published_blog_posts
+    }
