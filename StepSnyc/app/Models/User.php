@@ -42,9 +42,7 @@ class User extends Model {
     #[Column] #[Hidden]
     public string $date_of_birth;
 
-  function articles(): HasMany|Article {
-    return $this->hasMany(Article::class);
-  }
+
 
   function comments(): HasMany|Comment {
     return $this->hasMany(Comment::class);
@@ -53,6 +51,9 @@ class User extends Model {
     {
         return $this->hasMany(Workout::class);
     }
+    public function blogposts(): HasMany {
+      return $this->hasMany(Blogpost::class, 'user_id');
+  }
 
   static function validate(Request $request) {
     $post = $request->method() === 'POST';

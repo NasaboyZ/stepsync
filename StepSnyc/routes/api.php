@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\ArticlesController;
+use App\Controllers\BlogpostsController;
 use App\Controllers\AuthController;
 use App\Controllers\CommentsController;
 use App\Controllers\ExamplesController;
@@ -12,7 +12,7 @@ use App\Controllers\WorkoutsController;
 use Illuminate\Support\Facades\Route;
 
 // guest endpoints
-Route::get('/articles', [ArticlesController::class, 'index']);
+Route::get('/blogpost', [BlogpostsController::class, 'index']);
 Route::get('/comments', [CommentsController::class, 'index']);
 Route::post('/user', [UserController::class, 'create']);
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -26,9 +26,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::patch('/user', [UserController::class, 'update']);
   Route::delete('/user', [UserController::class, 'destroy']);
 
-  Route::post('/articles', [ArticlesController::class, 'create']);
-  Route::patch('/articles', [ArticlesController::class, 'update']);
-  Route::delete('/articles', [ArticlesController::class, 'destroy']);
+  Route::post('/blogpost', [BlogpostsController::class, 'create']);
+  Route::patch('/blogpost', [BlogpostsController::class, 'update']);
+  Route::delete('/blogpost', [BlogpostsController::class, 'destroy']);
 
   Route::post('/comments', [CommentsController::class, 'create']);
   Route::patch('/comments', [CommentsController::class, 'update']);
