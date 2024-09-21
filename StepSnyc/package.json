@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "serve": "php artisan serve",
-    "seed": "touch ./database/database.sqlite && php artisan migrate:fresh --seed"
-  }
-}
