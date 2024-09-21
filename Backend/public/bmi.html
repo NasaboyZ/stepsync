@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    body {
+      background: black;
+      color: #ccc;
+      font-family: system-ui;
+    }
+
+    pre {
+      border: 1px solid;
+    }
+  </style>
+  <script>
+    async function calculate() {
+      const weight = document.getElementById('weight').value
+      const height = document.getElementById('height').value
+      const response = await fetch('http://localhost:8000/api/examples/bmi', {
+        method: 'POST',
+        body: JSON.stringify({weight, height}),
+      })
+      const data = await response.json()
+      console.log(data)
+      document.getElementById('bmi').textContent = data.bmi
+      document.getElementById('category').textContent = data.category
+    }
+  </script>
+</head>
+
+<body>
+  <h1>bmi calculator</h1>
+  <input id="weight" placeholder="weight in kg">
+  <input id="height" placeholder="height in m">
+  <button onclick="calculate()">calculate</button>
+  <div id="bmi">...bmi</div>
+  <div id="category">...category</div>
+</body>
+</html>

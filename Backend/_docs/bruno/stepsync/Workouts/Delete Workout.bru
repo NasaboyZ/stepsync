@@ -1,0 +1,23 @@
+meta {
+  name: Delete Workout
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/workouts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+   "category": "lifting",
+    "description": "blabla"
+    
+  }
+}
