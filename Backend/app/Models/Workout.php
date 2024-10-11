@@ -36,7 +36,8 @@ class Workout extends Model
             'description' => 'required|string',
             'weight' => 'nullable|integer',
             'repetitions' => 'nullable|integer',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
+        
         ]);
     }
 }

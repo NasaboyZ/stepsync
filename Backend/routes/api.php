@@ -10,6 +10,7 @@ use App\Controllers\UploadsController;
 use App\Controllers\UserController;
 use App\Controllers\WorkoutsController;
 use Illuminate\Support\Facades\Route;
+use App\Controllers\BmiController;
 
 // guest endpoints
 Route::get('/blogpost', [BlogpostsController::class, 'index']);
@@ -47,6 +48,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/workouts', [WorkoutsController::class, 'create']);  
   Route::patch('/workouts', [WorkoutsController::class, 'update']);
   Route::delete('/workouts', [WorkoutsController::class, 'destroy']);
+
+  Route::get('/bmi', [BmiController::class, 'index']);   
+  Route::patch('/bmi', [BmiController::class, 'update']); 
+  Route::delete('/bmi', [BmiController::class, 'destroy']);
 });
 
 // example endpoints

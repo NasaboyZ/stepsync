@@ -1,11 +1,11 @@
 meta {
-  name: Delete Workout
+  name: update Workout
   type: http
-  seq: 3
+  seq: 4
 }
 
-delete {
-  url: {{baseUrl}}/workouts
+patch {
+  url: {{baseUrl}}/bmi
   body: json
   auth: none
 }
@@ -16,7 +16,8 @@ headers {
 
 body:json {
   {
-  "id": 3
+    "height":22,
+    "wight": 2
     
   }
 }

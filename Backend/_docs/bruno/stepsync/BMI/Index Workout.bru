@@ -1,11 +1,11 @@
 meta {
-  name: Delete Workout
+  name: Index Workout
   type: http
-  seq: 3
+  seq: 2
 }
 
-delete {
-  url: {{baseUrl}}/workouts
+get {
+  url: {{baseUrl}}//bmi
   body: json
   auth: none
 }
@@ -16,7 +16,8 @@ headers {
 
 body:json {
   {
-  "id": 3
+   "category": "lifting",
+    "description": "blabla"
     
   }
 }

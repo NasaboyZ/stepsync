@@ -1,0 +1,36 @@
+/* Navigation */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 702px;
+  height: 95px;
+  flex-shrink: 0;
+  border-radius: 0px 0px 79px 79px;
+  opacity: 0.29;
+  background: #837c6a;
+  font-family: "intern";
+ 
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+nav ul > li {
+  margin: 0 10px;
+  color: white;
+}
+
+nav ul > li > a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white; 
+  align-items: center;
+  justify-content: center;
+}
