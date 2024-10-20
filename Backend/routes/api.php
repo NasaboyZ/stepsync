@@ -16,9 +16,12 @@ use App\Controllers\BmiController;
 // guest endpoints
 Route::get('/blogpost', [BlogpostsController::class, 'index']);
 Route::get('/comments', [CommentsController::class, 'index']);
-Route::post('/user', [UserController::class, 'create']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/tags', [TagsController::class, 'index']);
+
+Route::post('/user', [UserController::class, 'create']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/verify', [UserController::class, 'verifyEmail']);
 
 // user endpoints
 Route::middleware(['auth:sanctum'])->group(function () {

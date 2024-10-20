@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use WendellAdriel\Lift\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class User extends Model
 {
@@ -45,6 +46,11 @@ class User extends Model
   #[Column] #[Hidden]
   public string $date_of_birth;
 
+  #[Column] #[Hidden]
+  public string $verfication_token;
+
+  #[Column] #[Hidden]
+  public string $email_verified;
 
 
   function comments(): HasMany|Comment
@@ -97,5 +103,26 @@ class User extends Model
         $user->setAttribute('password', \Hash::make($plain));
       }
     });
+  }
+
+  // Methode, um einen neuen Verifizierungstoken zu generieren
+  public function generateVerificationToken()
+  {
+    $this->verification_token = Str::random(64); // Token generieren
+    $this->save();
+  }
+
+  // Methode, um den Benutzer als verifiziert zu markieren
+  public function markEmailAsVerified()
+  {
+    $this->email_verified_at = now();
+    $this->verification_token = null; // Token löschen, nachdem die E-Mail verifiziert wurde
+    $this->save();
+  }
+
+  // Überprüfen, ob der Benutzer verifiziert ist
+  public function isVerified(): bool
+  {
+    return !is_null($this->email_verified_at);
   }
 }
