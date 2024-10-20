@@ -1,11 +1,11 @@
 meta {
-  name: update Workout
+  name: index eigner challenges
   type: http
   seq: 4
 }
 
-patch {
-  url: {{baseUrl}}/bmi
+get {
+  url: {{baseUrl}}/user/{id}/challenges
   body: json
   auth: none
 }
@@ -16,9 +16,7 @@ headers {
 
 body:json {
   {
-    "height":184,
-    "weight": 90,
-    "user_id":1
+    "id":5
     
   }
 }

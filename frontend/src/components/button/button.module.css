@@ -1,0 +1,13 @@
+.Herosection__mehrerfahrenBTN {
+  margin-top: 1rem;
+  background-color: #837c6a;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #fff;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

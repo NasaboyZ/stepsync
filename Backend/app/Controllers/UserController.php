@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Models\BMI;
+use App\Controllers\ChallengesController;
 use Illuminate\Http\Request;
 
 class UserController
@@ -18,22 +19,24 @@ class UserController
     $payload = User::validate($request);
     $user = User::create($payload);
 
+    // BMI speichern
     $bmi = new BMI();
     $bmi->height = $payload['height'];
     $bmi->weight = $payload['weight'];
     $bmi->user_id = $user->id;
     $bmi->save();
 
+    // Zufällige Challenges dem Benutzer zuweisen
+    $challengesController = new ChallengesController();
+    $challengesController->assignRandomChallengesToUser($user);
 
-
+    // Willkommens-Mail senden
     \Mail::raw(
-      'welcome to our app',
-      fn($mail) => $mail->to($user->email)->subject('welcome')
+      'Welcome to our app',
+      fn($mail) => $mail->to($user->email)->subject('Welcome')
     );
 
-
-
-    return $user;
+    return $user->fresh('challenges'); // Benutzer und die zugewiesenen Challenges zurückgeben
   }
 
   function update(Request $request)

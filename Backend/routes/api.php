@@ -2,6 +2,7 @@
 
 use App\Controllers\BlogpostsController;
 use App\Controllers\AuthController;
+use App\Controllers\ChallengesController;
 use App\Controllers\CommentsController;
 use App\Controllers\ExamplesController;
 use App\Controllers\MailsController;
@@ -38,19 +39,36 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/tags', [TagsController::class, 'create']);
   Route::put('/tags/assign', [TagsController::class, 'assign']);
 
-  Route::post('/uploads', [UploadsController::class, 'create']);
+  // Route::get('/challenges{id}', [ChallengesController::class, 'index']);
+  // Route::post('/challenges{id}', [ChallengesController::class, 'create']);
+  // Route::post('/challenges/assign{id}', [ChallengesController::class, 'assign']); 
+
+  Route::get('/challenges', [ChallengesController::class, 'index']); // Alle oder eine spezifische Challenge abrufen
+  Route::post('/challenges/{id}', [ChallengesController::class, 'create']); // Neue Challenge erstellen
+  Route::post('/challenges/assign/{id}', [ChallengesController::class, 'assign']); // Bestimmte Challenges zuweisen
+  Route::post('/user/{id}/assign-random-challenges', [ChallengesController::class, 'assignRandomChallengesToUser']); // Zufällige Challenges zuweisen
+
+  // Challenge ablehnen und eine neue zuweisen (mit Challenge-ID)
+  Route::post('/challenges/reject/{id}', [ChallengesController::class, 'rejectChallenge']); // Challenge ablehnen und eine neue zuweisen
+
+  // Status einer Challenge aktualisieren (Done oder Pass)
+  Route::post('/challenges/update-status/{id}', [ChallengesController::class, 'updateChallengeStatus']); // Status der Challenge aktualisieren
+
+  // Eigene Challenges eines Benutzers abrufen
+  Route::get('/user/{id}/challenges', [ChallengesController::class, 'getUserChallenges']); // Challenges eines Benutzers anzeigen
+
   Route::delete('/uploads', [UploadsController::class, 'destroy']);
 
   Route::post('/mails/send', [MailsController::class, 'send']);
 
 
   Route::get('/workouts', [WorkoutsController::class, 'index']);
-  Route::post('/workouts', [WorkoutsController::class, 'create']);  
+  Route::post('/workouts', [WorkoutsController::class, 'create']);
   Route::patch('/workouts', [WorkoutsController::class, 'update']);
   Route::delete('/workouts', [WorkoutsController::class, 'destroy']);
 
-  Route::get('/bmi', [BmiController::class, 'index']);   
-  Route::patch('/bmi', [BmiController::class, 'update']); 
+  Route::get('/bmi', [BmiController::class, 'index']);
+  Route::patch('/bmi', [BmiController::class, 'update']);
   Route::delete('/bmi', [BmiController::class, 'destroy']);
 });
 

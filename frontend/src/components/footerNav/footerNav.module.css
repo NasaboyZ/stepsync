@@ -1,0 +1,59 @@
+.footer {
+  background-color: #4f4b42; /* Ähnlich der dunklen Farbe im Bild */
+  padding: 2rem 0;
+  color: #fff;
+  text-align: center;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.logoSection img {
+  height: 50px;
+}
+
+.navLinks,
+.legalLinks {
+  list-style-type: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.navLinks li,
+.legalLinks li {
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.navLinks li:hover,
+.legalLinks li:hover {
+  color: #e94f37; /* Hover-Farbe (z.B. rot) */
+}
+
+.socialMedia a {
+  margin: 0 0.5rem;
+}
+
+.socialMedia img {
+  width: 24px;
+  height: 24px;
+}
+
+.copyright {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #ccc;
+  border-top: 1px solid #e94f37;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}

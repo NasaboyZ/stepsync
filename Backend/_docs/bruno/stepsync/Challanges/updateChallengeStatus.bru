@@ -1,0 +1,24 @@
+meta {
+  name: updateChallengeStatus
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/challenges/update-status/{id}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "user_id": 2,
+    "challenge_id": 4,
+    "status":1
+  }
+  
+}

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Config\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use WendellAdriel\Lift\Attributes\Column;
 use Illuminate\Http\Request;
@@ -62,6 +63,14 @@ class User extends Model
   {
     return $this->hasOne(BMI::class, 'user_id');
   }
+  public function challenges()
+  {
+    return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id');
+  }
+
+
+
+
 
   static function validate(Request $request)
   {

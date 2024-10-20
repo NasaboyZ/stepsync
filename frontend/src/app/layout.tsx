@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import NavigationBar from "@/layouts/navigation/page";
+// If NavigationBar is a named export
+import { NavigationBar } from "@/layouts/navigation/page";
+import { Footer } from "@/layouts/footer/page";
 
 const internItelic = localFont({
   src: "./fonts/intern/Inter-Italic-VariableFont_opsz,wght.ttf",
@@ -31,13 +33,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold .variable}`}>
+      <body
+        className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
+      >
         <header>
-        <NavigationBar/> 
-
+          <NavigationBar />
         </header>
-          {children}
-        <footer></footer>
+        {children}
+        <Footer />
       </body>
     </html>
   );

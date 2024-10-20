@@ -1,13 +1,30 @@
 erDiagram
     User ||--o{ Workout : "logs"
-    User ||--o{ BlogPost : "publishes"
-    BlogPost ||--o{ Recipe : "contains"
-    Recipe ||--o{ Ingredient : "includes"
     User }o--o{ Challenge : "interacts"
     Challenge }o--o{ User : "accepted or rejected"
     
     %% Für das Dashboard %%
     User {
         int completed_challenges
-        int published_blog_posts
+        float current_bmi
+        int workouts_logged_in_month
     }
+
+    Workout {
+        string type
+        int repetitions
+        date date_logged
+    }
+    
+    Challenge {
+        string status "accepted, rejected, done, pass"
+        date date_assigned
+    }
+    
+    Dashboard {
+        int completed_challenges
+        float current_bmi
+        int workouts_logged_in_month
+    }
+    
+    User ||--o{ Dashboard : "has"

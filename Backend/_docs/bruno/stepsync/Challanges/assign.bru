@@ -1,11 +1,11 @@
 meta {
-  name: update Workout
+  name: assign
   type: http
-  seq: 4
+  seq: 3
 }
 
-patch {
-  url: {{baseUrl}}/bmi
+post {
+  url: {{baseUrl}}/challenges/assign/{id}
   body: json
   auth: none
 }
@@ -16,9 +16,8 @@ headers {
 
 body:json {
   {
-    "height":184,
-    "weight": 90,
-    "user_id":1
-    
+    "user_id": 3,
+    "challenges_ids": [5]
   }
+  
 }

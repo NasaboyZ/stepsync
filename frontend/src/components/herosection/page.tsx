@@ -1,10 +1,11 @@
-import styles from './herosection.module.css';
+import React from "react";
+import Style from "./herosection.module.css";
 
-export default function HeroSection() {
-
-    return (
-        <div className={styles["wrapper"]}>
-            <h1 className={styles["title__herosection"]}>Tracke deinen Erfolg </h1>
-        </div>
-    );
+export function Herosection() {
+  return (
+    <div className={Style["Herosection__wrapper"]}>
+      <h1>Tracke deinen Erfolg</h1>
+      <button className={Style["Herosection__button"]}>Registrieren</button>
+    </div>
+  );
 }

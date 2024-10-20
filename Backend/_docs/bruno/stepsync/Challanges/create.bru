@@ -1,0 +1,25 @@
+meta {
+  name: create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/challenges/{id}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "title": "10k Steps Daily",
+    "description": "Walk at least 10,000 steps daily for a week.",
+    "goal": "10,000 Steps",
+    "status": true
+  }
+  
+}
