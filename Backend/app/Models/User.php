@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use WendellAdriel\Lift\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class User extends Model
 {
@@ -82,16 +83,24 @@ class User extends Model
   {
     $post = $request->method() === 'POST';
     return $request->validate([
-      'first_name' => ['required', 'string', 'max:255'],
-      'last_name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'email', 'unique:users,email'],
-      'username' => ['required', 'string', 'max:255', 'unique:users,username'],
-      'password' => [$post ? 'required' : 'sometimes', 'min:8'],
-      'weight' => ['required', 'numeric'],
-      'height' => ['required', 'numeric'],
-      'goal' => ['required', 'string'],
-      'gender' => ['required', 'in:male,female,other'],
-      'date_of_birth' => ['required', 'date'],
+      'first_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],
+      'last_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],
+      'email' => [$post ? 'required' : 'sometimes', 'email', 'unique:users,email'],
+      'username' => [$post ? 'required' : 'sometimes', 'string', 'max:255', 'unique:users,username'],
+      'password' => [
+        $post ? 'required' : 'sometimes',
+        'min:8',
+        'regex:/[a-z]/',      // Mindestens ein Kleinbuchstabe
+        'regex:/[A-Z]/',      // Mindestens ein Großbuchstabe
+        'regex:/[0-9]/',      // Mindestens eine Zahl
+        'regex:/[@$!%*#?&]/', // Mindestens ein Sonderzeichen
+        'not_regex:/\s/'      // Kein Leerzeichen erlaubt
+      ],
+      'weight' => [$post ? 'required' : 'sometimes', 'numeric'],
+      'height' => [$post ? 'required' : 'sometimes', 'numeric'],
+      'goal' => [$post ? 'required' : 'required', 'string'],
+      'gender' => [$post ? 'required' : 'sometimes', 'in:male,female,other'],
+      'date_of_birth' => [$post ? 'required' : 'sometimes', 'date'],
     ]);
   }
 

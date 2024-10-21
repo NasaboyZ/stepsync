@@ -5,7 +5,18 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: {{baseUrl}}/auth/verify
+  body: json
   auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "email":"saewdd@mailinator.com",
+    "token":"yA2JWh8C9pj4DatmW4Qviv0ncYb099dAZhGhGFgqU5FN1NtK2vFmRfhMHJYb079F"
+  }
 }

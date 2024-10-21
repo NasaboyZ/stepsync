@@ -15,12 +15,11 @@ use App\Controllers\BmiController;
 
 // guest endpoints
 Route::get('/blogpost', [BlogpostsController::class, 'index']);
-Route::get('/comments', [CommentsController::class, 'index']);
+// Route::get('/comments', [CommentsController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/tags', [TagsController::class, 'index']);
 
 Route::post('/user', [UserController::class, 'create']);
-Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/verify', [UserController::class, 'verifyEmail']);
 
 // user endpoints
@@ -31,30 +30,30 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::patch('/user', [UserController::class, 'update']);
   Route::delete('/user', [UserController::class, 'destroy']);
 
-  Route::post('/blogpost', [BlogpostsController::class, 'create']);
-  Route::patch('/blogpost', [BlogpostsController::class, 'update']);
-  Route::delete('/blogpost', [BlogpostsController::class, 'destroy']);
+  // Route::post('/blogpost', [BlogpostsController::class, 'create']);
+  // Route::patch('/blogpost', [BlogpostsController::class, 'update']);
+  // Route::delete('/blogpost', [BlogpostsController::class, 'destroy']);
 
-  Route::post('/comments', [CommentsController::class, 'create']);
-  Route::patch('/comments', [CommentsController::class, 'update']);
-  Route::delete('/comments', [CommentsController::class, 'destroy']);
+  // Route::post('/comments', [CommentsController::class, 'create']);
+  // Route::patch('/comments', [CommentsController::class, 'update']);
+  // Route::delete('/comments', [CommentsController::class, 'destroy']);
 
-  Route::post('/tags', [TagsController::class, 'create']);
-  Route::put('/tags/assign', [TagsController::class, 'assign']);
+  // Route::post('/tags', [TagsController::class, 'create']);
+  // Route::put('/tags/assign', [TagsController::class, 'assign']);
 
-  // Route::get('/challenges{id}', [ChallengesController::class, 'index']);
-  // Route::post('/challenges{id}', [ChallengesController::class, 'create']);
-  // Route::post('/challenges/assign{id}', [ChallengesController::class, 'assign']); 
+  Route::get('/challenges{id}', [ChallengesController::class, 'index']);
+  Route::post('/challenges{id}', [ChallengesController::class, 'create']);
+  Route::post('/challenges/assign{id}', [ChallengesController::class, 'assign']);
 
   Route::get('/challenges', [ChallengesController::class, 'index']); // Alle oder eine spezifische Challenge abrufen
   Route::post('/challenges/{id}', [ChallengesController::class, 'create']); // Neue Challenge erstellen
   Route::post('/challenges/assign/{id}', [ChallengesController::class, 'assign']); // Bestimmte Challenges zuweisen
   Route::post('/user/{id}/assign-random-challenges', [ChallengesController::class, 'assignRandomChallengesToUser']); // Zufällige Challenges zuweisen
 
-  // Challenge ablehnen und eine neue zuweisen (mit Challenge-ID)
+
   Route::post('/challenges/reject/{id}', [ChallengesController::class, 'rejectChallenge']); // Challenge ablehnen und eine neue zuweisen
 
-  // Status einer Challenge aktualisieren (Done oder Pass)
+  
   Route::post('/challenges/update-status/{id}', [ChallengesController::class, 'updateChallengeStatus']); // Status der Challenge aktualisieren
 
   // Eigene Challenges eines Benutzers abrufen
