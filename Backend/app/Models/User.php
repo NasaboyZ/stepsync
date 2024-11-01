@@ -90,11 +90,11 @@ class User extends Model
       'password' => [
         $post ? 'required' : 'sometimes',
         'min:8',
-        'regex:/[a-z]/',      // Mindestens ein Kleinbuchstabe
-        'regex:/[A-Z]/',      // Mindestens ein Großbuchstabe
-        'regex:/[0-9]/',      // Mindestens eine Zahl
-        'regex:/[@$!%*#?&]/', // Mindestens ein Sonderzeichen
-        'not_regex:/\s/'      // Kein Leerzeichen erlaubt
+        'regex:/[a-z]/',
+        'regex:/[A-Z]/',
+        'regex:/[0-9]/',
+        'regex:/[@$!%*#?&]/',
+        'not_regex:/\s/'
       ],
       'weight' => [$post ? 'required' : 'sometimes', 'numeric'],
       'height' => [$post ? 'required' : 'sometimes', 'numeric'],
