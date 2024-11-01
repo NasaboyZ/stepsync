@@ -54,7 +54,7 @@ export default function FooterNav() {
       </div>
 
       <div className={Style["copyright"]}>
-        <p>© Copyright 2024, All Rights Reserved</p>
+        <p> © Copyright 2024, All Rights Reserved</p>
 
         <ul className={Style["legalLinks"]}>
           {legalItems.map((item, index) => (

@@ -1,0 +1,28 @@
+.hero_titel {
+  display: flex;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: "ibnsans";
+  font-style: bold;
+}
+.hero_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #d9d9d94b 0%, #e03e297f 100%);
+  border-radius: 45px;
+  flex-direction: column;
+}
+.hero_image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 2rem;
+}
+
+.hero_text {
+  display: flex;
+}
