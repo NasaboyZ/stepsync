@@ -11,18 +11,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #d9d9d94b 0%, #e03e297f 100%);
+  background: linear-gradient(135deg, #d9d9d939 0%, #e03e2943 100%);
   border-radius: 45px;
   flex-direction: column;
+  margin: 2rem 2rem;
 }
 .hero_image {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  top: 2rem;
+  top: 5rem;
 }
 
 .hero_text {
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container_hero_text {
+  margin: 2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: normal;
+
+  font-family: "intern";
+  color: #ffffff;
+  text-align: left;
 }

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 
+
 import { Footer } from "@/layouts/footer/footer";
 import { Header } from "@/layouts/header/header";
 
@@ -37,7 +38,7 @@ export default function RootLayout({
       <body
         className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
       >
-        <Header />
+        <Header/>
         {children}
         <Footer />
       </body>

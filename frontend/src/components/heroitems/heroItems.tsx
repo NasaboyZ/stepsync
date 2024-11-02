@@ -26,13 +26,15 @@ export default function HeroItems() {
           alt="Bild von der Vorderseite des Handys"
         />
       </div>
-      <p className={Style["hero_text"]}>
-        Erlebe echte Motivation mit StepSync! Unsere Ziele und Challenges
-        treiben dich an und zeigen deinen Fortschritt. Verfolge deine
-        Verbesserungen genau und werde Teil einer engagierten Community. Kein
-        leeres Gerede, sondern echte Fitnessziele – dokumentiere deinen Weg mit
-        uns!
-      </p>
+      <div className={Style["container_hero_text"]}>
+        <p className={Style["hero_text"]}>
+          Erlebe echte Motivation mit StepSync! Unsere Ziele und Challenges
+          treiben dich an und zeigen deinen Fortschritt. Verfolge deine
+          Verbesserungen genau und werde Teil einer engagierten Community. Kein
+          leeres Gerede, sondern echte Fitnessziele – dokumentiere deinen Weg
+          mit uns!
+        </p>
+      </div>
     </>
   );
 }

@@ -1,0 +1,41 @@
+/* Hauptlayout für mobile Navigation */
+.mobileNavWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #4f4b42;
+  border-radius: 25px;
+  width: 100%; /* Optional: passt die Breite an */
+  margin: 0 auto;
+}
+
+.mobileNavToggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navList {
+    display: none;
+  }
+
+  .mobileNavToggle {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mobileNavList {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0;
+    margin-top: 1rem;
+  }
+
+  .mobileNavWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

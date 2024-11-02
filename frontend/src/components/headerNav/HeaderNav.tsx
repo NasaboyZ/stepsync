@@ -1,26 +1,17 @@
-import style from "./HeaderNav.module.css";
+import Style from "./HeaderNav.module.css";
 import Logo from "../logo/logo";
+import NavigationItem from "../navigationItems/navigationItems";
 
-const HeaderNavigationItem = () => {
-  const headerItem = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/product", label: "Product" },
-  ];
-  return headerItem.map((item, index) => (
-    <li key={index}>
-      <a href={item.href}>{item.label}</a>
-    </li>
-  ));
-};
-export default function HeaderNav() {
+interface NavigationItemProps {
+  items: { href: string; label: string }[];
+}
+export default function HeaderNav({ items }: NavigationItemProps) {
   return (
-    <div className={style["navWrapper"]}>
-      <Logo />
-      <div className={style["logo"]}>
-        <h2>STEP SYNC</h2>
+    <div className={Style["navWrapper"]}>
+      <div className={Style["logo"]}>
+        <Logo />
       </div>
-      <HeaderNavigationItem />
+      <NavigationItem items={items} />
     </div>
   );
 }
