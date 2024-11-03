@@ -1,6 +1,9 @@
 import Style from "./footerNav.module.css";
 import Logo from "../logo/logo";
 
+// TODO: Footer Resopnisive machen (josef)
+// TODO: Footer icons wie Instagram und Github einfügen (josef)
+// TODO: Text im Footer anpassen und ebben falls Responsive (josef)
 const NavigationItem = () => {
   // Array mit Links und Labels für Hauptnavigation
   const navItems = [

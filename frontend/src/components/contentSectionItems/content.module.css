@@ -1,0 +1,138 @@
+.section-wrapper {
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+}
+
+.container-wrapper-section-home {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 100%;
+  width: 90%;
+}
+
+.bild-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bild-container .image {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  object-fit: cover;
+  max-width: 400px;
+}
+
+
+.container-beschreibung {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+.beschreibung {
+  color: #ffffff;
+  font-family: "intern";
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Button-Container */
+.container-button {
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Skeleton Loader */
+.skeleton-loader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Skeleton für das Bild */
+.skeleton-image {
+  width: 500px;
+  height: 500px;
+  max-width: 400px;
+  border-radius: 15px;
+  background: #e0e0e0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Skeleton für den Text mit mehreren Zeilen */
+.skeleton-text {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeleton-line {
+  width: 100%;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-line.short {
+  width: 70%; /* Kürzere Linie für Variation */
+}
+
+/* Skeleton für den Button */
+.skeleton-button {
+  width: 150px;
+  height: 40px;
+  background: #e0e0e0;
+  border-radius: 25px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Animation für den Pulse-Effekt */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive Anpassung für mobile Bildschirme */
+@media (max-width: 768px) {
+  .container-wrapper-section-home {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bild-container,
+  .container-beschreibung {
+    flex: 1;
+    width: 100%; /* Volle Breite auf mobilen Geräten */
+  }
+
+  .beschreibung {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .container-button {
+    align-self: center;
+  }
+}

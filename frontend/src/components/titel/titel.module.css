@@ -1,0 +1,6 @@
+.titel__component {
+  display: flex;
+  font-size: 2rem;
+  font-family: "intern";
+  margin-left: 4rem;
+}
