@@ -6,14 +6,13 @@ import { Button, ButtonStyle } from "@/components/button/button";
 
 export function Footer() {
   return (
-    // <footer className={style["footer"]}>
-    //
-    // </footer>
     <footer className={Style["footer"]}>
-      <p>
-        Bereit, deine Fitness zu steigern? Starte mit StepSync, werde jede
-        Sekunde stärker.
-      </p>
+      <div className={Style["container-words"]}>
+        <p className={Style["footer_text"]}>
+          Bereit, deine Fitness zu steigern? Starte mit StepSync, werde jede
+          Sekunde stärker.
+        </p>
+      </div>
 
       <Button
         label="start now!"

@@ -24,7 +24,7 @@
 } */
 
 @font-face {
-  font-family: "ibnsans";
+  font-family: "IBM Plex Sans";
   src: url("./fonts/ibnsans/IBMPlexSans-Bold.ttf"),
     url("./fonts/ibnsans/IBMPlexSans-BoldItalic.ttf"),
     url("./fonts/ibnsans/IBMPlexSans-ExtraLight.ttf"),
@@ -53,6 +53,10 @@ body {
   font-family: "intern", Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+body ::selection {
+  background-color: var(--tertiarycolor);
+  color: var(--fontcolor);
 }
 
 * {

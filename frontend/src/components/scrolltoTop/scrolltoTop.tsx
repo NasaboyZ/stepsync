@@ -1,20 +1,22 @@
-"use client";
+"use client"; 
+
 import { useState, useEffect } from "react";
-import { FaArrowUp } from "react-icons/fa"; // Beispiel-Icon-Bibliothek (alternativ eigenes Icon)
-import Style from "./scrollToTop.module.css"; // Style für Button optional
+import Style from "./scrollToTop.module.css"; 
+import { FaChevronUp } from "react-icons/fa";
 
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Scroll-Ereignis, um die Sichtbarkeit des Buttons zu kontrollieren
+
   useEffect(() => {
     const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > 300); // Sichtbar ab 300px Scrollhöhe
+      setIsVisible(window.scrollY > 400);
     };
 
     window.addEventListener("scroll", toggleVisibility);
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -28,10 +30,10 @@ export default function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className={`${Style["scroll-to-top"]}`}
+          className={Style["scroll-to-top"]}
           aria-label="Scroll to top"
         >
-          <FaArrowUp />
+          <FaChevronUp />
         </button>
       )}
     </>

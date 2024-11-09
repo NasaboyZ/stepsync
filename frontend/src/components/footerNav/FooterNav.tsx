@@ -1,5 +1,6 @@
 import Style from "./footerNav.module.css";
 import Logo from "../logo/logo";
+import { FaGithub, FaInstagram } from "react-icons/fa";
 
 // TODO: Footer Resopnisive machen (josef)
 // TODO: Footer icons wie Instagram und Github einfügen (josef)
@@ -14,7 +15,6 @@ const NavigationItem = () => {
 
   return (
     <>
-      {/* Dynamische Navigation für Hauptlinks */}
       <ul className={Style["navLinks"]}>
         {navItems.map((item, index) => (
           <li key={index}>
@@ -44,14 +44,14 @@ export default function FooterNav() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/instagram-icon.png" alt="Instagram" />
+            <FaInstagram className={Style["SocialMediaIcon"]} />
           </a>
           <a
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/github-icon.png" alt="GitHub" />
+            <FaGithub className={Style["SocialMediaIcon"]} />
           </a>
         </div>
       </div>

@@ -1,0 +1,24 @@
+.container-words {
+  display: flex;
+  align-items: center;
+  margin: 1rem 2rem;
+  padding: 2rem 2rem;
+}
+
+.footer {
+  /* background-color: #e3af357e; */
+  height: auto;
+  width: 100dvw;
+  padding: 1rem;
+  margin: 0 1rem 0 0rem;
+}
+.footer_text {
+  display: flex;
+  text-align: left;
+  color: var(--white, #f8f7f6);
+  font-family: Inter;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 56px;
+}

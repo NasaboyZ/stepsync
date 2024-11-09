@@ -4,7 +4,7 @@ interface NavigationItemProps {
 }
 
 export default function NavigationItem({ items }: NavigationItemProps) {
-  return (
+  return (  
     <ul className={Style["navItem_ul"]}>
       {items.map((item, index) => (
         <li className={Style["navItem_li"]} key={index}>

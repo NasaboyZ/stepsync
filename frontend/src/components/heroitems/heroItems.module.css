@@ -1,4 +1,3 @@
-/* Wrapper für den Hero-Bereich */
 .hero_wrapper {
   position: relative;
   display: flex;
@@ -11,18 +10,25 @@
   margin: 2rem auto;
   max-width: 90%;
   gap: 2rem;
+  width: 1235px;
+  height: auto;
 }
 
-/* Titel im Hero-Bereich */
 .hero_title {
-  font-size: calc(2rem + 1vw);
-  font-weight: bold;
-  margin-bottom: 20px;
-  font-family: "ibnsans";
-  text-align: center;
+  color: var(--white, #f8f7f6);
+  font-size: 60px;
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 2rem;
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+}
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* Linkes Hintergrundbild */
 .hero_image_bg_left {
   position: absolute;
   z-index: -1;
@@ -32,7 +38,6 @@
   opacity: 0.8;
 }
 
-/* Rechtes Hintergrundbild */
 .hero_image_bg_right {
   position: absolute;
   z-index: -2;
@@ -42,7 +47,6 @@
   opacity: 0.8;
 }
 
-/* Bild-Vordergrund */
 .hero_image_front {
   position: relative;
   z-index: 2;
@@ -50,7 +54,6 @@
   max-width: 40vw;
 }
 
-/* Text-Container */
 .container_hero_text {
   margin: 2rem auto;
   display: flex;
@@ -59,17 +62,16 @@
   max-width: 80%;
 }
 
-/* Text im Hero-Bereich */
 .hero_text {
   font-family: "intern";
-  color: #ffffff;
+  color: var(--white, #f8f7f6);
   text-align: left;
   font-size: calc(1rem + 0.5vw);
-  line-height: 1.5;
+  font-weight: 500;
+  line-height: 135.2%;
   word-break: normal;
 }
 
-/* Anpassung für kleinere Bildschirme */
 @media (max-width: 768px) {
   .hero_wrapper {
     padding: 1rem;

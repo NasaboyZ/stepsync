@@ -1,0 +1,44 @@
+.switchContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background-color: #f0f0f0;
+  width: 200px;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.switchBackground {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background-color: var(--seconderycolor);
+  border-radius: 30px;
+  transition: left 0.3s ease-in-out;
+}
+
+.login {
+  left: 0;
+}
+
+.signup {
+  left: 50%;
+}
+
+.switchLabel {
+  flex: 1;
+  text-align: center;
+  z-index: 1;
+  cursor: pointer;
+  padding: 8px 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #4f4b42;
+  transition: color 0.3s;
+}
+
+.active {
+  color: #fff;
+}

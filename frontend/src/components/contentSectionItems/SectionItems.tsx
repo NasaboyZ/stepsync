@@ -18,7 +18,7 @@ export default function SectionItems({
   title = "Über uns",
   text = "Bist du bereit, deine Fitnessziele zu rocken? Bei Stepsync geht es um mehr als nur Training – es geht um die beste Version von dir! Finde Workouts, die zu dir passen, teile deine Erfolge und stürze dich in aufregende Challenges. Werde Teil unserer Community und starte heute durch – dein neues Ich wartet!",
   buttonText = "Erfahre mehr",
-  imageSrc = Rohlstuhlman, // Setze Rohlstuhlman als Standardwert
+  imageSrc = Rohlstuhlman,
   imageAlt = "Mann im Rollstuhl",
   onButtonClick,
 }: ContentSectionProps) {

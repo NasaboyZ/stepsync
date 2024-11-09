@@ -1,4 +1,4 @@
-import Logo from "../logo/logo";
+import Logo from "../../logo/logo";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import BurgerIcon from "@/assets/svg/burger-menu-right-svgrepo-com.svg";

@@ -49,7 +49,7 @@ export default function HeroItems() {
           />
         </motion.div>
 
-        {/* Bild-Vordergrund */}
+        
         <motion.div
           className={Style["hero_image_front"]}
           initial={{ opacity: 0, y: 20 }}

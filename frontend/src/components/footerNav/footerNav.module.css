@@ -1,17 +1,18 @@
-.footer {
-  background-color: #4f4b42; /* Ähnlich der dunklen Farbe im Bild */
+/* .footer {
+  background-color: #4f4b42;
+
   padding: 2rem 0;
   color: #fff;
   text-align: center;
-}
+} */
 
 .footerContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1350px;
   flex-wrap: wrap;
+  margin-bottom: 2 rem;
 }
 
 .logoSection img {
@@ -48,6 +49,11 @@
   height: 24px;
 }
 
+.SocialMediaIcon {
+  width: 30px;
+  height: auto;
+}
+
 .copyright {
   margin-top: 1.5rem;
   font-size: 0.875rem;
@@ -56,4 +62,5 @@
   padding-top: 1rem;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 2rem;
 }

@@ -1,3 +1,8 @@
+.contentwrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 2rem;
+}
 .navWrapper {
   display: flex;
   align-items: center;

@@ -1,6 +1,7 @@
 .titel__component {
   display: flex;
   font-size: 2rem;
-  font-family: "intern";
+  font-family: "IBM Plex Sans";
+  font-style: normal;
   margin-left: 4rem;
 }

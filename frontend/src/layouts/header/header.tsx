@@ -1,6 +1,7 @@
 "use client";
-import HeaderNav from "@/components/headerNav/HeaderNav";
-import MobileNav from "@/components/mobileNav/mobileNav";
+import HeaderNav from "@/components/navigation/headerNav/HeaderNav";
+import MobileNav from "@/components/navigation/mobileNav/mobileNav";
+
 import { useMediaQuery } from "@uidotdev/usehooks";
 
 const headerItem = [
@@ -13,13 +14,15 @@ export function Header() {
   const isSmallDevice = useMediaQuery("only screen and (max-width: 768px)");
 
   return (
-    <header className={isSmallDevice ? "mobile-header" : "desktop-header"}>
-      {isSmallDevice ? (
-        <MobileNav items={headerItem} />
-      ) : (
-        <HeaderNav items={headerItem} />
-      )}
-    </header>
+    <>
+      <header className={isSmallDevice ? "mobile-header" : "desktop-header"}>
+        {isSmallDevice ? (
+          <MobileNav items={headerItem} />
+        ) : (
+          <HeaderNav items={headerItem} />
+        )}
+      </header>
+    </>
   );
 }
 
