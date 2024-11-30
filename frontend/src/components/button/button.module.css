@@ -8,16 +8,16 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-  font-family: "intern";
+  font-family: var(--font-inter-regular);
 }
 
 .primary {
   color: #fff;
-  background-color: var(--seconderycolor);
+  background-color: var(--brown-light);
 }
 
 .secondary {
   background-color: transparent;
   border: 2px solid #ffffff;
-  color: var(--fontcolor);
+  color: var(--white);
 }

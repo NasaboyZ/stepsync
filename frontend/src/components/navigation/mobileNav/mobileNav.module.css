@@ -1,12 +1,13 @@
-/* Hauptlayout für mobile Navigation */
 .mobileNavWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background-color: #4f4b42;
+  background-color: var(--brown-light);
   border-radius: 25px;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .mobileNavToggle {
@@ -14,32 +15,40 @@
 }
 
 @media (max-width: 768px) {
-  .navList {
-    display: none;
-  }
-
   .mobileNavToggle {
     display: block;
     cursor: pointer;
   }
 
-  .mobileNavList {
-    list-style-type: none;
+  .mobileNavOpen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--brown-light);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
-    height: 100dvh;
-    width: 100dvw;
-    padding: 0;
-    margin: 1rem 2rem;
+    padding: 2rem;
+    z-index: 1000;
+    overflow-y: auto;
   }
 
-  .mobileNavWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .closeIcon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
   }
-  .mobileHeader {
-    margin: 0 2rem;
+
+  .switch-login {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 1rem;
   }
 }

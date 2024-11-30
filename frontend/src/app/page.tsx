@@ -1,14 +1,12 @@
-import ContentSection from "@/components/contentSection/ContentSection";
-import Hero from "@/components/hero/hero";
+import SectionItems from "@/components/ContentSection/contentSectionItems/sectionItems";
 
-// TODO: Locomotive Scrolling einfügen in die Scroll Component (josef)
-// TODO: Comoponente für scroll to Top erstellen und einfügen (josef)
+import Hero from "@/components/homeHero/hero/hero";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <ContentSection />
+      <SectionItems pageKey="homePage" title="Über uns" />
     </>
   );
 }

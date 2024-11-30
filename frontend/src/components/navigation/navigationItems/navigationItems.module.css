@@ -1,0 +1,21 @@
+.navItem_ul {
+  display: flex;
+  align-items: center;
+}
+
+.navItem_li {
+  margin-left: 2rem;
+  list-style: none;
+}
+
+@media (max-width: 768px) {
+  .navItem_ul {
+    display: block;
+    text-align: center;
+    padding: 0;
+  }
+
+  .navItem_li {
+    margin: 1rem 0;
+  }
+}

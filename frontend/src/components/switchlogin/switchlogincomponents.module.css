@@ -1,12 +1,12 @@
 .switchContainer {
   display: flex;
   align-items: center;
-  position: relative;
+  position: absolute;
+  right: 8rem;
   border: 1px solid #ccc;
   border-radius: 30px;
   background-color: #f0f0f0;
-  width: 200px;
-  padding: 5px;
+  width: 180px;
   overflow: hidden;
 }
 
@@ -14,7 +14,7 @@
   position: absolute;
   width: 50%;
   height: 100%;
-  background-color: var(--seconderycolor);
+  background-color: var(--brown-light);
   border-radius: 30px;
   transition: left 0.3s ease-in-out;
 }
@@ -35,10 +35,22 @@
   padding: 8px 0;
   font-size: 0.9rem;
   font-weight: bold;
-  color: #4f4b42;
+  color: var(--brown-light);
   transition: color 0.3s;
 }
 
 .active {
-  color: #fff;
+  color: var(--white);
+}
+
+@media (max-width: 1240px) {
+  .switchContainer {
+    right: 4rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .switchContainer {
+    width: 150px;
+  }
 }

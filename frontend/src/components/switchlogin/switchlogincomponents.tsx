@@ -1,42 +1,19 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import styles from "./switchlogincomponents.module.css";
+import Link from "next/link";
 
-
-type SelectedOption = "signup" | "login";
-
-export default function SwitchLoginComponent() {
-  const [selected, setSelected] = useState<SelectedOption>("signup");
-
-  const handleSwitch = (value: SelectedOption) => {
-    setSelected(value);
-  };
-
+const SwitchLoginComponents: React.FC = () => {
   return (
     <div className={styles.switchContainer}>
-      <motion.div
-        layout
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`${styles.switchBackground} ${
-          selected === "login" ? styles.login : styles.signup
-        }`}
-      />
-      <label
-        onClick={() => handleSwitch("login")}
-        className={`${styles.switchLabel} ${
-          selected === "login" ? styles.active : ""
-        }`}
-      >
-        Login
-      </label>
-      <label
-        onClick={() => handleSwitch("signup")}
-        className={`${styles.switchLabel} ${
-          selected === "signup" ? styles.active : ""
-        }`}
-      >
-        Sign-up
-      </label>
+      <div className={`${styles.switchBackground}`} />
+      <div className={`${styles.switchLabel} ${styles.active}`}>
+        <Link href="/login">Login</Link>
+      </div>
+      <div className={styles.switchLabel}>
+        <Link href="/registration">Sign-up</Link>
+      </div>
     </div>
   );
-}
+};
+
+export default SwitchLoginComponents;

@@ -16,7 +16,6 @@ export function Button({ label, onClick, style }: ButtonProps) {
     <button
       className={`${Style.herosection__mehrerfahrenBTN} ${Style[style]}`}
       onClick={onClick}
-      
     >
       {label}
     </button>

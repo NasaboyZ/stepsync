@@ -1,0 +1,9 @@
+.heroSubtitle {
+  font-family: var(--font-inter-regular);
+  color: var(--white, #f8f7f6);
+  text-align: left;
+  font-size: calc(1rem + 0.5vw);
+  font-weight: 500;
+  line-height: 135.2%;
+  word-break: normal;
+}

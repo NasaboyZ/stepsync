@@ -4,6 +4,10 @@ interface TitelProp {
   label: string;
   style?: "primary" | "secondary";
 }
+export enum titelStyle {
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
+}
 
 export function TitelComponent({ label, style = "primary" }: TitelProp) {
   return (

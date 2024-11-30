@@ -1,6 +1,6 @@
 import Image from "next/image";
-import asset from "../../assets/svg/logo.svg"; // Make sure TypeScript knows this is a string
-
+import asset from "../../assets/svg/logo.svg";
+import Link from "next/link";
 const ImageLogo = ({
   src,
   width,
@@ -18,14 +18,9 @@ const ImageLogo = ({
 export default function Logo() {
   return (
     <div>
-      <a href="">
-        <ImageLogo
-          src={asset} // Use the imported SVG logo
-          width={100}
-          height={100}
-          alt="Logo stepsync"
-        />
-      </a>
+      <Link href="/">
+        <ImageLogo src={asset} width={100} height={50} alt="Logo stepsync" />
+      </Link>
     </div>
   );
 }

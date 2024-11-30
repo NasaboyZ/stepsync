@@ -1,6 +1,10 @@
 :root {
-  --background: #4e463a;
-  --fontcolor: #fff;
+  --white: #f8f7f6;
+  --brown-dark: #4e463a;
+  --brown-light: #837c6a;
+  --grey: #d9d9d9;
+  --red: #e03e29;
+  --green: #04d820;
   --lieniargradiant: var(
     --fade-red,
     linear-gradient(
@@ -9,11 +13,7 @@
       rgba(224, 62, 41, 0.26) 96.69%
     )
   );
-  --seconderycolor: #837c6a;
-  --tertiarycolor: #e03e29;
-  --Buttonbackground-regristatrion: D9D9D9;
-  --Buttonbackgorund-border: #000000 70%;
-  --cardsbackground: #f8f7f6;
+  --h1-font-size: clamp(30px, 5vw, 60px);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -32,14 +32,14 @@
     url("./fonts/ibnsans/IBMPlexSans-Medium.ttf"),
     url("./fonts/ibnsans/IBMPlexSans-MediumItalic.ttf"),
     url("./fonts/ibnsans/IBMPlexSans-Regular.ttf"),
-    url("./fonts/ibnsans/IBMPlexSans-SemiBold.ttf"),
-    url("./fonts/ibnsans/IBMPlexSans-SemiBoldItalic.ttf");
+    url("./fonts/ibnsans/IBMPlexSans-SemiBold.ttf");
 }
-@font-face {
+/* @font-face {
   font-family: "intern";
-  src: url("./fonts/intern/Inter-Italic-VariableFont_opsz\,wght.ttf"),
+
+  src: url ("./fonts/intern/Inter_18pt-Regular.ttf"),
     url("./fonts/intern/Inter-VariableFont_opsz\,wght.ttf");
-}
+} */
 
 html,
 body {
@@ -48,15 +48,16 @@ body {
 }
 
 body {
-  color: var(--fontcolor);
-  background: var(--background);
-  font-family: "intern", Helvetica, sans-serif;
+  padding: 0 8rem;
+  color: var(--white);
+  background: var(--brown-dark);
+  font-family: var(--font-inter-regular), Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 body ::selection {
-  background-color: var(--tertiarycolor);
-  color: var(--fontcolor);
+  background-color: var(--red);
+  color: var(--white);
 }
 
 * {
@@ -70,8 +71,26 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+} */
+
+h1 {
+  color: var(--white, #f8f7f6);
+  font-family: "IBM Plex Sans";
+  font-size: var(--h1-font-size);
+}
+
+@media (max-width: 1240px) {
+  body {
+    padding: 0 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
   }
 }

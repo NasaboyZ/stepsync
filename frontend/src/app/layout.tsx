@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+import FooterNav from "@/layout/footer/footerNav";
+import Header from "@/layout/header/Header";
 
-
-import { Footer } from "@/layouts/footer/footer";
-import { Header } from "@/layouts/header/header";
+import SessionProvider from "@/providers/session-provider";
 
 const internItelic = localFont({
   src: "./fonts/intern/Inter-Italic-VariableFont_opsz,wght.ttf",
-  variable: "--fonnt-inter-itelic",
+  variable: "--font-inter-itelic",
   weight: "100 900",
 });
 const internFont = localFont({
   src: "./fonts/intern/Inter-VariableFont_opsz,wght.ttf",
-  variable: "--fonnt-inter-regular",
+  variable: "--font-inter-regular",
   weight: "100 900",
 });
 const ibnsansBold = localFont({
@@ -38,9 +38,11 @@ export default function RootLayout({
       <body
         className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
       >
-        <Header/>
-        {children}
-        <Footer />
+        <SessionProvider>
+          <Header />
+          {children}
+          <FooterNav />
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,14 +1,16 @@
-import Style from "./navItems.module.css";
+import Link from "next/link";
+import Style from "./navigationItems.module.css";
+
 interface NavigationItemProps {
   items: { href: string; label: string }[];
 }
 
 export default function NavigationItem({ items }: NavigationItemProps) {
-  return (  
+  return (
     <ul className={Style["navItem_ul"]}>
       {items.map((item, index) => (
         <li className={Style["navItem_li"]} key={index}>
-          <a href={item.href}>{item.label}</a>
+          <Link href={item.href}>{item.label}</Link>
         </li>
       ))}
     </ul>

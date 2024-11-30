@@ -1,7 +1,19 @@
-.titel__component {
-  display: flex;
-  font-size: 2rem;
-  font-family: "IBM Plex Sans";
+.primary {
+  color: var(--white, #f8f7f6);
+
+  font-size: var(--h1-font-size);
+  font-weight: 700;
   font-style: normal;
-  margin-left: 4rem;
+  font-family: "IBM Plex Sans";
+  text-align: center;
+}
+
+.secondary {
+  color: var(--white, #f8f7f6);
+  /* TODO: variabel und grösse anpassen */
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 2rem;
+  font-family: "IBM Plex Sans";
 }
