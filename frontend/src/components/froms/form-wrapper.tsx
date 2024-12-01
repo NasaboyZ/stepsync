@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode } from "react";
+import { ReactNode, FormEvent } from "react";
 
 interface FormWrapperProps {
   children: ReactNode;

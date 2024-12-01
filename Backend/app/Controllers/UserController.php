@@ -43,7 +43,11 @@ class UserController
       fn($mail) => $mail->to($user->email)->subject('Email Verification')
     );
 
-    return $user->fresh('challenges');
+
+    return response()->json([
+      'message' => 'User created successfully',
+      'user' => $user->fresh('challenges'),
+    ], 201);
   }
 
   function update(Request $request)
@@ -101,8 +105,32 @@ class UserController
       return response()->json(['message' => 'Please verify your email address'], 403);
     }
 
-    // Authentifizierungstoken erstellen (z.B. mit Laravel Passport oder Sanctum)
-    return response()->json(['message' => 'Login successful']);
+    // Token erstellen (z. B. mit Laravel Sanctum)
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return response()->json([
+      'message' => 'Login successful',
+      'token' => $token,
+      'user' => [
+        'id' => $user->id,
+        'first_name' => $user->first_name,
+        'last_name' => $user->last_name,
+        'email' => $user->email,
+        'username' => $user->username,
+      ],
+    ], 200);
+  }
+
+  public function checkUsername(Request $request)
+  {
+    $request->validate(['username' => 'required|string']);
+    $exists = User::where('username', $request->username)->exists();
+
+    if ($exists) {
+      return response()->json(['message' => 'Username is already taken'], 409);
+    }
+
+    return response()->json(['message' => 'Username is available'], 200);
   }
 
 

@@ -1,11 +1,12 @@
-import LoginItems from "@/components/froms/login-form";
+"use client";
 
-import React from "react";
+import { LoginForm } from "@/components/froms/login-form";
 
 export default function LoginPage() {
   return (
-    <>
-      <LoginItems />
-    </>
+    <div>
+      <h1>Login</h1>
+      <LoginForm />
+    </div>
   );
 }
