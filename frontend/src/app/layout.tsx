@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-import FooterNav from "@/layout/footer/footerNav";
-import Header from "@/layout/header/Header";
 
 import SessionProvider from "@/providers/session-provider";
 
@@ -38,11 +36,7 @@ export default function RootLayout({
       <body
         className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
       >
-        <SessionProvider>
-          <Header />
-          {children}
-          <FooterNav />
-        </SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
