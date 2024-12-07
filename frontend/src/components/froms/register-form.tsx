@@ -8,17 +8,23 @@ import { Button, ButtonStyle } from "../button/button";
 import { TextInput } from "./text-input";
 import { registerFormSchema } from "@/validations/register-form-schema";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useSnackbarStore } from "@/store/snackbarStore"; // Snackbar hinzufügen
 
-// Typ aus dem Schema ableiten
+import style from "./register.module.css";
+
+// Typen aus dem Schema ableiten
 type RegisterFormInputs = z.infer<typeof registerFormSchema>;
 
-const formFields: {
-  [key in keyof RegisterFormInputs]: {
+// Formularfeld-Konfiguration
+const formFields: Record<
+  keyof RegisterFormInputs,
+  {
     type: "text" | "number" | "date" | "password";
     placeholder: string;
     required: boolean;
-  };
-} = {
+  }
+> = {
   email: { type: "text", placeholder: "E-mail", required: true },
   first_name: { type: "text", placeholder: "First Name", required: true },
   last_name: { type: "text", placeholder: "Last Name", required: true },
@@ -32,8 +38,12 @@ const formFields: {
 };
 
 export const RegisterForm = () => {
+  const router = useRouter();
+  const { openSnackbar } = useSnackbarStore(); // Snackbar verwenden
+
+  // Formular-Setup
   const form = useForm<RegisterFormInputs>({
-    resolver: zodResolver(registerFormSchema),
+    resolver: zodResolver(registerFormSchema), // Validierung mit zod
     defaultValues: {
       email: "",
       first_name: "",
@@ -50,42 +60,56 @@ export const RegisterForm = () => {
     reValidateMode: "onBlur",
   });
 
+  // Formular-Submit-Handler
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
       const response = await handleSignup(data);
 
-      console.log("Signup response:", response);
-
       if (response.status === 201) {
-        console.log("Signup successful: ", response);
-
-        // Weiterleitung zur Login-Seite
-        window.location.href = "/login";
+        openSnackbar(
+          "Registration successful! Redirecting to login...",
+          "success"
+        );
+        router.push("/login");
       } else {
-        alert(`Signup failed: ${response.message || "Unknown error"}`);
-        console.error("Signup failed:", response.message);
+        openSnackbar(
+          `Registration failed: ${response.message || "Unknown error"}`,
+          "error"
+        );
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An unexpected error occurred. Check console for details.");
+      openSnackbar(
+        "An unexpected error occurred. Please try again later.",
+        "error"
+      );
     }
   };
 
   return (
     <FormProvider {...form}>
-      <FormWrapper onSubmit={form.handleSubmit(onSubmit)}>
+      <FormWrapper
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={style["formWrapper"]}
+      >
         {Object.entries(formFields).map(([name, config]) => (
           <TextInput
             key={name}
+            label={config.placeholder}
             placeholder={config.placeholder}
             name={name as keyof RegisterFormInputs}
             type={config.type}
             required={config.required}
+            className={style["input"]}
           />
         ))}
-        <div>
+        <div className={style["alreadyMember"]}>
           <p>Already a member?</p>
-          <Button style={ButtonStyle.SECONDARY} label="Login now" />
+          <Button
+            style={ButtonStyle.SECONDARY}
+            label="Login now"
+            onClick={() => router.push("/login")}
+          />
         </div>
         <Button type="submit" label="Register" style={ButtonStyle.PRIMARY} />
       </FormWrapper>

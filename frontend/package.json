@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
+    "@mui/material": "^6.1.9",
     "@react-three/drei": "^9.115.0",
     "@react-three/fiber": "^8.17.10",
     "@uidotdev/usehooks": "^2.4.1",

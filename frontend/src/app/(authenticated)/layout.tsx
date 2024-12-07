@@ -5,5 +5,7 @@ export default function AuthenticatedLayout({
 }: {
   children: ReactNode;
 }) {
-  return <div className="authenticated-container">{children}</div>;
+  return <div className="authenticated-container">
+    {children}
+    </div>;
 }
