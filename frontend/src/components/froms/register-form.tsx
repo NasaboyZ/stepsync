@@ -104,14 +104,8 @@ export const RegisterForm = () => {
           />
         ))}
         <div className={style["alreadyMember"]}>
-          <p>Already a member?</p>
-          <Button
-            style={ButtonStyle.SECONDARY}
-            label="Login now"
-            onClick={() => router.push("/login")}
-          />
+          <Button type="submit" label="Register" style={ButtonStyle.PRIMARY} />
         </div>
-        <Button type="submit" label="Register" style={ButtonStyle.PRIMARY} />
       </FormWrapper>
     </FormProvider>
   );
