@@ -54,7 +54,14 @@ export async function handleSignup(
     console.log("Response status:", response.status);
 
     const data = await response.json();
-    console.log("Response data:", data);
+    
+    if (data && data.user) {
+      console.log("User created successfully:", data.user);
+      return data;
+    } else {
+      console.error("Unexpected response format:", data);
+      throw new Error("Invalid response format");
+    }
 
     return {
       ...data,

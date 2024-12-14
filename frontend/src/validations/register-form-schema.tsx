@@ -41,3 +41,4 @@ export const registerFormSchema = z.object({
       "Datum darf nicht in der Zukunft liegen"
     ),
 });
+export type RegisterFormSchema = z.infer<typeof registerFormSchema>;

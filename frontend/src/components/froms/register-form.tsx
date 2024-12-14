@@ -6,16 +6,27 @@ import { handleSignup } from "@/actions/auth-actions";
 import { FormWrapper } from "./form-wrapper";
 import { Button, ButtonStyle } from "../button/button";
 import { TextInput } from "./text-input";
-import { registerFormSchema } from "@/validations/register-form-schema";
+import {
+  RegisterFormSchema,
+  registerFormSchema,
+} from "@/validations/register-form-schema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useSnackbarStore } from "@/store/snackbarStore"; // Snackbar hinzufügen
-
 import style from "./register.module.css";
 
-// Typen aus dem Schema ableiten
-type RegisterFormInputs = z.infer<typeof registerFormSchema>;
-
+interface RegisterFormInputs {
+  email: string;
+  first_name: string;
+  last_name: string;
+  weight: number;
+  height: number;
+  username: string;
+  goal: string;
+  gender: string;
+  date_of_birth: string;
+  password: string;
+}
 // Formularfeld-Konfiguration
 const formFields: Record<
   keyof RegisterFormInputs,
@@ -42,7 +53,7 @@ export const RegisterForm = () => {
   const { openSnackbar } = useSnackbarStore(); // Snackbar verwenden
 
   // Formular-Setup
-  const form = useForm<RegisterFormInputs>({
+  const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema), // Validierung mit zod
     defaultValues: {
       email: "",
@@ -63,7 +74,18 @@ export const RegisterForm = () => {
   // Formular-Submit-Handler
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
-      const response = await handleSignup(data);
+      const response = await handleSignup(
+        data.email,
+        data.first_name,
+        data.last_name,
+        data.weight,
+        data.height,
+        data.username,
+        data.goal,
+        data.gender,
+        data.date_of_birth,
+        data.password
+      );
 
       if (response.status === 201) {
         openSnackbar(
