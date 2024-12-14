@@ -8,32 +8,23 @@ export async function middleware(req: NextRequest) {
   // get the current request pathname
   const { pathname } = req.nextUrl;
 
-//   // 1. if the request is for the root url
-//   if (pathname === "/" && token) {
-//     // if there is a token, redirect to the dashboard page
-//     const redirectUrl = req.nextUrl.clone();
-//     redirectUrl.pathname = "/dashboard";
-//     return NextResponse.redirect(redirectUrl);
-//   }
-
   // 2. if there is a token, and we are on the session page, redirect to the dashboard page
-  if (pathname === "/session" && token) {
+  if (pathname === "/login" && token) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/dashboard";
+    return NextResponse.redirect(redirectUrl);
+  }
+  if (pathname === "/registration" && token) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/dashboard";
     return NextResponse.redirect(redirectUrl);
   }
 
-//   // 3. if the user is on the session page and has no token, do nothing (fixes the infinite redirect loop in step 4)
-//   if (pathname === "/session" && !token) {
-//     return NextResponse.next();
-//   }
-
-//   // 4. if there is no token, redirect to the session page (valid for all paths)
-//   if (!token) {
-//     const redirectUrl = req.nextUrl.clone();
-//     redirectUrl.pathname = "/session";
-//     return NextResponse.redirect(redirectUrl);
-//   }
+  if (pathname === "/dashboard" && !token) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    return NextResponse.redirect(redirectUrl);
+  }
 
   // 5. continue with the request, if no other condition is met
   return NextResponse.next();

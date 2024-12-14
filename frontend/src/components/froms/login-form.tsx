@@ -2,17 +2,16 @@
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useRouter } from "next/router";
-
 import {
   loginFormSchema,
   LoginFormInputs,
 } from "@/validations/login-form-schema";
-import { handleLogin } from "@/actions/auth-actions";
 import { FormWrapper } from "./form-wrapper";
 import { Button, ButtonStyle } from "../button/button";
 import { TextInput } from "./text-input";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 const formFields: Record<
   keyof LoginFormInputs,
@@ -24,6 +23,7 @@ const formFields: Record<
 
 export const LoginForm = () => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<LoginFormInputs>({
     resolver: zodResolver(loginFormSchema),
@@ -36,27 +36,20 @@ export const LoginForm = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    try {
-      const response = await handleLogin(data);
+    setError(null);
 
-      if (response.status === 200) {
-        console.log("Login successful:", response);
+    const response = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
 
-        // Token speichern
-        localStorage.setItem("auth_token", response.token || "");
-
-        // Weiterleitung ins Dashboard
-        if (router) {
-          router.push("/dashboard");
-        } else {
-          console.error("Router not available");
-        }
-      } else {
-        alert(`Login failed: ${response.message || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      alert("An unexpected error occurred. Check console for details.");
+    if (response?.error) {
+      setError("login fehlgeschlagen");
+      console.log(error);
+    } else {
+      console.log("Login successful", response);
+      router.push("/dashboard");
     }
   };
 
@@ -65,6 +58,7 @@ export const LoginForm = () => {
       <FormWrapper onSubmit={form.handleSubmit(onSubmit)}>
         {Object.entries(formFields).map(([name, config]) => (
           <TextInput
+            label={name}
             key={name}
             placeholder={config.placeholder}
             name={name as keyof LoginFormInputs}

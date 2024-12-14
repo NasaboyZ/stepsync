@@ -1,11 +1,7 @@
-import { ReactNode } from "react";
-
 export default function AuthenticatedLayout({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
-  return <div className="authenticated-container">
-    {children}
-    </div>;
+  return <div className="authenticated-container">{children}</div>;
 }

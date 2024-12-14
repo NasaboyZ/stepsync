@@ -23,19 +23,16 @@ export const authConfig: AuthOptions = {
 
         // if we have credentials, we can try to login
         // login logic is handled internally by NextAuth
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/api/auth/login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
 
         const user = await response.json();
 

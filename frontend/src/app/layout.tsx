@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
-
 import SessionProvider from "@/providers/session-provider";
 
 const internItelic = localFont({
