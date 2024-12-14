@@ -10,12 +10,21 @@ interface SignUpError {
   message: string;
 }
 
+interface User {
+  id: number;
+  email: string;
+  username: string;
+  created_at: string;
+  updated_at: string;
+}
+
 interface SignUpResponse extends ResponseReturn {
   email?: string;
   updated_at?: string;
   created_at?: string;
   id?: number;
-  errors?: SignUpError[]; // | {key: string}:string | string;
+  user?: User; // Spezifischer Typ für Benutzer-Daten
+  errors?: SignUpError[];
 }
 
 // Funktion für die Registrierung
@@ -51,35 +60,36 @@ export async function handleSignup(
       }),
     });
 
-    console.log("Response status:", response.status);
+    // console.log("Response status:", response.status);
 
     const data = await response.json();
-    
-    if (data && data.user) {
+    // console.log("Raw API Response:", data);
+
+    // Erfolgreicher Registrierungsversuch
+    if (response.status === 201 && data.user) {
       console.log("User created successfully:", data.user);
-      return data;
-    } else {
-      console.error("Unexpected response format:", data);
-      throw new Error("Invalid response format");
-    }
-
-    return {
-      ...data,
-      status: response.status,
-    };
-  } catch (error) {
-    console.error("Error occurred during signup:", error);
-
-    if (error instanceof Error) {
       return {
-        message: error.message,
-        status: 400,
+        status: response.status,
+        message: data.message || "User created successfully",
+        user: data.user,
       };
     }
 
+    // Unerwartete oder fehlerhafte Response
+    // console.error("Unexpected response format or error:", data);
     return {
-      message: "An unexpected error occurred",
-      status: 400,
+      status: response.status,
+      message: data.message || "Unexpected error occurred",
+      errors: data.errors || [],
+    };
+  } catch (error) {
+    // Fehler während der Anfrage
+    // console.error("Error occurred during signup:", error);
+
+    return {
+      status: 500,
+      message:
+        error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 }

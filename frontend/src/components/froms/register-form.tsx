@@ -10,7 +10,7 @@ import {
   RegisterFormSchema,
   registerFormSchema,
 } from "@/validations/register-form-schema";
-import { z } from "zod";
+
 import { useRouter } from "next/navigation";
 import { useSnackbarStore } from "@/store/snackbarStore"; // Snackbar hinzufügen
 import style from "./register.module.css";
