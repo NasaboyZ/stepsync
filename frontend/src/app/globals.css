@@ -48,7 +48,7 @@ body {
 }
 
 body {
-  padding: 0 8rem;
+  
   color: var(--white);
   background: var(--brown-dark);
   font-family: var(--font-inter-regular), Helvetica, sans-serif;
@@ -83,14 +83,3 @@ h1 {
   font-size: var(--h1-font-size);
 }
 
-@media (max-width: 1240px) {
-  body {
-    padding: 0 4rem;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    padding: 1rem;
-  }
-}

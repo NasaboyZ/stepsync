@@ -1,0 +1,15 @@
+.unauthenticated-container {
+  padding: 0 8rem;
+}
+
+@media (max-width: 1240px) {
+  .unauthenticated-container {
+    padding: 0 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .unauthenticated-containerdy {
+    padding: 1rem;
+  }
+}
