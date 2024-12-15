@@ -53,7 +53,7 @@ export default function DashboardGrafik() {
             <ReferenceLine
               y={durchschnittBMI}
               label="Durchschnitt"
-              stroke="red"
+              stroke="#e03e29"
             />
             <Line
               type="monotone"
