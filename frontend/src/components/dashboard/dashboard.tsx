@@ -8,13 +8,20 @@ import {
   MdDirectionsRun,
   MdEmojiEvents,
   MdMenu,
+  MdPerson,
+  MdEdit,
+  MdSettings,
 } from "react-icons/md";
 import {
-  Paper,
   Typography,
   IconButton,
   Tooltip,
   Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ClickAwayListener,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import DashboardGrafik from "./dashboardGrafik";
@@ -36,9 +43,24 @@ const item = {
 
 export default function Dashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickAway = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -50,12 +72,98 @@ export default function Dashboard() {
           transition={{ duration: 0.5 }}
           className={styles.area}
         >
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-            <Paper elevation={3} sx={{ p: 2 }}>
-              <Typography variant="h4" component="h2">
-                Dashboard
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "16px 24px",
+              backgroundColor: "var(--brown-light)",
+              borderRadius: "10px",
+              marginBottom: "20px",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Typography variant="h6" sx={{ color: "var(--white)" }}>
+                StepSync
               </Typography>
-            </Paper>
+            </Box>
+
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  padding: "4px 12px",
+                  borderLeft: "2px solid var(--white)",
+                  color: "var(--white)",
+                  cursor: "pointer",
+                }}
+                onClick={handleClick}
+              >
+                <Avatar
+                  src="/path-to-avatar.jpg"
+                  alt="Profilbild"
+                  sx={{ width: 32, height: 32 }}
+                />
+                <Typography>Max Mustermann</Typography>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  onClick={(e) => e.stopPropagation()}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      "& .MuiMenuItem-root": {
+                        px: 2,
+                        py: 1,
+                        borderRadius: 1,
+                        gap: 1,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      /* Profilbild bearbeiten Logik */
+                    }}
+                  >
+                    <ListItemIcon>
+                      <MdPerson size={20} />
+                    </ListItemIcon>
+                    Profilbild bearbeiten
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      /* Persönliche Daten bearbeiten Logik */
+                    }}
+                  >
+                    <ListItemIcon>
+                      <MdEdit size={20} />
+                    </ListItemIcon>
+                    Persönliche Daten bearbeiten
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      /* Einstellungen Logik */
+                    }}
+                  >
+                    <ListItemIcon>
+                      <MdSettings size={20} />
+                    </ListItemIcon>
+                    Einstellungen
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </ClickAwayListener>
           </Box>
           <DashboardGrafik />
         </motion.div>
@@ -67,7 +175,9 @@ export default function Dashboard() {
         </IconButton>
       </div>
 
-      <nav className={`${styles["main-menu"]} ${isMenuOpen ? styles.open : ""}`}>
+      <nav
+        className={`${styles["main-menu"]} ${isMenuOpen ? styles.open : ""}`}
+      >
         <motion.ul variants={container} initial="hidden" animate="show">
           <motion.li variants={item}>
             <Tooltip title="Dashboard" placement="right">

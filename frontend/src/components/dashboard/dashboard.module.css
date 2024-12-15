@@ -1,4 +1,3 @@
-
 .main-menu {
   background: var(--brown-light);
   position: fixed;
@@ -49,7 +48,7 @@
 }
 
 .nav-text {
-  font-family: "Roboto", sans-serif;
+  font-family: "--font-inter-regular" sans-serif;
   font-size: 14px;
   opacity: 1;
   transition: opacity 0.3s;
@@ -140,5 +139,37 @@
 
   .main-menu:hover + .area {
     margin-left: 0;
+  }
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-left: 2px solid var(--white);
+  color: var(--white);
+}
+
+.header-profile img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header-profile span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .header-profile span {
+    display: none;
+  }
+  
+  .header-profile {
+    border-left: none;
+    padding: 4px;
   }
 }
