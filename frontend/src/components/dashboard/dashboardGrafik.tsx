@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ReferenceLine,
 } from "recharts";
 
 export default function DashboardGrafik() {
@@ -19,6 +20,10 @@ export default function DashboardGrafik() {
     { datum: "01.04", bmi: 22.3 },
     { datum: "01.05", bmi: 21.9 },
   ];
+
+  // Durchschnitt berechnen
+  const durchschnittBMI =
+    bmiData.reduce((sum, current) => sum + current.bmi, 0) / bmiData.length;
 
   return (
     <motion.div
@@ -42,14 +47,20 @@ export default function DashboardGrafik() {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="datum" />
-            <YAxis domain={[18, 35]} /> {/* BMI Normalbereich */}
+            <YAxis domain={[18, 35]} />
             <Tooltip />
             <Legend />
+            <ReferenceLine
+              y={durchschnittBMI}
+              label="Durchschnitt"
+              stroke="red"
+            />
             <Line
               type="monotone"
               dataKey="bmi"
-              stroke="#8884d8"
-              activeDot={{ r: 6 }}
+              stroke="#837c6a"
+              strokeWidth={4}
+              activeDot={{ r: 7 }}
             />
           </LineChart>
         </Box>

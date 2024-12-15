@@ -1,6 +1,6 @@
-/* dashboard.module.css */
+
 .main-menu {
-  background: #1976d2;
+  background: var(--brown-light);
   position: fixed;
   top: 0;
   bottom: 0;
@@ -31,18 +31,20 @@
 .main-menu li > a {
   display: flex;
   align-items: center;
-  color: white;
+  color: var(--white);
   text-decoration: none;
   padding: 8px 16px;
   transition: background-color 0.2s;
 }
 
 .main-menu li > a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--red);
+  color: var(--white);
+  transition: background-color 0.3s ease;
 }
 
 .nav-icon {
-  color: white !important;
+  color: var(--white) !important;
   margin-right: 16px;
 }
 
@@ -63,7 +65,7 @@
 .area {
   margin-left: 60px;
   padding: 16px;
-  background: #f5f5f5;
+  background: var(--brown-dark);
   min-height: 100vh;
   transition: margin-left 0.3s ease;
 }
