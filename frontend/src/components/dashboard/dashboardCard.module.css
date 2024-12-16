@@ -1,0 +1,61 @@
+.dashboard-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  overflow: hidden;
+  max-width: 600px;
+  margin: 1rem;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.card-content {
+  padding: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.user-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.biography {
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+.user-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: bold;
+  color: #555;
+}
+
+.value {
+  color: #333;
+}

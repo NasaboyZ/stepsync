@@ -25,6 +25,8 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import DashboardGrafik from "./dashboardGrafik";
+import DashboardCard from "./dashboardCard";
+import { signOut } from "next-auth/react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -61,6 +63,27 @@ export default function Dashboard() {
 
   const handleClickAway = () => {
     setAnchorEl(null);
+  };
+
+  // Beispiel-Benutzerdaten
+  const mockUserData = {
+    name: "Max Mustermann",
+    biography: "Fitness-Enthusiast und Hobbysportler",
+    age: 30,
+    gender: "männlich",
+    weight: 75,
+    goal: "lifting" as const,
+    imageUrl: "https://loremflickr.com/320/240",
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut({
+        callbackUrl: "/login",
+      });
+    } catch (error) {
+      console.error("Fehler beim Abmelden:", error);
+    }
   };
 
   return (
@@ -142,7 +165,6 @@ export default function Dashboard() {
                   <MenuItem
                     onClick={() => {
                       handleClose();
-                      /* Persönliche Daten bearbeiten Logik */
                     }}
                   >
                     <ListItemIcon>
@@ -166,6 +188,7 @@ export default function Dashboard() {
             </ClickAwayListener>
           </Box>
           <DashboardGrafik />
+          <DashboardCard variant="user-info" userData={mockUserData} />
         </motion.div>
       </Box>
 
@@ -236,11 +259,13 @@ export default function Dashboard() {
         >
           <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <Tooltip title="Abmelden" placement="right">
-              <a href="#">
+              <a onClick={handleLogout} style={{ cursor: "pointer" }}>
                 <IconButton className={styles["nav-icon"]}>
                   <MdLogout size={24} />
                 </IconButton>
-                <span className={styles["nav-text"]}>Abmelden</span>
+                <span onClick={() => signOut()} className={styles["nav-text"]}>
+                  Abmelden
+                </span>
               </a>
             </Tooltip>
           </motion.li>
