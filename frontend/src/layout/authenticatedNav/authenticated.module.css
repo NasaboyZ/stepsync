@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.permanentDrawer {
+  width: 250px;
+  background-color: var(--brown-light);
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer {
+  width: 250px;
+  background-color: #f5f5f5;
+  height: 100%;
+}
+
+.appBar {
+  background-color: var(--brown-light);
+}
+
+.menuButton {
+  margin-right: 16px;
+}
+
+.title {
+  flex-grow: 1;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.mainContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 16px;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.listItem:hover {
+  background-color: #e0e0e0;
+}
+
+.listItemIcon {
+  font-size: 24px;
+  margin-right: 16px;
+  color: #1976d2;
+}
+
+.listItemText {
+  font-size: 16px;
+  color: #333333;
+  font-weight: 500;
+}

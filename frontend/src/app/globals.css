@@ -48,7 +48,6 @@ body {
 }
 
 body {
-  
   color: var(--white);
   background: var(--brown-dark);
   font-family: var(--font-inter-regular), Helvetica, sans-serif;
@@ -82,4 +81,3 @@ h1 {
   font-family: "IBM Plex Sans";
   font-size: var(--h1-font-size);
 }
-
