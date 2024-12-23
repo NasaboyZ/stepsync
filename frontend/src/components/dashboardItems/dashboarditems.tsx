@@ -1,7 +1,10 @@
+import DashboardCards from "../dashboardCards/dashboardCards";
+
+
 export default function DashboardItems() {
   return (
     <>
-      <h2>rauche</h2>
+      <DashboardCards />
     </>
   );
 }

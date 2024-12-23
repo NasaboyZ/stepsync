@@ -1,4 +1,9 @@
+import { ChallengeCard } from "../Cards/cards";
+
 export default function ChallengesItems() {
-    return <div>Challenges-Inhalte hier</div>;
-  }
-  
+  return (
+    <>
+      <ChallengeCard variant="secondary" />
+    </>
+  );
+}

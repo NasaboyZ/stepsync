@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +13,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  Avatar,
+  Box,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -32,8 +35,18 @@ export default function AuthenticatedNav() {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
 
+  // Mock user data
+  const user = {
+    name: "John Doe",
+    avatarUrl: "/images/avatar.jpg", // Ersetze durch den tatsächlichen Avatar-Pfad
+  };
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
+  };
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/login" });
   };
 
   const renderContent = () => {
@@ -78,6 +91,13 @@ export default function AuthenticatedNav() {
                 Challenges
               </Link>
             </ListItem>
+
+            <ListItem onClick={handleSignOut} className={styles.listItem}>
+              <ListItemIcon className={styles.listItemIcon}>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <Typography className={styles.listItemText}>Logout</Typography>
+            </ListItem>
           </List>
         </aside>
       ) : (
@@ -99,6 +119,16 @@ export default function AuthenticatedNav() {
             <Typography variant="h6" className={styles.title}>
               Dashboard
             </Typography>
+            <Box className={styles.userSection}>
+              <Avatar
+                src={user.avatarUrl}
+                alt={user.name}
+                className={styles.avatar}
+              />
+              <Typography variant="body1" className={styles.userName}>
+                {user.name}
+              </Typography>
+            </Box>
           </Toolbar>
         </AppBar>
         <div className={styles.content}>{renderContent()}</div>

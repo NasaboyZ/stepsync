@@ -65,3 +65,20 @@
   color: #333333;
   font-weight: 500;
 }
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Schiebt den Bereich nach rechts */
+  gap: 8px; /* Abstand zwischen Avatar und Name */
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border: 2px solid white;
+}
+
+.userName {
+  font-weight: 500;
+  color: white;
+}

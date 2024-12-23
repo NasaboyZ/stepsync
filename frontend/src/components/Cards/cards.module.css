@@ -1,0 +1,53 @@
+.card {
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.primary {
+  background-color: var(--brown-light);
+}
+
+.secondary {
+  background-color: var(--brown-light);
+  color: var(--white);
+}
+
+.title {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input {
+  margin-bottom: 16px;
+}
+
+.media {
+  margin-bottom: 16px;
+}
+
+.description {
+  margin-bottom: 16px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.button {
+  min-width: 120px;
+}
+
+.statusText {
+  margin-top: 16px;
+  font-weight: bold;
+  text-align: center;
+}
