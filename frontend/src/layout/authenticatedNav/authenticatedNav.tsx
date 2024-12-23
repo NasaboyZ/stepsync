@@ -52,18 +52,11 @@ export default function AuthenticatedNav() {
           },
         });
 
-        if (!response.ok) {
-          console.error("HTTP-Status:", response.status);
-          console.error("Fehler-Text:", await response.text());
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
-        console.log("Empfangene Daten:", data);
+
         setUsername(data.username);
       } catch (error: unknown) {
         if (error instanceof Error) {
-          console.error("Fehlermeldung:", error.message);
         } else {
           console.error("Ein unbekannter Fehler ist aufgetreten:", error);
         }

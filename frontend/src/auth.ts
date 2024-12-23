@@ -17,12 +17,11 @@ export const authConfig: AuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      // next-auth's default authorization method (no custom handleLogin)
+
       async authorize(credentials) {
         if (!credentials) return null;
 
-        // if we have credentials, we can try to login
-        // login logic is handled internally by NextAuth
+       
         const response = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: "POST",
           headers: {
@@ -36,7 +35,7 @@ export const authConfig: AuthOptions = {
 
         const user = await response.json();
 
-        // check if response is ok and user is exists
+  
         if (response.ok && user) {
           return {
             email: user.email,
@@ -44,7 +43,7 @@ export const authConfig: AuthOptions = {
           } as User;
         }
 
-        // if it doesn't work, return null
+    
         return null;
       },
     }),

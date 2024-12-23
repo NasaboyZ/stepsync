@@ -1,0 +1,25 @@
+.bioCard {
+  max-width: 400px;
+  margin: 1rem;
+  border-radius: 16px !important;
+}
+
+.cardContent {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.avatarSection {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background-color: var(--brown-light);
+  border-radius: 12px;
+}
+
+.infoSection {
+  flex-grow: 1;
+}
