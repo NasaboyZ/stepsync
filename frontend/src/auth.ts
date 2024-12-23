@@ -52,14 +52,15 @@ export const authConfig: AuthOptions = {
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
-        // if user is logged in, add the token from the response to the user object
         token.accessToken = user.accessToken;
+        // Token im localStorage speichern
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('authToken', user.accessToken as string);
+        }
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      // if the user is logged in and a session is created for the user,
-      // add the token from the response to the session object
       session.accessToken = token.accessToken as string;
       return session;
     },

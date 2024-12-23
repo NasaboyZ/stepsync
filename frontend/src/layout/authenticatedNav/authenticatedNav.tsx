@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,15 +31,49 @@ import ChallengesItems from "@/components/challengesitems/challengesItems";
 
 export default function AuthenticatedNav() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [username, setUsername] = React.useState("");
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
+  const { data: session } = useSession();
 
-  // Mock user data
-  const user = {
-    name: "John Doe",
-    avatarUrl: "/images/avatar.jpg", // Ersetze durch den tatsächlichen Avatar-Pfad
-  };
+  React.useEffect(() => {
+    async function fetchUsername() {
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`;
+        console.log("Versuche API-Zugriff auf:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          console.error("HTTP-Status:", response.status);
+          console.error("Fehler-Text:", await response.text());
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Empfangene Daten:", data);
+        setUsername(data.username);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Fehlermeldung:", error.message);
+        } else {
+          console.error("Ein unbekannter Fehler ist aufgetreten:", error);
+        }
+      }
+    }
+
+    if (session?.accessToken) {
+      fetchUsername();
+    }
+  }, [session]);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -120,13 +154,9 @@ export default function AuthenticatedNav() {
               Dashboard
             </Typography>
             <Box className={styles.userSection}>
-              <Avatar
-                src={user.avatarUrl}
-                alt={user.name}
-                className={styles.avatar}
-              />
+              <Avatar className={styles.avatar} />
               <Typography variant="body1" className={styles.userName}>
-                {user.name}
+                {username}
               </Typography>
             </Box>
           </Toolbar>

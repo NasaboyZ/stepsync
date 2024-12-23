@@ -49,6 +49,22 @@ export const LoginForm = () => {
       console.log(error);
     } else {
       console.log("Login successful", response);
+      const token = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      }).then(res => res.json())
+        .then(data => data.token);
+
+      if (token) {
+        localStorage.setItem('authToken', token);
+      }
+      
       router.push("/dashboard");
     }
   };
