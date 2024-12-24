@@ -88,8 +88,9 @@ export default function DashboardBmi() {
       {
         label: "BMI",
         data: bmiData.map((entry) => entry.bmi),
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(0,0,0,9)",
+        backgroundColor: "rgba(0,0,0,0.2)",
+        borderWidth: 2,
         fill: true,
         tension: 0.3,
       },
@@ -98,12 +99,16 @@ export default function DashboardBmi() {
 
   const options: ChartOptions<"line"> = {
     responsive: true,
+    maintainAspectRatio: false, // Verhindert festes Seitenverhältnis
     plugins: {
       legend: { display: true, position: "top" },
       tooltip: { mode: "index", intersect: false },
     },
     scales: {
-      x: { display: true, title: { display: true, text: "Messung (Index)" } },
+      x: {
+        display: true,
+        title: { display: true, text: "Messung (Index)" },
+      },
       y: {
         display: true,
         title: { display: true, text: "BMI-Wert" },
@@ -116,13 +121,18 @@ export default function DashboardBmi() {
   if (loading) return <div>Lädt Daten...</div>;
   if (error) return <div>Fehler: {error}</div>;
 
+  const chartHeight = `${Math.max(300, bmiData.length * 50)}px`;
+
   return (
     <Card className={styles.card}>
       <CardContent>
         <Typography variant="h6" className={styles.title}>
           BMI Verlauf
         </Typography>
-        <div className={styles.chartContainer}>
+        <div
+          className={styles.chartContainer}
+          style={{ height: chartHeight }} // Dynamische Höhe
+        >
           <Line data={chartData} options={options} />
         </div>
       </CardContent>
