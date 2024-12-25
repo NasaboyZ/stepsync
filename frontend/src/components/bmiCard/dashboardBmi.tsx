@@ -15,9 +15,9 @@ import {
   CategoryScale,
   ChartOptions,
 } from "chart.js";
+import Skeleton from "@mui/material/Skeleton";
 import styles from "./dashboardBmi.module.css";
 
-// Chart.js-Registrierung
 ChartJS.register(
   LineElement,
   PointElement,
@@ -28,7 +28,6 @@ ChartJS.register(
   CategoryScale
 );
 
-// Typdefinition für BMI-Daten
 interface BmiData {
   height: number;
   weight: number;
@@ -99,7 +98,7 @@ export default function DashboardBmi() {
 
   const options: ChartOptions<"line"> = {
     responsive: true,
-    maintainAspectRatio: false, // Verhindert festes Seitenverhältnis
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true, position: "top" },
       tooltip: { mode: "index", intersect: false },
@@ -118,7 +117,21 @@ export default function DashboardBmi() {
     },
   };
 
-  if (loading) return <div>Lädt Daten...</div>;
+  if (loading) {
+    return (
+      <Card className={styles.card}>
+        <CardContent>
+          <Typography variant="h6" className={styles.title}>
+            <Skeleton variant="text" width="40%" height={30} />
+          </Typography>
+          <div className={styles.chartContainer} style={{ height: "300px" }}>
+            <Skeleton variant="rectangular" width="100%" height="100%" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (error) return <div>Fehler: {error}</div>;
 
   const chartHeight = `${Math.max(300, bmiData.length * 50)}px`;
@@ -129,10 +142,7 @@ export default function DashboardBmi() {
         <Typography variant="h6" className={styles.title}>
           BMI Verlauf
         </Typography>
-        <div
-          className={styles.chartContainer}
-          style={{ height: chartHeight }} // Dynamische Höhe
-        >
+        <div className={styles.chartContainer} style={{ height: chartHeight }}>
           <Line data={chartData} options={options} />
         </div>
       </CardContent>
