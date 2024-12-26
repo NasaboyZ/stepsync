@@ -10,6 +10,7 @@ interface WorkoutData {
   category: string;
   description: string;
   weight: number;
+  repetitions: number;
 }
 
 export default function WorkoutItems() {
@@ -29,7 +30,10 @@ export default function WorkoutItems() {
       <Grid container spacing={2}>
         {savedWorkouts.map((workout, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
-            <WorkoutCard variant="primary" data={workout} />
+            <WorkoutCard
+              variant="primary"
+              onSave={() => {}} // Für gespeicherte Workouts ist keine Speicherung erforderlich
+            />
           </Grid>
         ))}
       </Grid>

@@ -16,12 +16,32 @@ import styles from "./cards.module.css";
 interface CardProps {
   variant: "primary" | "secondary";
 }
+interface WorkoutData {
+  category: string;
+  description: string;
+  weight: number;
+  repetitions: number;
+}
 
-export function WorkoutCard({ variant }: CardProps) {
+export function WorkoutCard({
+  variant,
+  onSave,
+}: CardProps & { onSave?: (data: WorkoutData) => void }) {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [weight, setWeight] = useState("");
   const [repetitions, setRepetitions] = useState("");
+
+  const handleSave = () => {
+    if (onSave) {
+      onSave({
+        category,
+        description,
+        weight: parseInt(weight),
+        repetitions: parseInt(repetitions),
+      });
+    }
+  };
 
   return (
     <Card className={`${styles.card} ${styles[variant]}`}>
@@ -63,6 +83,16 @@ export function WorkoutCard({ variant }: CardProps) {
           onChange={(e) => setRepetitions(e.target.value)}
           className={styles.input}
         />
+        {onSave && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSave}
+            className={styles.button}
+          >
+            Speichern
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

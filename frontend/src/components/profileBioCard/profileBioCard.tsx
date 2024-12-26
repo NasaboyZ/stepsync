@@ -34,18 +34,24 @@ export default function ProfileBioCard() {
             },
           });
 
+          if (!response.ok) {
+            console.error("API Error", response.status);
+            return;
+          }
+
           const data = await response.json();
           console.log("API Response:", data); // Debugging
+
           setUserProfile({
             username: data.username,
             age: data.age,
-            sex: data.gender,
+            sex: data.gender, // Mapping gender to sex
             height: data.height,
             weight: data.weight,
             goal: data.goal,
           });
         } catch (error) {
-          console.error("Fehler beim Laden des Benutzerprofils:", error);
+          console.error("Error fetching user profile:", error);
         }
       }
     }

@@ -19,11 +19,12 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
-  AiOutlineMenu as MenuIcon,
-  AiFillHome as HomeIcon,
-  AiFillDashboard as DashboardIcon,
-  AiOutlineLogout as ExitToAppIcon,
-} from "react-icons/ai";
+  MdOutlineSpaceDashboard as DashboardIcon,
+  MdFitnessCenter as WorkoutIcon,
+  MdEmojiEvents as ChallengesIcon,
+  MdLogout as LogoutIcon,
+  MdMenu as MenuIcon, // Import MenuIcon hier
+} from "react-icons/md";
 import styles from "./authenticated.module.css";
 import DashboardItems from "@/components/dashboardItems/dashboarditems";
 import WorkoutItems from "@/components/workoutitems/workoutitems";
@@ -89,6 +90,19 @@ export default function AuthenticatedNav() {
     }
   };
 
+  const getTitle = () => {
+    switch (pathname) {
+      case "/dashboard":
+        return "Dashboard";
+      case "/workout":
+        return "Workout";
+      case "/challenges":
+        return "Challenges";
+      default:
+        return "Dashboard";
+    }
+  };
+
   return (
     <div className={styles.container}>
       {isLargeScreen ? (
@@ -96,7 +110,7 @@ export default function AuthenticatedNav() {
           <List>
             <ListItem className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>
-                <HomeIcon />
+                <DashboardIcon />
               </ListItemIcon>
               <Link href="/dashboard" className={styles.listItemText}>
                 Dashboard
@@ -104,7 +118,7 @@ export default function AuthenticatedNav() {
             </ListItem>
             <ListItem className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>
-                <DashboardIcon />
+                <WorkoutIcon />
               </ListItemIcon>
               <Link href="/workout" className={styles.listItemText}>
                 Workout
@@ -112,7 +126,7 @@ export default function AuthenticatedNav() {
             </ListItem>
             <ListItem className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>
-                <ExitToAppIcon />
+                <ChallengesIcon />
               </ListItemIcon>
               <Link href="/challenges" className={styles.listItemText}>
                 Challenges
@@ -121,7 +135,7 @@ export default function AuthenticatedNav() {
 
             <ListItem onClick={handleSignOut} className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>
-                <ExitToAppIcon />
+                <LogoutIcon />
               </ListItemIcon>
               <Typography className={styles.listItemText}>Logout</Typography>
             </ListItem>
@@ -144,7 +158,7 @@ export default function AuthenticatedNav() {
               </IconButton>
             )}
             <Typography variant="h6" className={styles.title}>
-              Dashboard
+              {getTitle()}
             </Typography>
             <Box className={styles.userSection}>
               <Avatar className={styles.avatar} />
