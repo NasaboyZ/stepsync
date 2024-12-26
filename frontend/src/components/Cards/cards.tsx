@@ -15,6 +15,9 @@ import styles from "./cards.module.css";
 
 interface CardProps {
   variant: "primary" | "secondary";
+  initialData?: WorkoutData;
+  readOnly?: boolean;
+  onSave?: (data: WorkoutData) => void;
 }
 interface WorkoutData {
   category: string;
@@ -25,12 +28,18 @@ interface WorkoutData {
 
 export function WorkoutCard({
   variant,
+  initialData,
+  readOnly = false,
   onSave,
-}: CardProps & { onSave?: (data: WorkoutData) => void }) {
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [weight, setWeight] = useState("");
-  const [repetitions, setRepetitions] = useState("");
+}: CardProps) {
+  const [category, setCategory] = useState(initialData?.category || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
+  const [weight, setWeight] = useState(initialData?.weight?.toString() || "");
+  const [repetitions, setRepetitions] = useState(
+    initialData?.repetitions?.toString() || ""
+  );
 
   const handleSave = () => {
     if (onSave) {
@@ -56,6 +65,7 @@ export function WorkoutCard({
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className={styles.input}
+          disabled={readOnly}
         />
         <TextField
           label="Beschreibung"
@@ -66,6 +76,7 @@ export function WorkoutCard({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className={styles.input}
+          disabled={readOnly}
         />
         <TextField
           label="Gewicht"
@@ -74,6 +85,7 @@ export function WorkoutCard({
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           className={styles.input}
+          disabled={readOnly}
         />
         <TextField
           label="Wiederholungen"
@@ -82,8 +94,9 @@ export function WorkoutCard({
           value={repetitions}
           onChange={(e) => setRepetitions(e.target.value)}
           className={styles.input}
+          disabled={readOnly}
         />
-        {onSave && (
+        {onSave && !readOnly && (
           <Button
             variant="contained"
             color="primary"

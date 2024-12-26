@@ -7,11 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 
-interface WorkoutData {
+export interface WorkoutData {
+  id?: number;
   category: string;
   description: string;
   weight: number;
   repetitions: number;
+  user_id?: number;
 }
 
 export default function WorkoutItems() {
@@ -61,10 +63,11 @@ export default function WorkoutItems() {
           throw new Error("Fehler beim Laden der Workouts");
         }
 
-        const workouts = await response.json();
-        setSavedWorkouts(workouts);
+        const data = await response.json();
+        setSavedWorkouts(data.workouts || []);
       } catch (error) {
         console.error("Fehler beim Laden der Workouts:", error);
+        setSavedWorkouts([]);
       }
     };
 
@@ -77,10 +80,12 @@ export default function WorkoutItems() {
     <>
       <Grid container spacing={2}>
         {savedWorkouts.map((workout, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={4} key={workout.id || index}>
             <WorkoutCard
               variant="primary"
-              onSave={() => {}} // Für gespeicherte Workouts ist keine Speicherung erforderlich
+              initialData={workout}
+              readOnly={true}
+              onSave={() => {}}
             />
           </Grid>
         ))}
