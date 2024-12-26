@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { WorkoutCard } from "../Cards/cards";
 import { Fab, Modal, Box, Grid } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 
 interface WorkoutData {
   category: string;
@@ -14,16 +15,63 @@ interface WorkoutData {
 }
 
 export default function WorkoutItems() {
+  const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleSaveWorkout = (workoutData: WorkoutData) => {
-    setSavedWorkouts([...savedWorkouts, workoutData]);
-    setIsModalOpen(false);
+  const handleSaveWorkout = async (workoutData: WorkoutData) => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify(workoutData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Fehler beim Speichern des Workouts");
+      }
+
+      const savedWorkout = await response.json();
+      setSavedWorkouts([...savedWorkouts, savedWorkout]);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Fehler beim Speichern:", error);
+      // Hier könnten Sie eine Benutzerbenachrichtigung hinzufügen
+    }
   };
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
+        const response = await fetch(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Fehler beim Laden der Workouts");
+        }
+
+        const workouts = await response.json();
+        setSavedWorkouts(workouts);
+      } catch (error) {
+        console.error("Fehler beim Laden der Workouts:", error);
+      }
+    };
+
+    if (session?.accessToken) {
+      fetchWorkouts();
+    }
+  }, [session]);
 
   return (
     <>
