@@ -7,7 +7,6 @@ import {
   Typography,
   TextField,
   Button,
-  CardMedia,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { FaDumbbell } from "react-icons/fa";
@@ -28,6 +27,18 @@ interface WorkoutData {
   weight: number;
   repetitions: number;
   user_id?: number;
+}
+
+interface ChallengeCardProps extends CardProps {
+  challenge: {
+    id: number;
+    title: string;
+    description: string;
+    goal: string;
+    status: boolean;
+    start_date: string;
+    end_date: string;
+  };
 }
 
 export function WorkoutCard({
@@ -147,7 +158,7 @@ export function WorkoutCard({
   );
 }
 
-export function ChallengeCard({ variant }: CardProps) {
+export function ChallengeCard({ variant, challenge }: ChallengeCardProps) {
   const [status, setStatus] = useState<
     "pending" | "accepted" | "completed" | "failed"
   >("pending");
@@ -156,18 +167,13 @@ export function ChallengeCard({ variant }: CardProps) {
     <Card className={`${styles.card} ${styles[variant]}`}>
       <CardContent>
         <Typography variant="h5" className={styles.title}>
-          30 Tage Plank Challenge
+          {challenge.title}
         </Typography>
-        <CardMedia
-          component="img"
-          height="140"
-          image="/path-to-challenge-image.jpg"
-          alt="Plank Challenge"
-          className={styles.media}
-        />
         <Typography variant="body2" className={styles.description}>
-          Halte eine Plank-Position für mindestens 5 Minuten täglich. Stärkt
-          deinen Kern und steigert deine Ausdauer!
+          {challenge.description}
+        </Typography>
+        <Typography variant="body2" className={styles.goal}>
+          Ziel: {challenge.goal}
         </Typography>
         {status === "pending" && (
           <motion.div className={styles.buttonContainer}>

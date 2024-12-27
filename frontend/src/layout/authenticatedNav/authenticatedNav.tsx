@@ -58,6 +58,8 @@ export default function AuthenticatedNav() {
         setUsername(data.username);
       } catch (error: unknown) {
         if (error instanceof Error) {
+
+          
         } else {
           console.error("Ein unbekannter Fehler ist aufgetreten:", error);
         }
