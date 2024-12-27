@@ -21,6 +21,7 @@
   margin-bottom: 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 
@@ -38,8 +39,9 @@
 
 .buttonContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
   margin-top: 16px;
+  justify-content: flex-end;
 }
 
 .button {
@@ -50,4 +52,9 @@
   margin-top: 16px;
   font-weight: bold;
   text-align: center;
+}
+
+.iconButton {
+  color: var(--icon-color, #000);
+  z-index: 1;
 }

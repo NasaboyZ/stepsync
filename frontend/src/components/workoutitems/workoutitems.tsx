@@ -20,6 +20,9 @@ export default function WorkoutItems() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
+  const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
+    null
+  );
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -37,15 +40,70 @@ export default function WorkoutItems() {
       });
 
       if (!response.ok) {
-        throw new Error("Fehler beim Speichern des Workouts");
+        const errorData = await response.json().catch(() => null);
+        console.error("Server Antwort:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData,
+        });
+        throw new Error(
+          `Fehler beim Speichern des Workouts: ${response.status} ${response.statusText}`
+        );
       }
 
       const savedWorkout = await response.json();
       setSavedWorkouts([...savedWorkouts, savedWorkout]);
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Fehler beim Speichern:", error);
-      // Hier könnten Sie eine Benutzerbenachrichtigung hinzufügen
+      console.error("Detaillierter Fehler beim Speichern:", error);
+      // Optional: Fügen Sie hier einen Toast oder eine andere UI-Benachrichtigung hinzu
+      throw error; // Fehler weiterleiten, damit er in der Entwicklerkonsole sichtbar ist
+    }
+  };
+
+  const handleEdit = (workout: WorkoutData) => {
+    setEditingWorkout(workout);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = async (workoutData: WorkoutData) => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify(workoutData),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Fehler beim Aktualisieren des Workouts: ${response.status}`
+        );
+      }
+
+      const updatedWorkout = await response.json();
+      setSavedWorkouts(
+        savedWorkouts.map((workout) =>
+          workout.id === updatedWorkout.workout.id
+            ? updatedWorkout.workout
+            : workout
+        )
+      );
+      setIsModalOpen(false);
+      setEditingWorkout(null);
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren:", error);
+    }
+  };
+
+  const handleSaveOrUpdate = (workoutData: WorkoutData) => {
+    if (editingWorkout) {
+      handleUpdate({ ...workoutData, id: editingWorkout.id });
+    } else {
+      handleSaveWorkout(workoutData);
     }
   };
 
@@ -85,7 +143,8 @@ export default function WorkoutItems() {
               variant="primary"
               initialData={workout}
               readOnly={true}
-              onSave={() => {}}
+              onEdit={() => handleEdit(workout)}
+              onDelete={() => {}} // TODO: Implement delete functionality
             />
           </Grid>
         ))}
@@ -138,7 +197,11 @@ export default function WorkoutItems() {
                   borderRadius: 2,
                 }}
               >
-                <WorkoutCard variant="primary" onSave={handleSaveWorkout} />
+                <WorkoutCard
+                  variant="primary"
+                  initialData={editingWorkout || undefined}
+                  onSave={handleSaveOrUpdate}
+                />
               </Box>
             </motion.div>
           </Modal>

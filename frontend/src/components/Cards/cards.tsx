@@ -18,12 +18,16 @@ interface CardProps {
   initialData?: WorkoutData;
   readOnly?: boolean;
   onSave?: (data: WorkoutData) => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 interface WorkoutData {
+  id?: number;
   category: string;
   description: string;
   weight: number;
   repetitions: number;
+  user_id?: number;
 }
 
 export function WorkoutCard({
@@ -31,6 +35,8 @@ export function WorkoutCard({
   initialData,
   readOnly = false,
   onSave,
+  onEdit,
+  onDelete,
 }: CardProps) {
   const [category, setCategory] = useState(initialData?.category || "");
   const [description, setDescription] = useState(
@@ -42,7 +48,15 @@ export function WorkoutCard({
   );
 
   const handleSave = () => {
-    if (onSave) {
+    if (onSave && initialData?.id) {
+      onSave({
+        id: initialData.id,
+        category,
+        description,
+        weight: parseInt(weight),
+        repetitions: parseInt(repetitions),
+      });
+    } else if (onSave) {
       onSave({
         category,
         description,
@@ -96,16 +110,38 @@ export function WorkoutCard({
           className={styles.input}
           disabled={readOnly}
         />
-        {onSave && !readOnly && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSave}
-            className={styles.button}
-          >
-            Speichern
-          </Button>
-        )}
+        <div className={styles.buttonContainer}>
+          {onSave && !readOnly && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSave}
+              className={styles.button}
+            >
+              Speichern
+            </Button>
+          )}
+          {onEdit && readOnly && (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={onEdit}
+              className={styles.button}
+            >
+              Bearbeiten
+            </Button>
+          )}
+          {onDelete && readOnly && (
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={onDelete}
+              className={styles.button}
+            >
+              Löschen
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
