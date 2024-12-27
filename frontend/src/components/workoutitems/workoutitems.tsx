@@ -107,6 +107,31 @@ export default function WorkoutItems() {
     }
   };
 
+  const handleDelete = async (workoutId: number) => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
+      const response = await fetch(apiUrl, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify({ id: workoutId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Fehler beim Löschen des Workouts: ${response.status}`);
+      }
+
+      // Workout aus dem lokalen State entfernen
+      setSavedWorkouts(
+        savedWorkouts.filter((workout) => workout.id !== workoutId)
+      );
+    } catch (error) {
+      console.error("Fehler beim Löschen:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -144,7 +169,7 @@ export default function WorkoutItems() {
               initialData={workout}
               readOnly={true}
               onEdit={() => handleEdit(workout)}
-              onDelete={() => {}} // TODO: Implement delete functionality
+              onDelete={() => workout.id && handleDelete(workout.id)}
             />
           </Grid>
         ))}
