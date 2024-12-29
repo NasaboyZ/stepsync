@@ -11,8 +11,8 @@ interface UserProfile {
   username: string;
   age: number | null;
   sex: string;
-  height: number;
-  weight: number;
+  height: number | null;
+  weight: number | null;
   goal: string;
 }
 
@@ -40,16 +40,19 @@ export default function ProfileBioCard() {
           }
 
           const data = await response.json();
-          console.log("API Response:", data); // Debugging
+          console.log("Rohdaten von API:", data);
 
-          setUserProfile({
+          const profileData = {
             username: data.username,
             age: data.age,
-            sex: data.gender, // Mapping gender to sex
+            sex: data.gender,
             height: data.height,
             weight: data.weight,
             goal: data.goal,
-          });
+          };
+
+          console.log("Verarbeitete Profildaten:", profileData);
+          setUserProfile(profileData);
         } catch (error) {
           console.error("Error fetching user profile:", error);
         }
@@ -111,43 +114,49 @@ export default function ProfileBioCard() {
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Age</Typography>
+                  <Typography color="textSecondary">Alter</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography>
                     {userProfile.age !== null
                       ? userProfile.age
-                      : "No age provided"}
+                      : "Nicht angegeben"}
                   </Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Sex</Typography>
+                  <Typography color="textSecondary">Geschlecht</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography>{userProfile.sex}</Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Height</Typography>
+                  <Typography color="textSecondary">Grösse</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography>
-                    {userProfile.height ? `${userProfile.height} cm` : "N/A"}
+                    {userProfile.height !== null &&
+                    userProfile.height !== undefined
+                      ? `${userProfile.height} cm`
+                      : "Nicht angegeben"}
                   </Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Weight</Typography>
+                  <Typography color="textSecondary">Gewicht</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography>
-                    {userProfile.weight ? `${userProfile.weight} kg` : "N/A"}
+                    {userProfile.weight !== null &&
+                    userProfile.weight !== undefined
+                      ? `${userProfile.weight} kg`
+                      : "Nicht angegeben"}
                   </Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Goal</Typography>
+                  <Typography color="textSecondary">Ziel</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography>{userProfile.goal}</Typography>

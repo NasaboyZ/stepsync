@@ -13,7 +13,18 @@ class UserController
 {
   function show(Request $request)
   {
-    return \Auth::user();
+    $user = \Auth::user();
+    $age = \Carbon\Carbon::parse($user->date_of_birth)->age;
+
+    return response()->json([
+      'username' => $user->username,
+      'weight' => (float)$user->weight,
+      'height' => (float)$user->height,
+      'gender' => $user->gender,
+      'goal' => $user->goal,
+      'date_of_birth' => $user->date_of_birth,
+      'age' => $age
+    ]);
   }
 
   function create(Request $request)
