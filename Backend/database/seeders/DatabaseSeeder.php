@@ -76,18 +76,18 @@ class DatabaseSeeder extends Seeder
             'title'       => '10k Steps Daily',
             'description' => 'Walk at least 10,000 steps daily for a week.',
             'goal'        => '10,000 Steps',
-            'status'      => true, // Use boolean value
-            'start_date'  => now(),
-            'end_date'    => now()->addDays(7),
+            'status'      => 'pending',
+            'start_date'  => '2024-12-29 13:21:00',
+            'end_date'    => '2025-01-05 13:21:00'
         ]);
 
         $challenge2 = Challenges::create([
             'title'       => 'Drink 2L Water',
             'description' => 'Drink at least 2 liters of water each day for a month.',
             'goal'        => '2L Water Daily',
-            'status'      => true, // Use boolean value
-            'start_date'  => now(),
-            'end_date'    => now()->addMonth(),
+            'status'      => 'pending',
+            'start_date'  => '2024-12-29 13:21:00',
+            'end_date'    => '2025-01-29 13:21:00'
         ]);
 
 
@@ -95,9 +95,9 @@ class DatabaseSeeder extends Seeder
             'title'       => '30-Day Yoga Challenge',
             'description' => 'Practice yoga every day for 30 days.',
             'goal'        => 'Daily Yoga',
-            'status'      => true,
-            'start_date'  => now(),
-            'end_date'    => now()->addDays(30),
+            'status'      => 'pending',
+            'start_date'  => '2024-12-29 13:21:00',
+            'end_date'    => '2025-01-29 13:21:00'
         ]);
 
         // Assign challenges to users

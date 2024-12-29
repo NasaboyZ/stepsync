@@ -18,7 +18,7 @@ Route::get('/blogpost', [BlogpostsController::class, 'index']);
 // Route::get('/comments', [CommentsController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/tags', [TagsController::class, 'index']);
-
+Route::get('/challenges', [ChallengesController::class, 'index']);
 Route::post('/user', [UserController::class, 'create']);
 Route::post('/auth/verify', [UserController::class, 'verifyEmail']);
 
@@ -41,23 +41,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
   // Route::post('/tags', [TagsController::class, 'create']);
   // Route::put('/tags/assign', [TagsController::class, 'assign']);
 
-  Route::get('/challenges{id}', [ChallengesController::class, 'index']);
-  Route::post('/challenges{id}', [ChallengesController::class, 'create']);
-  Route::post('/challenges/assign{id}', [ChallengesController::class, 'assign']);
 
-  Route::get('/challenges', [ChallengesController::class, 'index']); // Alle oder eine spezifische Challenge abrufen
-  Route::post('/challenges/{id}', [ChallengesController::class, 'create']); // Neue Challenge erstellen
-  Route::post('/challenges/assign/{id}', [ChallengesController::class, 'assign']); // Bestimmte Challenges zuweisen
-  Route::post('/user/{id}/assign-random-challenges', [ChallengesController::class, 'assignRandomChallengesToUser']); // Zufällige Challenges zuweisen
+  Route::get('/user/challenges', [UserController::class, 'showChallenges']); // Eigene Challenges anzeigen
+
+  // Challenge management
+  Route::post('/challenges', [ChallengesController::class, 'create']); // Neue Challenge erstellen
+  Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']); // Challenge aktualisieren
+  Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']); // Challenge löschen
 
 
-  Route::post('/challenges/reject/{id}', [ChallengesController::class, 'rejectChallenge']); // Challenge ablehnen und eine neue zuweisen
 
-  
-  Route::post('/challenges/update-status/{id}', [ChallengesController::class, 'updateChallengeStatus']); // Status der Challenge aktualisieren
-
-  // Eigene Challenges eines Benutzers abrufen
-  Route::get('/user/{id}/challenges', [ChallengesController::class, 'getUserChallenges']); // Challenges eines Benutzers anzeigen
 
   Route::delete('/uploads', [UploadsController::class, 'destroy']);
 

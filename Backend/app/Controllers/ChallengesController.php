@@ -5,103 +5,81 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Models\Challenges;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChallengesController
 {
-
-    // Alle Challenges abrufen
+    // Alle Challenges abrufen (nur für den authentifizierten Benutzer)
     public function index(Request $request)
     {
-        return Challenges::all(); // Gibt alle Herausforderungen zurück
+        if (Auth::check()) {
+            $user = Auth::user();
+            $challenges = $user->challenges()->get(); // Nur die Challenges des Benutzers abrufen
+        } else {
+            $challenges = Challenges::all(); // Für Gäste: Alle Challenges anzeigen
+        }
+
+        return response()->json(['challenges' => $challenges]);
     }
 
     // Neue Challenge erstellen
     public function create(Request $request)
     {
-        $payload = Challenges::validate($request); // Validierung der eingehenden Daten
-        $challenge = Challenges::create($payload); // Neue Challenge erstellen
-        return $challenge; // Gibt die neu erstellte Challenge zurück
+        $user = Auth::user();
+        $payload = Challenges::validate($request);
+
+        // Challenge erstellen und dem Benutzer zuweisen
+        $challenge = Challenges::create($payload);
+        $user->challenges()->attach($challenge->id, ['status' => 'pending']);
+
+        return response()->json(['challenge' => $challenge], 201);
     }
 
-    // Zufällige Challenges einem Benutzer zuweisen
-    public function assignRandomChallengesToUser(User $user)
+    // Challenge aktualisieren
+    public function updateChallenge(Request $request, $id)
     {
-        $numberOfChallenges = 3; // Anzahl zufälliger Challenges
+        $user = Auth::user();
+        $challenge = $user->challenges()->where('challenges.id', $id)->firstOrFail();
 
-        // Zufällig ausgewählte Challenges aus der Datenbank abrufen
-        $challenges = Challenges::inRandomOrder()->take($numberOfChallenges)->get();
+        // Wenn nur der Status aktualisiert werden soll
+        if ($request->has('status') && count($request->all()) === 1) {
+            $payload = $request->validate([
+                'status' => ['required', 'string', 'in:done,pending,pass']
+            ]);
 
-        // Zuweisung der Challenges an den Benutzer
-        $user->challenges()->attach($challenges->pluck('id'));
+            // Update sowohl Challenge als auch Pivot-Status
+            $challenge->update(['status' => $payload['status']]);
+            $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);
 
-        return $user->fresh('challenges'); // Gibt die aktualisierten Challenges zurück
-    }
+            return response()->json([
+                'message' => 'Challenge status successfully updated',
+                'status' => $payload['status']
+            ]);
+        }
 
-    // Status einer Challenge (Done oder Pass) aktualisieren
-    public function updateChallengeStatus(Request $request)
-    {
-        $userId = $request->input('user_id');
-        $challengeId = $request->input('challenge_id');
-        $status = $request->input('status'); // "done" oder "pass"
+        // Ansonsten normale Challenge-Aktualisierung
+        $payload = Challenges::validate($request, false);
+        $challenge->update($payload);
 
-        // Finde den Benutzer und die Challenge
-        $user = User::findOrFail($userId);
-
-        // Update der Challenge-Status in der Pivot-Tabelle
-        $user->challenges()->updateExistingPivot($challengeId, ['status' => $status]);
+        // Wenn ein Status im Payload ist, auch den Pivot-Status aktualisieren
+        if (isset($payload['status'])) {
+            $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);
+        }
 
         return response()->json([
-            'message' => 'Challenge status updated',
-            'status' => $status
+            'message' => 'Challenge successfully updated',
+            'challenge' => $challenge
         ]);
     }
 
-    // Bestimmte Challenges einem Benutzer zuweisen
-    public function assign(Request $request)
+    // Challenge löschen
+    public function destroy($challengeId)
     {
-        $userId = $request->input('user_id'); // Benutzer-ID aus der Anfrage
-        $challengeIds = $request->input('challenge_id'); // Challenge-IDs aus der Anfrage
+        $user = Auth::user();
+        $challenge = $user->challenges()->findOrFail($challengeId);
 
-        // Sucht den Benutzer anhand der ID
-        $user = User::findOrFail($userId);
+        $user->challenges()->detach($challengeId); 
 
-        // Synchronisiere die Challenges mit dem Benutzer
-        $user->challenges()->sync($challengeIds);
-
-        return response()->json([
-            'message' => 'Challenges assigned successfully',
-            'user' => $user->fresh('challenges') // Gibt die aktualisierten Herausforderungen zurück
-        ]);
-    }
-
-    // Challenge ablehnen und neue zuweisen
-    // Challenge ablehnen und neue zuweisen
-    public function rejectChallenge($challengeId, Request $request)
-    {
-        $userId = $request->input('user_id');
-
-        // Finde den Benutzer
-        $user = User::findOrFail($userId);
-
-        // Entferne die abgelehnte Challenge
-        $user->challenges()->detach($challengeId);
-
-        // Weise eine neue zufällige Challenge zu
-        $newChallenge = Challenges::inRandomOrder()->first();
-        $user->challenges()->attach($newChallenge->id);
-
-        return response()->json([
-            'message' => 'Challenge rejected and new challenge assigned',
-            'new_challenge' => $newChallenge
-        ]);
-    }
-
-    // Eigene Challenges eines Benutzers abrufen
-    public function getUserChallenges($userId)
-    {
-        $user = User::findOrFail($userId); // Finde den Benutzer
-
-        // Gibt alle Challenges des Benutzers zurück
-        return $user->challenges()->get();
+        return response()->json(['message' => 'Challenge deleted']);
     }
 }

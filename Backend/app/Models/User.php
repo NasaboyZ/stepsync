@@ -5,11 +5,11 @@ namespace App\Models;
 use Config\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use WendellAdriel\Lift\Attributes\Column;
+use WendellAdriel\Lift\Attributes\Hidden;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
-use WendellAdriel\Lift\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
@@ -17,10 +17,12 @@ class User extends Model
 {
   use HasApiTokens;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $first_name;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $last_name;
 
   #[Column]
@@ -29,59 +31,76 @@ class User extends Model
   #[Column]
   public string $username;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $password;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public float $weight;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public float $height;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $goal;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $gender;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $date_of_birth;
 
-  #[Column] #[Hidden]
-  public string $verfication_token;
+  #[Column]
+  #[Hidden]
+  public string $verification_token;
 
-  #[Column] #[Hidden]
+  #[Column]
+  #[Hidden]
   public string $email_verified;
 
-
-  function comments(): HasMany|Comment
+  public function comments(): HasMany
   {
     return $this->hasMany(Comment::class);
   }
-  public function workouts(): HasMany| Workout
+
+  public function workouts(): HasMany
   {
     return $this->hasMany(Workout::class);
   }
+
   public function blogposts(): HasMany
   {
     return $this->hasMany(Blogpost::class, 'user_id');
   }
+
   public function bmi(): HasOne
   {
     return $this->hasOne(BMI::class, 'user_id');
   }
-  public function challenges()
+
+  // Beziehung zu Challenges mit Pivot-Informationen
+  public function challenges(): BelongsToMany
   {
-    return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id');
+    return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id')
+      ->withPivot('status') // Zusätzliche Pivot-Daten
+      ->withTimestamps();  // Timestamps für die Pivot-Tabelle
   }
 
+  // Abrufen aktiver Challenges
+  public function activeChallenges(): BelongsToMany
+  {
+    return $this->challenges()->wherePivot('status', 'pending');
+  }
 
-
-
-
-  static function validate(Request $request)
+  public static function validate(Request $request)
   {
     $post = $request->method() === 'POST';
+
     return $request->validate([
       'first_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],
       'last_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],
@@ -104,7 +123,7 @@ class User extends Model
     ]);
   }
 
-  static function booted()
+  protected static function booted()
   {
     self::saving(function (User $user) {
       if ($user->isDirty('password')) {
@@ -114,22 +133,19 @@ class User extends Model
     });
   }
 
-  // Methode, um einen neuen Verifizierungstoken zu generieren
   public function generateVerificationToken()
   {
-    $this->verification_token = Str::random(64); // Token generieren
+    $this->verification_token = Str::random(64);
     $this->save();
   }
 
-  // Methode, um den Benutzer als verifiziert zu markieren
   public function markEmailAsVerified()
   {
     $this->email_verified_at = now();
-    $this->verification_token = null; // Token löschen, nachdem die E-Mail verifiziert wurde
+    $this->verification_token = null;
     $this->save();
   }
 
-  // Überprüfen, ob der Benutzer verifiziert ist
   public function isVerified(): bool
   {
     return !is_null($this->email_verified_at);

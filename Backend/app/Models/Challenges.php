@@ -2,52 +2,41 @@
 
 namespace App\Models;
 
-use Config\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use WendellAdriel\Lift\Attributes\Column;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Challenges extends Model
 {
-    #[Column]
-    public string $title;
+    use HasFactory;
 
-    #[Column]
-    public string $description;
+    protected $fillable = ['title', 'description', 'goal', 'status', 'start_date', 'end_date'];
 
-    #[Column]
-    public string $goal;
-
-    #[Column]
-    public bool $status; // Boolean field for status
-
-    #[Column]
-    public  $start_date;
-
-    #[Column]
-    public  $end_date;
-
-    // Casts to ensure fields are handled as the proper data type
     protected $casts = [
-        'status' => 'boolean', // Ensure status is always treated as a boolean
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
 
-    // Relationship: many-to-many with users
     public function users()
     {
-        return $this->belongsToMany(User::class, 'challenge_user', 'challenge_id', 'user_id');
+        return $this->belongsToMany(User::class, 'challenge_user', 'challenge_id', 'user_id')
+            ->withPivot('status')
+            ->withTimestamps();
     }
 
-    // Challenge validation
-    static function validate(Request $request)
+    public static function validate(Request $request, $isPost = true)
     {
+        if ($request->has('status') && count($request->all()) === 1) {
+            return $request->validate([
+                'status' => ['required', 'string', 'in:done,pending,pass']
+            ]);
+        }
+
         return $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'goal' => ['required', 'string'],
-            'status' => ['required', 'boolean'], // Validates status as a boolean
+            'title' => [$isPost ? 'required' : 'sometimes', 'string', 'max:255'],
+            'description' => [$isPost ? 'required' : 'sometimes', 'string'],
+            'goal' => [$isPost ? 'required' : 'sometimes', 'string'],
+            'status' => [$isPost ? 'required' : 'sometimes', 'string', 'in:done,pending,pass'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
         ]);

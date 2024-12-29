@@ -4,22 +4,25 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Models\BMI;
+use App\Models\Challenges;
 use App\Controllers\ChallengesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class UserController
 {
+  // Zeigt die Details eines Benutzers an
   function show(Request $request)
   {
-    $user = \Auth::user();
+    $user = Auth::user();
     $age = \Carbon\Carbon::parse($user->date_of_birth)->age;
 
     return response()->json([
       'username' => $user->username,
-      'weight' => (float)$user->weight,
-      'height' => (float)$user->height,
+      'weight' => (float) $user->weight,
+      'height' => (float) $user->height,
       'gender' => $user->gender,
       'goal' => $user->goal,
       'date_of_birth' => $user->date_of_birth,
@@ -27,6 +30,19 @@ class UserController
     ]);
   }
 
+  // Listet alle Challenges des Benutzers auf
+  function showChallenges()
+  {
+    $user = Auth::user();
+
+    $challenges = $user->challenges()->get();
+
+    return response()->json([
+      'challenges' => $challenges
+    ]);
+  }
+
+  // Benutzer erstellen
   function create(Request $request)
   {
     $payload = User::validate($request);
@@ -41,7 +57,7 @@ class UserController
 
     // Zufällige Challenges dem Benutzer zuweisen
     $challengesController = new ChallengesController();
-    $challengesController->assignRandomChallengesToUser($user);
+    // $challengesController->assignRandomChallengesToUser($user);
 
     // Verifizierungs-Token generieren
     $token = Str::random(64);
@@ -54,54 +70,55 @@ class UserController
       fn($mail) => $mail->to($user->email)->subject('Email Verification')
     );
 
-
     return response()->json([
       'message' => 'User created successfully',
       'user' => $user->fresh('challenges'),
     ], 201);
   }
 
+  // Benutzerinformationen aktualisieren
   function update(Request $request)
   {
-    $user = \Auth::user();
+    $user = Auth::user();
     $payload = User::validate($request);
     $user->update($payload);
     return $user;
   }
+
+  // Benutzer löschen
+  function destroy(Request $request)
+  {
+    $user = Auth::user();
+    $user->delete();
+    return $user;
+  }
+
+  // E-Mail-Verifizierung
   public function verifyEmail(Request $request)
   {
-    // Validierung des Tokens
     $request->validate([
       'email' => 'required|email',
       'token' => 'required|string',
     ]);
 
-    // Benutzer anhand der E-Mail-Adresse finden
     $user = User::where('email', $request->input('email'))->first();
 
     if (!$user) {
-      return response()->json([
-        'message' => 'User not found'
-      ], 404);
+      return response()->json(['message' => 'User not found'], 404);
     }
 
-    // Prüfen, ob der Token übereinstimmt
     if ($user->verification_token === $request->input('token')) {
-      // Token validieren, email_verified_at setzen und Token zurücksetzen
       $user->email_verified_at = now();
       $user->verification_token = null;
       $user->save();
 
-      return response()->json([
-        'message' => 'Email successfully verified'
-      ], 200);
+      return response()->json(['message' => 'Email successfully verified'], 200);
     }
 
-    return response()->json([
-      'message' => 'Invalid token'
-    ], 400);
+    return response()->json(['message' => 'Invalid token'], 400);
   }
-  // Login mit Token-Verifizierung
+
+  // Benutzer-Login
   public function login(Request $request)
   {
     $credentials = $request->only('email', 'password');
@@ -111,12 +128,10 @@ class UserController
       return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    // Überprüfe, ob die E-Mail verifiziert wurde
     if (is_null($user->email_verified_at)) {
       return response()->json(['message' => 'Please verify your email address'], 403);
     }
 
-    // Token erstellen (z. B. mit Laravel Sanctum)
     $token = $user->createToken('auth_token')->plainTextToken;
 
     return response()->json([
@@ -132,6 +147,7 @@ class UserController
     ], 200);
   }
 
+  // Prüfen, ob ein Benutzername verfügbar ist
   public function checkUsername(Request $request)
   {
     $request->validate(['username' => 'required|string']);
@@ -142,13 +158,5 @@ class UserController
     }
 
     return response()->json(['message' => 'Username is available'], 200);
-  }
-
-
-  function destroy(Request $request)
-  {
-    $user = \Auth::user();
-    $user->delete();
-    return $user;
   }
 }
