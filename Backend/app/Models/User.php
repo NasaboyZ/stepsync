@@ -82,7 +82,10 @@ class User extends Model
   {
     return $this->hasOne(BMI::class, 'user_id');
   }
-
+  public function image(): HasMany
+  {
+    return $this->hasMany(Image::class, 'user_id');
+  }
   // Beziehung zu Challenges mit Pivot-Informationen
   public function challenges(): BelongsToMany
   {

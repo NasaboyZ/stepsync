@@ -15,7 +15,7 @@ use App\Controllers\BmiController;
 
 // guest endpoints
 Route::get('/blogpost', [BlogpostsController::class, 'index']);
-// Route::get('/comments', [CommentsController::class, 'index']);
+
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/tags', [TagsController::class, 'index']);
 Route::get('/challenges', [ChallengesController::class, 'index']);
@@ -30,16 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::patch('/user', [UserController::class, 'update']);
   Route::delete('/user', [UserController::class, 'destroy']);
 
-  // Route::post('/blogpost', [BlogpostsController::class, 'create']);
-  // Route::patch('/blogpost', [BlogpostsController::class, 'update']);
-  // Route::delete('/blogpost', [BlogpostsController::class, 'destroy']);
 
-  // Route::post('/comments', [CommentsController::class, 'create']);
-  // Route::patch('/comments', [CommentsController::class, 'update']);
-  // Route::delete('/comments', [CommentsController::class, 'destroy']);
-
-  // Route::post('/tags', [TagsController::class, 'create']);
-  // Route::put('/tags/assign', [TagsController::class, 'assign']);
 
 
   Route::get('/user/challenges', [UserController::class, 'showChallenges']); // Eigene Challenges anzeigen
@@ -52,7 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-  Route::delete('/uploads', [UploadsController::class, 'destroy']);
+  Route::post('/uploads', [UploadsController::class, 'create']);
+  Route::delete('/uploads/{id}', [UploadsController::class, 'destroy']);
 
   Route::post('/mails/send', [MailsController::class, 'send']);
 
