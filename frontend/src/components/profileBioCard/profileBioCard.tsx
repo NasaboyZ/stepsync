@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Avatar } from "@mui/material";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Skeleton from "@mui/material/Skeleton";
@@ -104,20 +104,20 @@ export default function ProfileBioCard() {
         <CardContent>
           <div className={styles.cardContent}>
             <div className={styles.avatarSection}>
-              <div className={styles.avatar}></div>
+              <Avatar className={styles.avatar} />
             </div>
 
             <div className={styles.infoSection}>
-              <Typography variant="h5" gutterBottom>
+              <Typography className={styles.username}>
                 {userProfile.username}
               </Typography>
 
-              <Grid container spacing={2}>
+              <Grid container spacing={2} className={styles.infoGrid}>
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Alter</Typography>
+                  <Typography className={styles.infoLabel}>Alter</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>
+                  <Typography className={styles.infoValue}>
                     {userProfile.age !== null
                       ? userProfile.age
                       : "Nicht angegeben"}
@@ -125,17 +125,21 @@ export default function ProfileBioCard() {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Geschlecht</Typography>
+                  <Typography className={styles.infoLabel}>
+                    Geschlecht
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>{userProfile.sex}</Typography>
+                  <Typography className={styles.infoValue}>
+                    {userProfile.sex}
+                  </Typography>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Grösse</Typography>
+                  <Typography className={styles.infoLabel}>Grösse</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>
+                  <Typography className={styles.infoValue}>
                     {userProfile.height !== null &&
                     userProfile.height !== undefined
                       ? `${userProfile.height} cm`
@@ -144,10 +148,10 @@ export default function ProfileBioCard() {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Gewicht</Typography>
+                  <Typography className={styles.infoLabel}>Gewicht</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>
+                  <Typography className={styles.infoValue}>
                     {userProfile.weight !== null &&
                     userProfile.weight !== undefined
                       ? `${userProfile.weight} kg`
@@ -156,10 +160,12 @@ export default function ProfileBioCard() {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Ziel</Typography>
+                  <Typography className={styles.infoLabel}>Ziel</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography>{userProfile.goal}</Typography>
+                  <Typography className={styles.infoValue}>
+                    {userProfile.goal}
+                  </Typography>
                 </Grid>
               </Grid>
             </div>

@@ -22,6 +22,7 @@ export default function ChallengesItems() {
     const fetchChallenges = async () => {
       try {
         const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges`;
+
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -32,10 +33,15 @@ export default function ChallengesItems() {
         });
 
         if (!response.ok) {
-          throw new Error("Fehler beim Laden der Challenges");
+          const errorText = await response.text();
+          throw new Error(
+            `Fehler beim Laden der Challenges: ${response.status} ${response.statusText}`
+          );
         }
+
         const data = await response.json();
-        setChallenges(data);
+        const challengesData = data.challenges || data;
+        setChallenges(Array.isArray(challengesData) ? challengesData : []);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Ein Fehler ist aufgetreten"
