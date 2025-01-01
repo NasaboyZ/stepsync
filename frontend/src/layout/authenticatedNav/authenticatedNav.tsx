@@ -16,6 +16,8 @@ import {
   Avatar,
   Box,
   useMediaQuery,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -37,6 +39,7 @@ export default function AuthenticatedNav() {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
   const { data: session } = useSession();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   React.useEffect(() => {
     async function fetchUsername() {
@@ -58,8 +61,6 @@ export default function AuthenticatedNav() {
         setUsername(data.username);
       } catch (error: unknown) {
         if (error instanceof Error) {
-
-          
         } else {
           console.error("Ein unbekannter Fehler ist aufgetreten:", error);
         }
@@ -103,6 +104,14 @@ export default function AuthenticatedNav() {
       default:
         return "Dashboard";
     }
+  };
+
+  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -163,10 +172,25 @@ export default function AuthenticatedNav() {
               {getTitle()}
             </Typography>
             <Box className={styles.userSection}>
-              <Avatar className={styles.avatar} />
+              <Avatar
+                className={styles.avatar}
+                onClick={handleAvatarClick}
+                style={{ cursor: "pointer" }}
+              />
               <Typography variant="body1" className={styles.userName}>
                 {username}
               </Typography>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                onClick={handleMenuClose}
+              >
+                <MenuItem onClick={handleMenuClose}>
+                  Profileinstellungen
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>Passwort ändern</MenuItem>
+              </Menu>
             </Box>
           </Toolbar>
         </AppBar>
