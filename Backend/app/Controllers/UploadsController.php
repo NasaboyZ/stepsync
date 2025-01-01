@@ -34,7 +34,7 @@ class UploadsController
 
       // Speichern des Bildes im Storage
       $pathname = \Storage::putFileAs(
-        'public/uploads/' . $user->id,
+        'uploads/' . $user->id,
         $file,
         'avatar.jpg'
       );

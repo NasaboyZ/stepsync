@@ -26,7 +26,8 @@ class UserController
       'gender' => $user->gender,
       'goal' => $user->goal,
       'date_of_birth' => $user->date_of_birth,
-      'age' => $age
+      'age' => $age,
+      'id' => $user->id,
     ]);
   }
 

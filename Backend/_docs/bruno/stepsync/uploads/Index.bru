@@ -1,0 +1,29 @@
+meta {
+  name: Index
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/uploads
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "images": [
+      {
+        "id": 2
+      }
+    ]
+  }
+}
+
+body:multipart-form {
+  user_id: 1
+}

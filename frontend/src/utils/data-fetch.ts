@@ -1,7 +1,3 @@
-// this is a helper function to fetch data from the backend
-// we will refactor it and make it reusable, so that
-// we don't need to write try/catch blocks everywhere
-
 async function dataFetch(endpoint: string) {
   try {
     const response = await fetch(endpoint);
@@ -15,46 +11,26 @@ async function dataFetch(endpoint: string) {
 export default dataFetch;
 
 export async function dataFetchWithToken(endpoint: string, token: string) {
-  // it is just a GET request
   try {
+    console.log("Fetching from endpoint:", endpoint);
     const response = await fetch(endpoint, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Accept: "application/json",
       },
+      credentials: "include",
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      console.log("Fetch error:", response.status, response.statusText);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
+    const data = await response.json();
+    console.log("Fetch response:", data);
     return data;
   } catch (error) {
-    console.error(error);
+    console.log("Fetch error details:", error);
+    throw error;
   }
 }
-
-// Beispiel für einen wiederverwendbaren fetch mit einem body und der Method
-// export async function dataFetchWithTokenTest(
-//   endpoint: string,
-//   token: string,
-//   method = "GET",
-//   body: JSON,
-//   contentType = "application/json"
-// ) {
-//   // it is just a GET request
-//   try {
-//     const response = await fetch(endpoint, {
-//       method: method,
-//       headers: {
-//         "Content-Type": contentType,
-//         Authorization: `Bearer ${token}`,
-//       },
-//       body: JSON.stringify(body),
-//     });
-
-//     const data = await response.json();
-
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }

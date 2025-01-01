@@ -103,6 +103,7 @@ class User extends Model
   public static function validate(Request $request)
   {
     $post = $request->method() === 'POST';
+    // user mit geben ? 
 
     return $request->validate([
       'first_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],

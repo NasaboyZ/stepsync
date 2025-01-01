@@ -1,16 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { ChallengeCard } from "../Cards/cards";
 import { useSession } from "next-auth/react";
-
-interface Challenge {
-  id: number;
-  title: string;
-  description: string;
-  goal: string;
-  status: boolean;
-  start_date: string;
-  end_date: string;
-}
+import { fetchChallenges } from "@/utils/api";
+import { Challenge } from "@/types/challenges";
 
 export default function ChallengesItems() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -19,28 +13,10 @@ export default function ChallengesItems() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    const fetchChallenges = async () => {
+    const loadChallenges = async () => {
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges`;
-
-        const response = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(
-            `Fehler beim Laden der Challenges: ${response.status} ${response.statusText}`
-          );
-        }
-
-        const data = await response.json();
-        const challengesData = data.challenges || data;
+        if (!session?.accessToken) return;
+        const challengesData = await fetchChallenges(session.accessToken);
         setChallenges(Array.isArray(challengesData) ? challengesData : []);
       } catch (err) {
         setError(
@@ -51,9 +27,7 @@ export default function ChallengesItems() {
       }
     };
 
-    if (session?.accessToken) {
-      fetchChallenges();
-    }
+    loadChallenges();
   }, [session]);
 
   if (loading) return <div>Lädt...</div>;
