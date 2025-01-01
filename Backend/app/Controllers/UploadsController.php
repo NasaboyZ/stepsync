@@ -7,7 +7,17 @@ use Illuminate\Http\Request;
 
 class UploadsController
 {
-  function create(Request $request)
+  public function index(Request $request)
+  {
+    $user = \Auth::user();
+    $images = Image::where('user_id', $user->id)->get();
+
+    return response()->json([
+      'images' => $images
+    ]);
+  }
+
+  public function create(Request $request)
   {
     $user = \Auth::user();
     $request->validate([
@@ -20,8 +30,11 @@ class UploadsController
     }
 
     try {
+      \Log::info('Upload für User:', ['user_id' => $user->id]);
+
+      // Speichern des Bildes im Storage
       $pathname = \Storage::putFileAs(
-        'uploads/' . $user->id,
+        'public/uploads/' . $user->id,
         $file,
         'avatar.jpg'
       );
@@ -30,18 +43,27 @@ class UploadsController
         return response()->json(['error' => 'Fehler beim Speichern der Datei'], 500);
       }
 
+      // Löschen des alten Avatar-Bildes, falls vorhanden
       Image::where('user_id', $user->id)->delete();
 
-      $image = new Image();
-      $image->pathname = $pathname;
-      $image->user_id = $user->id;
-      $image->save();
+      // Erstellen des neuen Bildeintrags in der Datenbank
+      $image = Image::create([
+        'pathname' => $pathname,
+        'user_id' => $user->id
+      ]);
+
+      \Log::info('Gespeichertes Bild:', ['image' => $image->toArray()]);
 
       return response()->json([
         'message' => 'Avatar erfolgreich hochgeladen',
-        'pathname' => $pathname
+        'pathname' => $pathname,
+        'image' => $image,
+        'url' => \Storage::url($pathname)
       ], 201);
     } catch (\Exception $e) {
+      \Log::error('Upload Fehler:', ['error' => $e->getMessage()]);
+
+      // Aufräumen bei Fehler
       if (isset($pathname) && \Storage::exists($pathname)) {
         \Storage::delete($pathname);
       }
@@ -52,17 +74,29 @@ class UploadsController
     }
   }
 
-  function destroy(Request $request)
+  public function destroy($id)
   {
-    $user = \Auth::user();
-    $filename = $request->input('filename');
-    $path = 'uploads/' . $user->id . '/' . $filename;
+    try {
+      $user = \Auth::user();
+      $image = Image::where('id', $id)
+        ->where('user_id', $user->id)
+        ->firstOrFail();
 
-    Image::where('pathname', $path)->where('user_id', $user->id)->delete();
+      // Datei aus dem Storage löschen
+      if (\Storage::exists($image->pathname)) {
+        \Storage::delete($image->pathname);
+      }
 
-    if (!\Storage::exists($path))
-      return abort(404, 'file does not exist');
-    \Storage::delete($path);
-    return $path;
+      // Datenbankeintrag löschen
+      $image->delete();
+
+      return response()->json([
+        'message' => 'Bild erfolgreich gelöscht'
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'error' => 'Fehler beim Löschen des Bildes: ' . $e->getMessage()
+      ], 500);
+    }
   }
 }

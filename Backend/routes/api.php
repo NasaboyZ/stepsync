@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   Route::get('/user/challenges', [UserController::class, 'showChallenges']); // Eigene Challenges anzeigen
 
-  // Challenge management
+
   Route::post('/challenges', [ChallengesController::class, 'create']); // Neue Challenge erstellen
   Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']); // Challenge aktualisieren
   Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']); // Challenge löschen
@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
+  Route::get('/uploads', [UploadsController::class, 'index']);
   Route::post('/uploads', [UploadsController::class, 'create']);
   Route::delete('/uploads/{id}', [UploadsController::class, 'destroy']);
 

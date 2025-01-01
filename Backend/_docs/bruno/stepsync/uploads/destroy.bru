@@ -5,8 +5,8 @@ meta {
 }
 
 delete {
-  url: {{baseUrl}}/uploads
-  body: json
+  url: {{baseUrl}}/uploads/{id}
+  body: multipartForm
   auth: none
 }
 
