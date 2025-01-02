@@ -7,7 +7,6 @@
 .main {
   flex-grow: 1;
   margin-left: 0;
-  padding: 24px;
 }
 
 @media (min-width: 900px) {
