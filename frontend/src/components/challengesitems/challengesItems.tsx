@@ -38,7 +38,7 @@ export default function ChallengesItems() {
       {challenges.map((challenge) => (
         <ChallengeCard
           key={challenge.id}
-          variant="secondary"
+          variant="primary"
           challenge={challenge}
         />
       ))}
