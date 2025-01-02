@@ -5,6 +5,7 @@ import { ChallengeCard } from "../Cards/cards";
 import { useSession } from "next-auth/react";
 import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/challenges";
+import styles from "./challengesItems.module.css";
 
 export default function ChallengesItems() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -34,7 +35,7 @@ export default function ChallengesItems() {
   if (error) return <div>Fehler: {error}</div>;
 
   return (
-    <>
+    <div className={styles.challengesContainer}>
       {challenges.map((challenge) => (
         <ChallengeCard
           key={challenge.id}
@@ -42,6 +43,6 @@ export default function ChallengesItems() {
           challenge={challenge}
         />
       ))}
-    </>
+    </div>
   );
 }

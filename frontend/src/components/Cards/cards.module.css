@@ -1,6 +1,15 @@
 .card {
-  margin-bottom: 20px;
+  position: relative;
+  width: 300px;
+  height: auto;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: var(--white);
+  margin: 10px;
   transition: all 0.3s ease;
+  padding: 20px;
 }
 
 .card:hover {
@@ -9,52 +18,76 @@
 }
 
 .primary {
-  background-color: var(--brown-light);
+  background-color: var(--white);
 }
 
 .secondary {
-  background-color: var(--brown-light);
-  color: var(--white);
+  background-color: var(--white);
 }
 
 .title {
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--brown-light);
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.input {
-  margin-bottom: 16px;
-}
-
-.media {
-  margin-bottom: 16px;
+  text-align: center;
 }
 
 .description {
+  font-size: 16px;
+  color: var(--brown-dark);
   margin-bottom: 16px;
+  text-align: center;
+}
+
+.goal {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--brown-light);
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 .buttonContainer {
   display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  justify-content: flex-end;
+  gap: 12px;
+  margin-top: auto;
+  justify-content: center;
 }
 
 .button {
   min-width: 120px;
+  border: 2px solid var(--brown-light);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .statusText {
-  margin-top: 16px;
+  margin-top: 24px;
   font-weight: bold;
   text-align: center;
+  font-size: 18px;
+  color: var(--brown-light);
 }
 
 .iconButton {
-  color: var(--icon-color, #000);
+  color: var(--brown-light);
   z-index: 1;
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
 }

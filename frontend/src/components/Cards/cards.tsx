@@ -163,69 +163,124 @@ export function ChallengeCard({ variant, challenge }: ChallengeCardProps) {
     "pending" | "accepted" | "completed" | "failed"
   >("pending");
 
+  const handleAccept = () => {
+    setStatus("accepted");
+    // Hier könnte API-Call erfolgen
+  };
+
+  const handleReject = () => {
+    setStatus("failed");
+    // Hier könnte API-Call erfolgen
+  };
+
+  const handleComplete = () => {
+    setStatus("completed");
+    // Hier könnte API-Call erfolgen
+  };
+
+  const handleFail = () => {
+    setStatus("failed");
+    // Hier könnte API-Call erfolgen
+  };
+
   return (
-    <Card className={`${styles.card} ${styles[variant]}`}>
-      <CardContent>
-        <Typography variant="h5" className={styles.title}>
-          {challenge.title}
-        </Typography>
-        <Typography variant="body2" className={styles.description}>
-          {challenge.description}
-        </Typography>
-        <Typography variant="body2" className={styles.goal}>
-          Ziel: {challenge.goal}
-        </Typography>
-        {status === "pending" && (
-          <motion.div className={styles.buttonContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setStatus("accepted")}
-              className={styles.button}
-            >
-              Annehmen
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => setStatus("failed")}
-              className={styles.button}
-            >
-              Ablehnen
-            </Button>
-          </motion.div>
-        )}
-        {status === "accepted" && (
-          <motion.div className={styles.buttonContainer}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => setStatus("completed")}
-              className={styles.button}
-            >
-              Geschafft
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => setStatus("failed")}
-              className={styles.button}
-            >
-              Nicht geschafft
-            </Button>
-          </motion.div>
-        )}
-        {status === "completed" && (
-          <Typography variant="body1" className={styles.statusText}>
-            Glückwunsch! Du hast die Challenge gemeistert!
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Card className={`${styles.card} ${styles[variant]}`}>
+        <CardContent>
+          <Typography variant="h5" className={styles.title}>
+            {challenge.title}
           </Typography>
-        )}
-        {status === "failed" && (
-          <Typography variant="body1" className={styles.statusText}>
-            Schade! Vielleicht klappt es beim nächsten Mal.
+          <Typography variant="body2" className={styles.description}>
+            {challenge.description}
           </Typography>
-        )}
-      </CardContent>
-    </Card>
+          <Typography variant="body2" className={styles.goal}>
+            {challenge.goal}
+          </Typography>
+
+          {status === "pending" && (
+            <motion.div
+              className={styles.buttonContainer}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Button
+                variant="contained"
+                onClick={handleAccept}
+                className={styles.button}
+                sx={{ backgroundColor: "var(--brown-light)" }}
+              >
+                Annehmen
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleReject}
+                className={styles.button}
+                sx={{
+                  borderColor: "var(--brown-light)",
+                  color: "var(--brown-light)",
+                }}
+              >
+                Ablehnen
+              </Button>
+            </motion.div>
+          )}
+
+          {status === "accepted" && (
+            <motion.div
+              className={styles.buttonContainer}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Button
+                variant="contained"
+                onClick={handleComplete}
+                className={styles.button}
+                sx={{ backgroundColor: "var(--brown-light)" }}
+              >
+                Geschafft
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleFail}
+                className={styles.button}
+                sx={{ backgroundColor: "var(--red)" }}
+              >
+                Nicht geschafft
+              </Button>
+            </motion.div>
+          )}
+
+          {status === "completed" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Typography variant="body1" className={styles.statusText}>
+                🎉 Challenge gemeistert!
+              </Typography>
+            </motion.div>
+          )}
+
+          {status === "failed" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Typography variant="body1" className={styles.statusText}>
+                Vielleicht klappt es beim nächsten Mal! 💪
+              </Typography>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
