@@ -1,0 +1,45 @@
+.challengesContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+
+  margin: 0 1rem;
+}
+
+@media (max-width: 1024px) {
+  .challengesContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .challengesContainer {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+
+.modalContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modalContent h2 {
+  color: black;
+}
+
+.fabButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
