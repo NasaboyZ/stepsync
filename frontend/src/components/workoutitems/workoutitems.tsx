@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { WorkoutCard } from "../Cards/cards";
+
 import { Fab, Modal, Box, Grid } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
+import { WorkoutCard } from "../workoutCard/workoutCard";
+import { createWorkout } from "@/services/servicesWorkout";
+import { useRouter } from "next/navigation";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
@@ -16,7 +19,8 @@ export default function WorkoutItems() {
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
     null
   );
-
+  const router = useRouter();
+  //TODO:Validierung einfügen
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -47,6 +51,16 @@ export default function WorkoutItems() {
     } catch (error) {
       console.error("Fehler beim Löschen:", error);
     }
+  };
+
+  const handleSave = async (workoutData: WorkoutData) => {
+    console.log("workoutData", workoutData);
+    await createWorkout(
+      workoutData,
+      session?.accessToken ?? undefined,
+      router,
+      handleCloseModal
+    );
   };
 
   useEffect(() => {
@@ -129,7 +143,7 @@ export default function WorkoutItems() {
                   left: "50%",
                   transform: "translate(-50%, -50%)",
                   width: 400,
-                  maxWidth: "90%",
+                  maxWidth: "100%",
                   bgcolor: "background.paper",
                   boxShadow: 24,
                   p: 4,
@@ -139,6 +153,8 @@ export default function WorkoutItems() {
                 <WorkoutCard
                   variant="primary"
                   initialData={editingWorkout || undefined}
+                  onSave={handleSave}
+                  showSaveButton={true}
                 />
               </Box>
             </motion.div>

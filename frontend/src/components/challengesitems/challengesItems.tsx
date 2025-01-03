@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChallengeCard } from "../Cards/cards";
+
 import { useSession } from "next-auth/react";
 import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/challenges";
@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
+import { ChallengesCard } from "../challengersCard/challengesCard";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -68,7 +69,7 @@ export default function ChallengesItems() {
     <>
       <div className={styles.challengesContainer}>
         {challenges.map((challenge) => (
-          <ChallengeCard
+          <ChallengesCard
             key={challenge.id}
             variant="primary"
             challenge={challenge}

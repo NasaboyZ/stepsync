@@ -1,0 +1,53 @@
+.card {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .primary {
+    background-color: var(--brown-light);
+    color: white;
+  }
+  
+  .secondary {
+    background-color: white;
+    border: 2px solid var(--brown-light);
+    color: var(--brown-dark);
+  }
+  
+  .title {
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .description {
+    margin-bottom: 1rem;
+    color: inherit;
+  }
+  
+  .goal {
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+  
+  .button {
+    min-width: 120px;
+  }
+  
+  .statusText {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
