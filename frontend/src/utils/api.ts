@@ -1,6 +1,7 @@
+import { WorkoutData } from "@/types/interfaces/workoutData";
 import { dataFetchWithToken } from "./data-fetch";
 
-export interface  Challenge {
+export interface Challenge {
   id: number;
   title: string;
   description: string;
@@ -40,4 +41,21 @@ export const fetchChallenges = async (token: string) => {
     token
   );
   return data.challenges || data;
+};
+
+export const fetchWorkouts = async (token: string): Promise<WorkoutData[]> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
 };

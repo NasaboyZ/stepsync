@@ -5,8 +5,8 @@ meta {
 }
 
 delete {
-  url: {{baseUrl}}/uploads/{id}
-  body: multipartForm
+  url: {{baseUrl}}/uploads/5
+  body: json
   auth: none
 }
 
@@ -16,6 +16,6 @@ headers {
 
 body:json {
   {
-    "filename": "fall.webp"
+    "filename": "avatar.jpg"
   }
 }

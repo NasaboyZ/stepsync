@@ -6,15 +6,8 @@ import { Fab, Modal, Box, Grid } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-
-export interface WorkoutData {
-  id?: number;
-  category: string;
-  description: string;
-  weight: number;
-  repetitions: number;
-  user_id?: number;
-}
+import { WorkoutData } from "@/types/interfaces/workoutData";
+import { fetchWorkouts } from "@/utils/api";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
@@ -27,84 +20,9 @@ export default function WorkoutItems() {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleSaveWorkout = async (workoutData: WorkoutData) => {
-    try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify(workoutData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error("Server Antwort:", {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorData,
-        });
-        throw new Error(
-          `Fehler beim Speichern des Workouts: ${response.status} ${response.statusText}`
-        );
-      }
-
-      const savedWorkout = await response.json();
-      setSavedWorkouts([...savedWorkouts, savedWorkout]);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Detaillierter Fehler beim Speichern:", error);
-      // Optional: Fügen Sie hier einen Toast oder eine andere UI-Benachrichtigung hinzu
-      throw error; // Fehler weiterleiten, damit er in der Entwicklerkonsole sichtbar ist
-    }
-  };
-
   const handleEdit = (workout: WorkoutData) => {
     setEditingWorkout(workout);
     setIsModalOpen(true);
-  };
-
-  const handleUpdate = async (workoutData: WorkoutData) => {
-    try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
-      const response = await fetch(apiUrl, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify(workoutData),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Fehler beim Aktualisieren des Workouts: ${response.status}`
-        );
-      }
-
-      const updatedWorkout = await response.json();
-      setSavedWorkouts(
-        savedWorkouts.map((workout) =>
-          workout.id === updatedWorkout.workout.id
-            ? updatedWorkout.workout
-            : workout
-        )
-      );
-      setIsModalOpen(false);
-      setEditingWorkout(null);
-    } catch (error) {
-      console.error("Fehler beim Aktualisieren:", error);
-    }
-  };
-
-  const handleSaveOrUpdate = (workoutData: WorkoutData) => {
-    if (editingWorkout) {
-      handleUpdate({ ...workoutData, id: editingWorkout.id });
-    } else {
-      handleSaveWorkout(workoutData);
-    }
   };
 
   const handleDelete = async (workoutId: number) => {
@@ -123,7 +41,6 @@ export default function WorkoutItems() {
         throw new Error(`Fehler beim Löschen des Workouts: ${response.status}`);
       }
 
-      // Workout aus dem lokalen State entfernen
       setSavedWorkouts(
         savedWorkouts.filter((workout) => workout.id !== workoutId)
       );
@@ -133,21 +50,12 @@ export default function WorkoutItems() {
   };
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
+    const loadWorkouts = async () => {
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
-        const response = await fetch(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Fehler beim Laden der Workouts");
-        }
-
-        const data = await response.json();
-        setSavedWorkouts(data.workouts || []);
+        if (!session?.accessToken) return;
+        const workoutsData = await fetchWorkouts(session.accessToken);
+        setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
+        console.log("Geladene Workouts:", workoutsData);
       } catch (error) {
         console.error("Fehler beim Laden der Workouts:", error);
         setSavedWorkouts([]);
@@ -155,24 +63,30 @@ export default function WorkoutItems() {
     };
 
     if (session?.accessToken) {
-      fetchWorkouts();
+      loadWorkouts();
     }
   }, [session]);
 
   return (
     <>
       <Grid container spacing={2}>
-        {savedWorkouts.map((workout, index) => (
-          <Grid item xs={12} sm={6} md={4} key={workout.id || index}>
-            <WorkoutCard
-              variant="primary"
-              initialData={workout}
-              readOnly={true}
-              onEdit={() => handleEdit(workout)}
-              onDelete={() => workout.id && handleDelete(workout.id)}
-            />
+        {savedWorkouts && savedWorkouts.length > 0 ? (
+          savedWorkouts.map((workout, index) => (
+            <Grid item xs={12} sm={6} md={4} key={workout.id || index}>
+              <WorkoutCard
+                variant="primary"
+                initialData={workout}
+                readOnly={true}
+                onEdit={() => handleEdit(workout)}
+                onDelete={() => workout.id && handleDelete(workout.id)}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <p>Keine Workouts gefunden</p>
           </Grid>
-        ))}
+        )}
       </Grid>
 
       <motion.div
@@ -225,7 +139,6 @@ export default function WorkoutItems() {
                 <WorkoutCard
                   variant="primary"
                   initialData={editingWorkout || undefined}
-                  onSave={handleSaveOrUpdate}
                 />
               </Box>
             </motion.div>

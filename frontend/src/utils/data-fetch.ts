@@ -24,7 +24,6 @@ export async function dataFetchWithToken(endpoint: string, token: string) {
     }
 
     const data = await response.json();
-
     return data;
   } catch (error) {
     console.error(error);
