@@ -1,10 +1,10 @@
 import { WorkoutData } from "@/types/interfaces/workoutData";
-import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const createWorkout = async (
   workoutData: WorkoutData,
   accessToken: string | undefined,
-  router: NextRouter,
+  router: AppRouterInstance,
   onSuccess: () => void
 ) => {
   if (!workoutData || !accessToken) {
@@ -28,9 +28,7 @@ export const createWorkout = async (
     await response.json().then(() => {
       console.log("workout wurde erstellt");
       onSuccess();
-      router.push("/workout").then(() => {
-        window.location.reload();
-      });
+      router.push("/workout");
     });
   } catch (error) {
     //TODO: fehler meldung für den user wenns sicht gespeichert werden kann

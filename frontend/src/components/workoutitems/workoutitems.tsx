@@ -59,7 +59,10 @@ export default function WorkoutItems() {
       workoutData,
       session?.accessToken ?? undefined,
       router,
-      handleCloseModal
+      () => {
+        handleCloseModal();
+        router.refresh();
+      }
     );
   };
 
@@ -154,7 +157,6 @@ export default function WorkoutItems() {
                   variant="primary"
                   initialData={editingWorkout || undefined}
                   onSave={handleSave}
-                  showSaveButton={true}
                 />
               </Box>
             </motion.div>
