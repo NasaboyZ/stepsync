@@ -9,7 +9,11 @@ import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
 import { WorkoutCard } from "../workoutCard/workoutCard";
-import { createWorkout, deleteWorkout } from "@/services/servicesWorkout";
+import {
+  createWorkout,
+  deleteWorkout,
+  updateWorkout,
+} from "@/services/servicesWorkout";
 import { useRouter } from "next/navigation";
 
 export default function WorkoutItems() {
@@ -45,15 +49,29 @@ export default function WorkoutItems() {
 
   const handleSave = async (workoutData: WorkoutData) => {
     console.log("workoutData", workoutData);
-    await createWorkout(
-      workoutData,
-      session?.accessToken ?? undefined,
-      router,
-      () => {
-        handleCloseModal();
-        router.refresh();
-      }
-    );
+    if (editingWorkout?.id) {
+      // Wenn ein Workout bearbeitet wird
+      await updateWorkout(
+        workoutData,
+        session?.accessToken ?? undefined,
+        router,
+        () => {
+          handleCloseModal();
+          router.refresh();
+        }
+      );
+    } else {
+      // Wenn ein neues Workout erstellt wird
+      await createWorkout(
+        workoutData,
+        session?.accessToken ?? undefined,
+        router,
+        () => {
+          handleCloseModal();
+          router.refresh();
+        }
+      );
+    }
   };
 
   useEffect(() => {

@@ -38,35 +38,35 @@ export const createWorkout = async (
 
 export const updateWorkout = async (
   workoutData: WorkoutData,
-  accessToken: string
+  accessToken: string | undefined,
+  router: AppRouterInstance,
+  onSuccess: () => void
 ) => {
-  if (!workoutData || !accessToken) {
-    console.log("Keine Daten Verfügbar");
+  if (!workoutData || !accessToken || !workoutData.id) {
+    console.log("Keine Daten verfügbar oder keine ID vorhanden");
     return;
   }
-  const payload = { ...workoutData };
+
   try {
     const response = await fetch("/api/update-workout", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(workoutData),
     });
-    //TODO: Snackbar einbauen für die fehler meldung für den user
+
     if (!response.ok) {
       throw new Error(
         `Fehler beim Aktualisieren des Workouts: ${response.status}`
       );
     }
 
-    const data = await response.json();
-    const workoutId = data.id;
-    //TODO: user feedback for updating workout also mach eine Snackbar
-
-    return workoutId;
+    await response.json();
+    console.log("Workout wurde aktualisiert");
+    onSuccess();
+    router.push("/workout");
   } catch (error) {
-    //TODO: fehler meldung für den user wenns sicht gespeichert werden kann
     console.log("Fehler beim Aktualisieren des Workouts", error);
   }
 };

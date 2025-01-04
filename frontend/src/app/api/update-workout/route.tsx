@@ -18,7 +18,7 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts/${workoutId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`,
       {
         method: "PATCH",
         headers: {
