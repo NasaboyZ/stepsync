@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { FaDumbbell } from "react-icons/fa";
 import styles from "./workoutCard.module.css";
+import { workoutSchema } from "../../validations/workout-shema";
+import { z } from "zod";
 
 interface WorkoutCardProps {
   variant: "primary" | "secondary";
@@ -45,23 +47,43 @@ export function WorkoutCard({
   const [repetitions, setRepetitions] = useState(
     initialData?.repetitions?.toString() || ""
   );
+  const [errors, setErrors] = useState<{
+    category?: string;
+    description?: string;
+    weight?: string;
+    repetitions?: string;
+  }>({});
 
   const handleSave = () => {
-    if (onSave && initialData?.id) {
-      onSave({
-        id: initialData.id,
+    try {
+      const validatedData = workoutSchema.parse({
         category,
         description,
-        weight: parseInt(weight),
-        repetitions: parseInt(repetitions),
+        weight,
+        repetitions,
       });
-    } else if (onSave) {
-      onSave({
-        category,
-        description,
-        weight: parseInt(weight),
-        repetitions: parseInt(repetitions),
-      });
+
+      setErrors({});
+
+      if (onSave && initialData?.id) {
+        onSave({
+          id: initialData.id,
+          ...validatedData,
+        });
+      } else if (onSave) {
+        onSave(validatedData);
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const formattedErrors: {
+          [key: string]: string;
+        } = {};
+        error.errors.forEach((err) => {
+          const path = err.path[0] as string;
+          formattedErrors[path] = err.message;
+        });
+        setErrors(formattedErrors);
+      }
     }
   };
 
@@ -85,6 +107,8 @@ export function WorkoutCard({
           onChange={(e) => setCategory(e.target.value)}
           className={styles.input}
           disabled={readOnly}
+          error={!!errors.category}
+          helperText={errors.category}
         />
         <TextField
           label="Beschreibung"
@@ -96,6 +120,8 @@ export function WorkoutCard({
           onChange={(e) => setDescription(e.target.value)}
           className={styles.input}
           disabled={readOnly}
+          error={!!errors.description}
+          helperText={errors.description}
         />
         <TextField
           label="Gewicht"
@@ -105,6 +131,8 @@ export function WorkoutCard({
           onChange={(e) => setWeight(e.target.value)}
           className={styles.input}
           disabled={readOnly}
+          error={!!errors.weight}
+          helperText={errors.weight}
         />
         <TextField
           label="Wiederholungen"
@@ -114,6 +142,8 @@ export function WorkoutCard({
           onChange={(e) => setRepetitions(e.target.value)}
           className={styles.input}
           disabled={readOnly}
+          error={!!errors.repetitions}
+          helperText={errors.repetitions}
         />
         <div className={styles.buttonContainer}>
           {onSave && !readOnly && (
