@@ -40,25 +40,35 @@ export const updateWorkout = async (
   workoutData: WorkoutData,
   accessToken: string
 ) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`,
-    {
+  if (!workoutData || !accessToken) {
+    console.log("Keine Daten Verfügbar");
+    return;
+  }
+  const payload = { ...workoutData };
+  try {
+    const response = await fetch("/api/update-workout", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(workoutData),
+      body: JSON.stringify(payload),
+    });
+    //TODO: Snackbar einbauen für die fehler meldung für den user
+    if (!response.ok) {
+      throw new Error(
+        `Fehler beim Aktualisieren des Workouts: ${response.status}`
+      );
     }
-  );
 
-  if (!response.ok) {
-    throw new Error(
-      `Fehler beim Aktualisieren des Workouts: ${response.status}`
-    );
+    const data = await response.json();
+    const workoutId = data.id;
+    //TODO: user feedback for updating workout also mach eine Snackbar
+
+    return workoutId;
+  } catch (error) {
+    //TODO: fehler meldung für den user wenns sicht gespeichert werden kann
+    console.log("Fehler beim Aktualisieren des Workouts", error);
   }
-
-  return response.json();
 };
 
 export const deleteWorkout = async (

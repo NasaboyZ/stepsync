@@ -65,6 +65,12 @@ export function WorkoutCard({
     }
   };
 
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit();
+    }
+  };
+
   return (
     <Card className={`${styles.card} ${styles[variant]}`}>
       <CardContent>
@@ -124,7 +130,7 @@ export function WorkoutCard({
             <Button
               variant="outlined"
               color="primary"
-              onClick={onEdit}
+              onClick={handleEdit}
               className={styles.button}
             >
               Bearbeiten

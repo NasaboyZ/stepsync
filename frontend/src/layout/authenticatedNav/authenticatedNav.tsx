@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   Typography,
@@ -10,7 +10,6 @@ import {
   ListItem,
   ListItemIcon,
   useMediaQuery,
-  Avatar,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -21,25 +20,11 @@ import {
 } from "react-icons/md";
 
 import styles from "./authenticated.module.css";
-import { UserProfile } from "@/types/interfaces/userProfile";
-import { fetchUserData } from "@/utils/api";
 
 export default function AuthenticatedNav() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
-  const [user, setUser] = useState<UserProfile | null>(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchUserData(token)
-        .then((userData) => setUser(userData))
-        .catch((error) =>
-          console.error("Fehler beim Laden der Benutzerdaten:", error)
-        );
-    }
-  }, []);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -53,15 +38,6 @@ export default function AuthenticatedNav() {
     <div className={styles.container}>
       {isLargeScreen ? (
         <aside className={styles.permanentDrawer}>
-          {user?.avatar && (
-            <div className={styles.avatarContainer}>
-              <Avatar
-                src={user.avatar.url}
-                alt={user.username}
-                className={styles.avatar}
-              />
-            </div>
-          )}
           <List>
             <ListItem className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>

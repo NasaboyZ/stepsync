@@ -24,6 +24,11 @@ export interface UploadsData {
   }>;
 }
 
+export interface UploadResponse {
+  url: string;
+  pathname: string;
+}
+
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
   const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,

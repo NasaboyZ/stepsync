@@ -1,3 +1,5 @@
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
 export interface WorkoutData {
   id?: number;
   category: string;
@@ -6,3 +8,10 @@ export interface WorkoutData {
   repetitions: number;
   user_id?: number;
 }
+
+export type DeleteWorkoutFunction = (
+  workoutId: number,
+  accessToken: string | undefined,
+  router: AppRouterInstance,
+  onSuccess: () => void
+) => Promise<void>;

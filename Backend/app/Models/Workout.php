@@ -17,10 +17,10 @@ class Workout extends Model
     public string $description;
 
     #[Column]
-    public int $weight;
+    public ?int $weight;
 
     #[Column]
-    public int $repetitions;
+    public ?int $repetitions;
 
     #[Column]
     public int $user_id;
@@ -30,14 +30,26 @@ class Workout extends Model
         return $this->belongsTo(User::class);
     }
 
-    static function validate(Request $request) {
-        return $request->validate([
-            'category' => 'required|in:cardio,lifting',
-            'description' => 'required|string',
+    static function validate(Request $request)
+    {
+        $rules = [
+            'category' => 'string|max:255',
+            'description' => 'string',
             'weight' => 'nullable|integer',
             'repetitions' => 'nullable|integer',
-            // 'user_id' => 'required|exists:users,id',
-        
-        ]);
+        ];
+
+
+        if ($request->isMethod('POST')) {
+            $rules['category'] = 'required|' . $rules['category'];
+            $rules['description'] = 'required|' . $rules['description'];
+        }
+
+        // Bei PATCH muss die ID vorhanden sein
+        if ($request->isMethod('PATCH')) {
+            $rules['id'] = 'required|exists:workouts,id';
+        }
+
+        return $request->validate($rules);
     }
 }

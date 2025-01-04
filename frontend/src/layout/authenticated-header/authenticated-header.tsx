@@ -15,20 +15,30 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import styles from "./authenticated-header.module.css";
-import { fetchUserData, fetchUserUploads } from "@/utils/api";
-import defaultImage from "../../../src/assets/jogger.jpg";
+import { fetchUserData } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { UserProfile } from "@/types/interfaces/userProfile";
 
 export default function AuthenticatedHeader() {
-  const DEFAULT_AVATAR = defaultImage.src;
   const [username, setUsername] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string>("");
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      fetchUserData(token)
+        .then((userData) => setUser(userData))
+        .catch((error) =>
+          console.error("Fehler beim Laden der Benutzerdaten:", error)
+        );
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -39,30 +49,14 @@ export default function AuthenticatedHeader() {
         if (userData && userData.username) {
           setUsername(userData.username);
         }
-
-        const uploadsData = await fetchUserUploads(session.accessToken);
-        if (uploadsData?.images && uploadsData.images.length > 0) {
-          const avatar = uploadsData.images.find((img: { pathname: string }) =>
-            img.pathname.includes("avatar")
-          );
-
-          if (avatar) {
-            setAvatarUrl(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/${avatar.pathname}`
-            );
-          } else {
-            setAvatarUrl(DEFAULT_AVATAR);
-          }
-        }
       } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
-        setAvatarUrl(DEFAULT_AVATAR);
         setUsername("");
       }
     }
 
     fetchData();
-  }, [session, DEFAULT_AVATAR]);
+  }, [session]);
 
   const getTitle = () => {
     switch (pathname) {
@@ -102,10 +96,10 @@ export default function AuthenticatedHeader() {
           <label htmlFor="avatar-upload">
             <Avatar
               className={styles.avatar}
-              src={avatarUrl}
+              src={user?.avatar?.url}
               style={{ cursor: "pointer" }}
             >
-              {username ? username[0].toUpperCase() : "?"}
+              {user?.username ? user.username[0].toUpperCase() : "?"}
             </Avatar>
           </label>
           <Typography variant="body1" className={styles.userName}>
