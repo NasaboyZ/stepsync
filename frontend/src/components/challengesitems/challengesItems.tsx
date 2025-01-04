@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
-import { fetchChallenges } from "@/utils/api";
-import { Challenge } from "@/types/challenges";
+import { fetchChallenges, createChallenge } from "@/utils/api";
+import { Challenge } from "@/types/interfaces/challenges";
 import { Fab, Modal, TextField, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
 import { ChallengesCard } from "../challengersCard/challengesCard";
+import { useRouter } from "next/navigation";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -23,6 +24,7 @@ export default function ChallengesItems() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newChallenge, setNewChallenge] =
@@ -57,9 +59,35 @@ export default function ChallengesItems() {
     setNewChallenge((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSaveChallenge = () => {
-    console.log("Challenge saved:", newChallenge);
-    setIsModalOpen(false);
+  const handleSaveChallenge = async () => {
+    if (!session?.accessToken) {
+      console.log("Keine Authentifizierung vorhanden");
+      return;
+    }
+
+    try {
+      await createChallenge(
+        {
+          title: newChallenge.title,
+          description: newChallenge.description,
+          goal: newChallenge.goal,
+          status: "pending",
+        },
+        session.accessToken,
+        router,
+        () => {
+          setIsModalOpen(false);
+          // Aktualisiere die Challenge-Liste
+          const loadChallenges = async () => {
+            const challengesData = await fetchChallenges(session.accessToken!);
+            setChallenges(Array.isArray(challengesData) ? challengesData : []);
+          };
+          loadChallenges();
+        }
+      );
+    } catch (error) {
+      console.error("Fehler beim Speichern der Challenge:", error);
+    }
   };
 
   if (loading) return <div>Lädt...</div>;

@@ -1,11 +1,11 @@
 meta {
-  name: destroy
+  name: delete Challenges
   type: http
-  seq: 2
+  seq: 4
 }
 
 delete {
-  url: {{baseUrl}}/uploads/1
+  url: {{baseUrl}}/challenges/1
   body: json
   auth: none
 }
@@ -16,6 +16,6 @@ headers {
 
 body:json {
   {
-    "filename": "avatar.jpg"
+    
   }
 }

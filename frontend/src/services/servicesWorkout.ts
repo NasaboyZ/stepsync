@@ -60,3 +60,39 @@ export const updateWorkout = async (
 
   return response.json();
 };
+
+export const deleteWorkout = async (
+  workoutId: number,
+  accessToken: string | undefined,
+  router: AppRouterInstance,
+  onSuccess: () => void
+) => {
+  if (!workoutId || !accessToken) {
+    console.log("Keine Daten Verfügbar");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/delete-workout/${workoutId}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+
+    //TODO: Snackbar einbauen für die fehler meldung für den user beim löschen des workouts
+    if (!response.ok) {
+      throw new Error(
+        `Fehler beim Löschen des Workouts: ${response.status}, ${data.message}`
+      );
+    }
+
+    await response.json().then(() => {
+      console.log("workout wurde gelöscht");
+      onSuccess();
+      // router.push("/workout");
+    });
+  } catch (error) {
+    //TODO: fehler meldung für den user wenns sicht gespeichert werden kann
+    console.log("Fehler beim Speichern des Workouts", error);
+  }
+};

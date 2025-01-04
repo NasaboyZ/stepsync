@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class UserController
 {
@@ -28,6 +29,10 @@ class UserController
       'date_of_birth' => $user->date_of_birth,
       'age' => $age,
       'id' => $user->id,
+      'avatar' => $user->avatar ? [
+        'id' => $user->avatar->id,
+        'url' => Storage::url($user->avatar->pathname)
+      ] : null,
     ]);
   }
 

@@ -76,9 +76,15 @@ class ChallengesController
     public function destroy($challengeId)
     {
         $user = Auth::user();
-        $challenge = $user->challenges()->findOrFail($challengeId);
+        $challenge = Challenges::findOrFail($challengeId);
 
-        $user->challenges()->detach($challengeId); 
+        // Überprüfen, ob der Benutzer Zugriff auf diese Challenge hat
+        if (!$user->challenges()->where('challenges.id', $challengeId)->exists()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $user->challenges()->detach($challengeId);
+        $challenge->delete(); // Die Challenge selbst auch löschen
 
         return response()->json(['message' => 'Challenge deleted']);
     }

@@ -9,11 +9,16 @@ export interface Challenge {
   userId: string;
 }
 
+export interface ChallengeData {
+  id?: string;
+  title: string;
+  description: string;
+  goal: string;
+  status?: "pending" | "accepted" | "completed" | "failed";
+}
 
 export interface CreateChallenge {
   title: string;
   description: string;
   goal: string;
 }
-
-// Alternativ können Sie auch Partial<Challenge> verwenden, wo Sie das vereinfachte Interface benötigen

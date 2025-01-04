@@ -100,6 +100,11 @@ class User extends Model
     return $this->challenges()->wherePivot('status', 'pending');
   }
 
+  public function avatar()
+  {
+    return $this->belongsTo(Image::class, 'avatar_image_id');
+  }
+
   public static function validate(Request $request)
   {
     $post = $request->method() === 'POST';

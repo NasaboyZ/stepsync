@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
 import { WorkoutCard } from "../workoutCard/workoutCard";
-import { createWorkout } from "@/services/servicesWorkout";
+import { createWorkout, deleteWorkout } from "@/services/servicesWorkout";
 import { useRouter } from "next/navigation";
 
 export default function WorkoutItems() {
@@ -30,27 +30,17 @@ export default function WorkoutItems() {
   };
 
   const handleDelete = async (workoutId: number) => {
-    try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify({ id: workoutId }),
-      });
+    console.log("workoutId", workoutId);
 
-      if (!response.ok) {
-        throw new Error(`Fehler beim Löschen des Workouts: ${response.status}`);
+    await deleteWorkout(
+      workoutId,
+      session?.accessToken ?? undefined,
+      router,
+      () => {
+        handleCloseModal();
+        router.refresh();
       }
-
-      setSavedWorkouts(
-        savedWorkouts.filter((workout) => workout.id !== workoutId)
-      );
-    } catch (error) {
-      console.error("Fehler beim Löschen:", error);
-    }
+    );
   };
 
   const handleSave = async (workoutData: WorkoutData) => {

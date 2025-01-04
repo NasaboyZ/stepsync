@@ -52,6 +52,10 @@ class UploadsController
         'user_id' => $user->id
       ]);
 
+      // User mit neuem Avatar-Bild verknüpfen
+      $user->avatar_image_id = $image->id;
+      $user->save();
+
       \Log::info('Gespeichertes Bild:', ['image' => $image->toArray()]);
 
       return response()->json([

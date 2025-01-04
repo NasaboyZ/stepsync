@@ -33,13 +33,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-  Route::get('/user/challenges', [UserController::class, 'showChallenges']); // Eigene Challenges anzeigen
+  Route::get('/user/challenges', [UserController::class, 'showChallenges']); 
 
 
-  Route::post('/challenges', [ChallengesController::class, 'create']); // Neue Challenge erstellen
-  Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']); // Challenge aktualisieren
-  Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']); // Challenge löschen
-
+  Route::post('/challenges', [ChallengesController::class, 'create']); 
+  Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']);
+  Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']);
 
 
 

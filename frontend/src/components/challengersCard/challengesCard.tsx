@@ -4,43 +4,54 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, Typography, Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { updateChallengeStatus } from "@/services/servicesChallenge";
+import { Challenge } from "@/types/interfaces/challenges";
 
 interface ChallengeCardProps {
+  challenge: Challenge;
   variant: "primary" | "secondary";
-  challenge: {
-    id: number;
-    title: string;
-    description: string;
-    goal: string;
-    status: boolean;
-    start_date: string;
-    end_date: string;
-  };
 }
 
-export function ChallengesCard({ variant, challenge }: ChallengeCardProps) {
+export function ChallengesCard({ challenge, variant }: ChallengeCardProps) {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [status, setStatus] = useState<
     "pending" | "accepted" | "completed" | "failed"
   >("pending");
 
+  const handleStatusUpdate = (
+    newStatus: "accepted" | "completed" | "failed"
+  ) => {
+    updateChallengeStatus(
+      {
+        id: challenge.id,
+        title: challenge.title,
+        description: challenge.description,
+        goal: challenge.goal,
+        status: newStatus,
+      },
+      session?.accessToken,
+      router,
+      () => setStatus(newStatus)
+    );
+  };
+
   const handleAccept = () => {
-    setStatus("accepted");
-    // Hier könnte API-Call erfolgen
+    handleStatusUpdate("accepted");
   };
 
   const handleReject = () => {
-    setStatus("failed");
-    // Hier könnte API-Call erfolgen
+    handleStatusUpdate("failed");
   };
 
   const handleComplete = () => {
-    setStatus("completed");
-    // Hier könnte API-Call erfolgen
+    handleStatusUpdate("completed");
   };
 
   const handleFail = () => {
-    setStatus("failed");
-    // Hier könnte API-Call erfolgen
+    handleStatusUpdate("failed");
   };
 
   return (

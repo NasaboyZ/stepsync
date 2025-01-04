@@ -6,15 +6,8 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Skeleton from "@mui/material/Skeleton";
 import styles from "./profileBioCard.module.css";
-
-interface UserProfile {
-  username: string;
-  age: number | null;
-  sex: string;
-  height: number | null;
-  weight: number | null;
-  goal: string;
-}
+import { UserProfile } from "@/types/interfaces/userProfile";
+import { fetchUserData } from "@/utils/api";
 
 export default function ProfileBioCard() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -24,34 +17,7 @@ export default function ProfileBioCard() {
     async function fetchUserProfile() {
       if (session?.accessToken) {
         try {
-          const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`;
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          });
-
-          if (!response.ok) {
-            console.error("API Error", response.status);
-            return;
-          }
-
-          const data = await response.json();
-          console.log("Rohdaten von API:", data);
-
-          const profileData = {
-            username: data.username,
-            age: data.age,
-            sex: data.gender,
-            height: data.height,
-            weight: data.weight,
-            goal: data.goal,
-          };
-
-          console.log("Verarbeitete Profildaten:", profileData);
+          const profileData = await fetchUserData(session.accessToken);
           setUserProfile(profileData);
         } catch (error) {
           console.error("Error fetching user profile:", error);

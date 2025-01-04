@@ -48,7 +48,7 @@ export default function AuthenticatedHeader() {
 
           if (avatar) {
             setAvatarUrl(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}${avatar.pathname}`
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/${avatar.pathname}`
             );
           } else {
             setAvatarUrl(DEFAULT_AVATAR);
