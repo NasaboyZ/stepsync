@@ -21,7 +21,6 @@
   }
 }
 
-
 .modalContent {
   position: absolute;
   top: 50%;
@@ -42,4 +41,18 @@
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 3px;
+  margin-bottom: 8px;
+}
+
+.modalContent {
+  .MuiFormHelperText-root {
+    color: #d32f2f;
+    margin-top: 3px;
+  }
 }

@@ -12,6 +12,8 @@ import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
 import { ChallengesCard } from "../challengersCard/challengesCard";
 import { useRouter } from "next/navigation";
+import { challengesSchema } from "@/validations/challenges-shema";
+import { z } from "zod";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -29,6 +31,10 @@ export default function ChallengesItems() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newChallenge, setNewChallenge] =
     useState<CreateChallenge>(emptyChallenge);
+
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
 
   useEffect(() => {
     const loadChallenges = async () => {
@@ -66,6 +72,10 @@ export default function ChallengesItems() {
     }
 
     try {
+      // Validiere die Eingaben mit dem Schema
+      challengesSchema.parse(newChallenge);
+      setValidationErrors({});
+
       await createChallenge(
         {
           title: newChallenge.title,
@@ -86,7 +96,17 @@ export default function ChallengesItems() {
         }
       );
     } catch (error) {
-      console.error("Fehler beim Speichern der Challenge:", error);
+      if (error instanceof z.ZodError) {
+        const errors: { [key: string]: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errors[err.path[0]] = err.message;
+          }
+        });
+        setValidationErrors(errors);
+      } else {
+        console.error("Fehler beim Speichern der Challenge:", error);
+      }
     }
   };
 
@@ -145,7 +165,13 @@ export default function ChallengesItems() {
                   value={newChallenge.title}
                   onChange={(e) => handleInputChange("title", e.target.value)}
                   margin="normal"
+                  error={!!validationErrors.title}
                 />
+                {validationErrors.title && (
+                  <div className={styles.errorMessage}>
+                    {validationErrors.title}
+                  </div>
+                )}
                 <TextField
                   label="Beschreibung"
                   fullWidth
@@ -154,14 +180,26 @@ export default function ChallengesItems() {
                     handleInputChange("description", e.target.value)
                   }
                   margin="normal"
+                  error={!!validationErrors.description}
                 />
+                {validationErrors.description && (
+                  <div className={styles.errorMessage}>
+                    {validationErrors.description}
+                  </div>
+                )}
                 <TextField
                   label="Ziel"
                   fullWidth
                   value={newChallenge.goal}
                   onChange={(e) => handleInputChange("goal", e.target.value)}
                   margin="normal"
+                  error={!!validationErrors.goal}
                 />
+                {validationErrors.goal && (
+                  <div className={styles.errorMessage}>
+                    {validationErrors.goal}
+                  </div>
+                )}
                 <Button
                   variant="contained"
                   color="primary"
