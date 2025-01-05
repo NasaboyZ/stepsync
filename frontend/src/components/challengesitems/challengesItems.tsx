@@ -11,9 +11,10 @@ import { FaPlus } from "react-icons/fa";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
 import { ChallengesCard } from "../challengersCard/challengesCard";
-import { useRouter } from "next/navigation";
+
 import { challengesSchema } from "@/validations/challenges-shema";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const emptyChallenge: CreateChallenge = {
   title: "",

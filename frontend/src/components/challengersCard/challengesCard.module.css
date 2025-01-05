@@ -1,53 +1,101 @@
 .card {
-    margin: 1rem;
-    padding: 1rem;
-    border-radius: 8px;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .primary {
-    background-color: var(--brown-light);
-    color: white;
-  }
-  
-  .secondary {
-    background-color: white;
-    border: 2px solid var(--brown-light);
-    color: var(--brown-dark);
-  }
-  
-  .title {
-    margin-bottom: 1rem;
-    font-weight: bold;
-  }
-  
-  .description {
-    margin-bottom: 1rem;
-    color: inherit;
-  }
-  
-  .goal {
-    margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-  
-  .buttonContainer {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    justify-content: center;
-  }
-  
-  .button {
-    min-width: 120px;
-  }
-  
-  .statusText {
-    text-align: center;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
+  position: relative;
+  width: 300px;
+  height: auto;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  background: var(--brown-light);
+  padding: 20px;
+  margin: 1rem;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--white);
+  text-align: center;
+  padding: 0 20px;
+}
+
+.description {
+  margin-top: 10px;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--white);
+  text-align: center;
+  padding: 0 20px;
+}
+
+.goal {
+  margin-top: 10px;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--white);
+  text-align: center;
+  padding: 0 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.button {
+  min-width: 120px;
+  height: 40px;
+  border: 2px solid var(--brown-light);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.statusText {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: var(--brown-dark);
+}
+
+.primary {
+  background: var(--brown-dark);
+  color: white;
+}
+
+.secondary {
+  background: white;
+  border: 2px solid var(--brown-light);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color:  black;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.editButton:hover {
+  color: #000;
+}

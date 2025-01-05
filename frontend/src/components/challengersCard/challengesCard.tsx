@@ -2,56 +2,30 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { updateChallengeStatus } from "@/services/servicesChallenge";
 import { Challenge } from "@/types/interfaces/challenges";
+import { FaEdit } from "react-icons/fa";
 
 interface ChallengeCardProps {
   challenge: Challenge;
   variant: "primary" | "secondary";
 }
 
-export function ChallengesCard({ challenge, variant }: ChallengeCardProps) {
+export function ChallengesCard({ challenge }: ChallengeCardProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [status, setStatus] = useState<
     "pending" | "accepted" | "completed" | "failed"
-  >("pending");
+  >(challenge.status);
 
   const handleStatusUpdate = (
     newStatus: "accepted" | "completed" | "failed"
   ) => {
-    updateChallengeStatus(
-      {
-        id: challenge.id,
-        title: challenge.title,
-        description: challenge.description,
-        goal: challenge.goal,
-        status: newStatus,
-      },
-      session?.accessToken,
-      router,
-      () => setStatus(newStatus)
-    );
-  };
-
-  const handleAccept = () => {
-    handleStatusUpdate("accepted");
-  };
-
-  const handleReject = () => {
-    handleStatusUpdate("failed");
-  };
-
-  const handleComplete = () => {
-    handleStatusUpdate("completed");
-  };
-
-  const handleFail = () => {
-    handleStatusUpdate("failed");
+    setStatus(newStatus);
   };
 
   return (
@@ -60,98 +34,87 @@ export function ChallengesCard({ challenge, variant }: ChallengeCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className={`${styles.card} ${styles[variant]}`}>
-        <CardContent>
-          <Typography variant="h5" className={styles.title}>
-            {challenge.title}
-          </Typography>
-          <Typography variant="body2" className={styles.description}>
-            {challenge.description}
-          </Typography>
-          <Typography variant="body2" className={styles.goal}>
-            {challenge.goal}
-          </Typography>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div className={styles.title}>{challenge.title}</div>
+          <motion.button
+            className={styles.editButton}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => console.log("Edit clicked")}
+          >
+            <FaEdit />
+          </motion.button>
+        </div>
+        <div className={styles.description}>{challenge.description}</div>
+        <div className={styles.goal}>{challenge.goal}</div>
 
-          {status === "pending" && (
-            <motion.div
-              className={styles.buttonContainer}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+        {status === "pending" && (
+          <motion.div
+            className={styles.buttonContainer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Button
+              onClick={() => setStatus("accepted")}
+              className={`${styles.button} ${styles.primary}`}
             >
-              <Button
-                variant="contained"
-                onClick={handleAccept}
-                className={styles.button}
-                sx={{ backgroundColor: "var(--brown-light)" }}
-              >
-                Annehmen
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={handleReject}
-                className={styles.button}
-                sx={{
-                  borderColor: "var(--brown-light)",
-                  color: "var(--brown-light)",
-                }}
-              >
-                Ablehnen
-              </Button>
-            </motion.div>
-          )}
+              Annehmen
+            </Button>
+            <Button
+              onClick={() => setStatus("failed")}
+              className={`${styles.button} ${styles.secondary}`}
+            >
+              Ablehnen
+            </Button>
+          </motion.div>
+        )}
 
-          {status === "accepted" && (
-            <motion.div
-              className={styles.buttonContainer}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+        {status === "accepted" && (
+          <motion.div
+            className={styles.buttonContainer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Button
+              onClick={() => setStatus("completed")}
+              className={`${styles.button} ${styles.primary}`}
             >
-              <Button
-                variant="contained"
-                onClick={handleComplete}
-                className={styles.button}
-                sx={{ backgroundColor: "var(--brown-light)" }}
-              >
-                Geschafft
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleFail}
-                className={styles.button}
-                sx={{ backgroundColor: "var(--red)" }}
-              >
-                Nicht geschafft
-              </Button>
-            </motion.div>
-          )}
+              Geschafft
+            </Button>
+            <Button
+              onClick={() => setStatus("failed")}
+              className={`${styles.button} ${styles.secondary}`}
+            >
+              Nicht geschafft
+            </Button>
+          </motion.div>
+        )}
 
-          {status === "completed" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Typography variant="body1" className={styles.statusText}>
-                🎉 Challenge gemeistert!
-              </Typography>
-            </motion.div>
-          )}
+        {status === "completed" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className={styles.statusText}>🎉 Challenge gemeistert!</div>
+          </motion.div>
+        )}
 
-          {status === "failed" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Typography variant="body1" className={styles.statusText}>
-                Vielleicht klappt es beim nächsten Mal! 💪
-              </Typography>
-            </motion.div>
-          )}
-        </CardContent>
-      </Card>
+        {status === "failed" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className={styles.statusText}>
+              Vielleicht klappt es beim nächsten Mal! 💪
+            </div>
+          </motion.div>
+        )}
+      </div>
     </motion.div>
   );
 }

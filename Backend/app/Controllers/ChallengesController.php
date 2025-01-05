@@ -9,45 +9,44 @@ use Illuminate\Support\Facades\Auth;
 
 class ChallengesController
 {
-    // Alle Challenges abrufen (nur für den authentifizierten Benutzer)
+
     public function index(Request $request)
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $challenges = $user->challenges()->get(); // Nur die Challenges des Benutzers abrufen
+            $challenges = $user->challenges()->get();
         } else {
-            $challenges = Challenges::all(); // Für Gäste: Alle Challenges anzeigen
+            $challenges = Challenges::all();
         }
 
         return response()->json(['challenges' => $challenges]);
     }
 
-    // Neue Challenge erstellen
+
     public function create(Request $request)
     {
         $user = Auth::user();
         $payload = Challenges::validate($request);
 
-        // Challenge erstellen und dem Benutzer zuweisen
         $challenge = Challenges::create($payload);
         $user->challenges()->attach($challenge->id, ['status' => 'pending']);
 
         return response()->json(['challenge' => $challenge], 201);
     }
 
-    // Challenge aktualisieren
+
     public function updateChallenge(Request $request, $id)
     {
         $user = Auth::user();
         $challenge = $user->challenges()->where('challenges.id', $id)->firstOrFail();
 
-        // Wenn nur der Status aktualisiert werden soll
+
         if ($request->has('status') && count($request->all()) === 1) {
             $payload = $request->validate([
                 'status' => ['required', 'string', 'in:done,pending,pass']
             ]);
 
-            // Update sowohl Challenge als auch Pivot-Status
+
             $challenge->update(['status' => $payload['status']]);
             $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);
 
@@ -57,11 +56,10 @@ class ChallengesController
             ]);
         }
 
-        // Ansonsten normale Challenge-Aktualisierung
         $payload = Challenges::validate($request, false);
         $challenge->update($payload);
 
-        // Wenn ein Status im Payload ist, auch den Pivot-Status aktualisieren
+
         if (isset($payload['status'])) {
             $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);
         }
@@ -72,19 +70,22 @@ class ChallengesController
         ]);
     }
 
-    // Challenge löschen
+
     public function destroy($challengeId)
     {
         $user = Auth::user();
-        $challenge = Challenges::findOrFail($challengeId);
 
-        // Überprüfen, ob der Benutzer Zugriff auf diese Challenge hat
-        if (!$user->challenges()->where('challenges.id', $challengeId)->exists()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+
+        $challenge = $user->challenges()
+            ->where('challenges.id', $challengeId)
+            ->first();
+
+        if (!$challenge) {
+            return response()->json(['message' => 'Challenge not found or unauthorized'], 404);
         }
 
         $user->challenges()->detach($challengeId);
-        $challenge->delete(); // Die Challenge selbst auch löschen
+        $challenge->delete();
 
         return response()->json(['message' => 'Challenge deleted']);
     }
