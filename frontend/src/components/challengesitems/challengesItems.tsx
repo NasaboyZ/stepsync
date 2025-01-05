@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
-import { fetchChallenges, createChallenge } from "@/utils/api";
+import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/interfaces/challenges";
 import { Fab, Modal, TextField, Button } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +15,7 @@ import { ChallengesCard } from "../challengersCard/challengesCard";
 import { challengesSchema } from "@/validations/challenges-shema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { createChallenge } from "@/services/servicesChallenge";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -117,13 +118,15 @@ export default function ChallengesItems() {
   return (
     <>
       <div className={styles.challengesContainer}>
-        {challenges.map((challenge) => (
-          <ChallengesCard
-            key={challenge.id}
-            variant="primary"
-            challenge={challenge}
-          />
-        ))}
+        {challenges
+          .filter((challenge) => challenge.status === "pending")
+          .map((challenge) => (
+            <ChallengesCard
+              key={challenge.id}
+              variant="primary"
+              challenge={challenge}
+            />
+          ))}
       </div>
 
       <motion.div

@@ -1,7 +1,6 @@
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { dataFetchWithToken } from "./data-fetch";
 import { UserProfile } from "@/types/interfaces/userProfile";
-import { NextRouter } from "next/router";
 import { ImageResponse } from "@/types/interfaces/imageData";
 
 export interface Challenge {
@@ -80,63 +79,27 @@ export const fetchWorkouts = async (token: string): Promise<WorkoutData[]> => {
   return await response.json();
 };
 
-export const createChallenge = async (
-  challenge: {
-    title: string;
-    description: string;
-    goal: string;
-    status: string;
-  },
-  token: string,
-  router: NextRouter,
-  onSuccess?: () => void
-) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(challenge),
-    }
-  );
+// export const uploadAvatar = async (
+//   file: File,
+//   token: string
+// ): Promise<UploadResponse> => {
+//   const formData = new FormData();
+//   formData.append("file", file);
 
-  if (!response.ok) {
-    throw new Error("Fehler beim Erstellen der Challenge");
-  }
+//   const response = await fetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
+//     {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: formData,
+//     }
+//   );
 
-  const data = await response.json();
+//   if (!response.ok) {
+//     throw new Error("Fehler beim Hochladen des Avatars");
+//   }
 
-  if (onSuccess) {
-    onSuccess();
-  }
-
-  return data;
-};
-
-export const uploadAvatar = async (
-  file: File,
-  token: string
-): Promise<UploadResponse> => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Fehler beim Hochladen des Avatars");
-  }
-
-  return response.json();
-};
+//   return response.json();
+// };

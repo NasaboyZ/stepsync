@@ -30,7 +30,7 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
     try {
       await updateChallengeStatus(
         {
-          id: challenge.id,
+          id: challenge.id.toString(),
           title: challenge.title,
           description: challenge.description,
           goal: challenge.goal,

@@ -1,9 +1,11 @@
+export type ChallengeStatus = "pending" | "accepted" | "completed" | "failed";
+
 export interface Challenge {
-  id: string;
+  id?: number;
   title: string;
   description: string;
   goal: string;
-  status: string;
+  status: ChallengeStatus;
   start_date: Date;
   end_date: Date;
   userId: string;
