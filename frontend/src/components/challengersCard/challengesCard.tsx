@@ -22,10 +22,30 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
     "pending" | "accepted" | "completed" | "failed"
   >(challenge.status);
 
-  const handleStatusUpdate = (
+  const handleStatusUpdate = async (
     newStatus: "accepted" | "completed" | "failed"
   ) => {
-    setStatus(newStatus);
+    if (!session?.accessToken || !challenge.id) return;
+
+    try {
+      await updateChallengeStatus(
+        {
+          id: challenge.id,
+          title: challenge.title,
+          description: challenge.description,
+          goal: challenge.goal,
+          status: newStatus,
+        },
+        session.accessToken,
+        router,
+        () => {
+          setStatus(newStatus);
+          router.refresh();
+        }
+      );
+    } catch (error) {
+      console.error("Fehler beim Status-Update:", error);
+    }
   };
 
   return (
@@ -57,13 +77,13 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
             transition={{ delay: 0.2 }}
           >
             <Button
-              onClick={() => setStatus("accepted")}
+              onClick={() => handleStatusUpdate("accepted")}
               className={`${styles.button} ${styles.primary}`}
             >
               Annehmen
             </Button>
             <Button
-              onClick={() => setStatus("failed")}
+              onClick={() => handleStatusUpdate("failed")}
               className={`${styles.button} ${styles.secondary}`}
             >
               Ablehnen
@@ -79,13 +99,13 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
             transition={{ delay: 0.2 }}
           >
             <Button
-              onClick={() => setStatus("completed")}
+              onClick={() => handleStatusUpdate("completed")}
               className={`${styles.button} ${styles.primary}`}
             >
               Geschafft
             </Button>
             <Button
-              onClick={() => setStatus("failed")}
+              onClick={() => handleStatusUpdate("failed")}
               className={`${styles.button} ${styles.secondary}`}
             >
               Nicht geschafft

@@ -52,11 +52,11 @@ export const createChallenge = async (
 
 export const updateChallengeStatus = async (
   challengeData: ChallengeData,
-  accessToken: string | undefined,
+  accessToken: string,
   router: AppRouterInstance,
   onSuccess: () => void
 ) => {
-  if (!challengeData || !accessToken) {
+  if (!challengeData || !challengeData.id) {
     console.log("Keine Daten verfügbar");
     return;
   }
@@ -70,23 +70,28 @@ export const updateChallengeStatus = async (
     }[challengeData.status as string] || "pending";
 
   try {
-    const response = await fetch(`/api/update-challenge/${challengeData.id}`, {
-      method: "PUT",
+    const response = await fetch(`/api/update-challenges/${challengeData.id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({ status: backendStatus }),
     });
 
     if (!response.ok) {
+      const errorData = await response.json();
       throw new Error(
-        `Fehler beim Aktualisieren der Challenge: ${response.status}`
+        errorData.message ||
+          `Fehler beim Aktualisieren der Challenge: ${response.status}`
       );
     }
 
-    console.log("Challenge wurde aktualisiert");
+    const data = await response.json();
+    console.log("Challenge wurde aktualisiert:", data);
     onSuccess();
   } catch (error) {
-    console.log("Fehler beim Aktualisieren der Challenge", error);
+    console.error("Fehler beim Aktualisieren der Challenge:", error);
+    throw error;
   }
 };

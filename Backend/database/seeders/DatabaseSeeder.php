@@ -101,8 +101,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Assign challenges to users
-        $alpha->challenges()->attach([$challenge1->id, $challenge2->id]);
-        $bravo->challenges()->attach([$challenge1->id, $challenge3->id]);
+        $alpha->challenges()->sync([$challenge1->id]);
+        $bravo->challenges()->sync([$challenge2->id, $challenge3->id]);
 
 
         // Optionally, you can sync challenges to replace any existing assignments
