@@ -38,14 +38,17 @@ class ChallengesController
     public function updateChallenge(Request $request, $id)
     {
         $user = Auth::user();
-        $challenge = $user->challenges()->where('challenges.id', $id)->firstOrFail();
+        $challenge = Challenges::findOrFail($id);
 
+        $hasAccess = $user->challenges()->where('challenges.id', $id)->exists();
+        if (!$hasAccess) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         if ($request->has('status') && count($request->all()) === 1) {
             $payload = $request->validate([
                 'status' => ['required', 'string', 'in:done,pending,pass']
             ]);
-
 
             $challenge->update(['status' => $payload['status']]);
             $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);
@@ -58,7 +61,6 @@ class ChallengesController
 
         $payload = Challenges::validate($request, false);
         $challenge->update($payload);
-
 
         if (isset($payload['status'])) {
             $user->challenges()->updateExistingPivot($id, ['status' => $payload['status']]);

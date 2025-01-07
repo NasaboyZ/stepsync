@@ -15,7 +15,7 @@ import { ChallengesCard } from "../challengersCard/challengesCard";
 import { challengesSchema } from "@/validations/challenges-shema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { createChallenge } from "@/services/servicesChallenge";
+import { createChallenge, updateChallenge } from "@/services/servicesChallenge";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -31,8 +31,9 @@ export default function ChallengesItems() {
   const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newChallenge, setNewChallenge] =
-    useState<CreateChallenge>(emptyChallenge);
+  const [newChallenge, setNewChallenge] = useState<Challenge | CreateChallenge>(
+    emptyChallenge
+  );
 
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
@@ -78,25 +79,58 @@ export default function ChallengesItems() {
       challengesSchema.parse(newChallenge);
       setValidationErrors({});
 
-      await createChallenge(
-        {
-          title: newChallenge.title,
-          description: newChallenge.description,
-          goal: newChallenge.goal,
-          status: "pending",
-        },
-        session.accessToken,
-        router,
-        () => {
-          setIsModalOpen(false);
-          // Aktualisiere die Challenge-Liste
-          const loadChallenges = async () => {
-            const challengesData = await fetchChallenges(session.accessToken!);
-            setChallenges(Array.isArray(challengesData) ? challengesData : []);
-          };
-          loadChallenges();
-        }
-      );
+      if ("id" in newChallenge && newChallenge.id !== undefined) {
+        // Wenn die Challenge eine ID hat, aktualisieren
+        await updateChallenge(
+          {
+            id: newChallenge.id.toString(),
+            title: newChallenge.title,
+            description: newChallenge.description,
+            goal: newChallenge.goal,
+            status: newChallenge.status || "pending",
+          },
+          session.accessToken,
+          router,
+          () => {
+            setIsModalOpen(false);
+            // Aktualisiere die Challenge-Liste
+            const loadChallenges = async () => {
+              const challengesData = await fetchChallenges(
+                session.accessToken!
+              );
+              setChallenges(
+                Array.isArray(challengesData) ? challengesData : []
+              );
+            };
+            loadChallenges();
+          }
+        );
+      } else {
+        // Wenn keine ID vorhanden ist, erstellen
+        await createChallenge(
+          {
+            title: newChallenge.title,
+            description: newChallenge.description,
+            goal: newChallenge.goal,
+            status: "pending",
+          },
+          session.accessToken,
+          router,
+          () => {
+            setIsModalOpen(false);
+            // Aktualisiere die Challenge-Liste
+            const loadChallenges = async () => {
+              const challengesData = await fetchChallenges(
+                session.accessToken!
+              );
+              setChallenges(
+                Array.isArray(challengesData) ? challengesData : []
+              );
+            };
+            loadChallenges();
+          }
+        );
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: { [key: string]: string } = {};
@@ -112,6 +146,11 @@ export default function ChallengesItems() {
     }
   };
 
+  const handleEditChallenge = (challenge: Challenge) => {
+    setNewChallenge(challenge);
+    setIsModalOpen(true);
+  };
+
   if (loading) return <div>Lädt...</div>;
   if (error) return <div>Fehler: {error}</div>;
 
@@ -125,6 +164,7 @@ export default function ChallengesItems() {
               key={challenge.id}
               variant="primary"
               challenge={challenge}
+              onEdit={() => handleEditChallenge(challenge)}
             />
           ))}
       </div>
@@ -162,7 +202,7 @@ export default function ChallengesItems() {
               transition={{ duration: 0.3 }}
             >
               <div className={styles.modalContent}>
-                <h2>Neue Challenge</h2>
+                <h2>Challenge bearbeiten</h2>
                 <TextField
                   label="Titel"
                   fullWidth

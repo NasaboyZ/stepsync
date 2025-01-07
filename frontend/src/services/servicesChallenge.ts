@@ -12,7 +12,6 @@ export const createChallenge = async (
     return;
   }
 
-  // Status-Mapping zwischen Frontend und Backend
   const backendStatus =
     {
       accepted: "pending",
@@ -20,7 +19,6 @@ export const createChallenge = async (
       failed: "pass",
     }[challengeData.status as string] || "pending";
 
-  // Erstelle ein neues Objekt mit dem gemappten Status
   const mappedChallengeData = {
     ...challengeData,
     status: backendStatus,
@@ -31,6 +29,7 @@ export const createChallenge = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(mappedChallengeData),
     });
@@ -41,7 +40,6 @@ export const createChallenge = async (
       );
     }
 
-    // Vereinfachter Response-Handler ohne ungenutzte Variable
     console.log("Challenge wurde erstellt");
     onSuccess();
     router.push("/challenges");
@@ -50,18 +48,17 @@ export const createChallenge = async (
   }
 };
 
-export const updateChallengeStatus = async (
+export const updateChallenge = async (
   challengeData: ChallengeData,
-  accessToken: string,
+  accessToken: string | undefined,
   router: AppRouterInstance,
   onSuccess: () => void
 ) => {
-  if (!challengeData || !challengeData.id) {
-    console.log("Keine Daten verfügbar");
+  if (!challengeData || !challengeData.id || !accessToken) {
+    console.log("Keine Daten oder ID verfügbar");
     return;
   }
 
-  // Status-Mapping zwischen Frontend und Backend
   const backendStatus =
     {
       accepted: "pending",
@@ -76,22 +73,24 @@ export const updateChallengeStatus = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ status: backendStatus }),
+      body: JSON.stringify({
+        title: challengeData.title,
+        description: challengeData.description,
+        goal: challengeData.goal,
+        status: backendStatus,
+      }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
       throw new Error(
-        errorData.message ||
-          `Fehler beim Aktualisieren der Challenge: ${response.status}`
+        `Fehler beim Aktualisieren der Challenge: ${response.status}`
       );
     }
 
-    const data = await response.json();
-    console.log("Challenge wurde aktualisiert:", data);
+    console.log("Challenge wurde aktualisiert");
     onSuccess();
+    router.refresh();
   } catch (error) {
     console.error("Fehler beim Aktualisieren der Challenge:", error);
-    throw error;
   }
 };

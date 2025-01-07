@@ -6,16 +6,17 @@ import { Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { updateChallengeStatus } from "@/services/servicesChallenge";
+import { updateChallenge } from "@/services/servicesChallenge";
 import { Challenge } from "@/types/interfaces/challenges";
 import { FaEdit } from "react-icons/fa";
 
 interface ChallengeCardProps {
   challenge: Challenge;
   variant: "primary" | "secondary";
+  onEdit: () => void;
 }
 
-export function ChallengesCard({ challenge }: ChallengeCardProps) {
+export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [status, setStatus] = useState<
@@ -28,7 +29,7 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
     if (!session?.accessToken || !challenge.id) return;
 
     try {
-      await updateChallengeStatus(
+      await updateChallenge(
         {
           id: challenge.id.toString(),
           title: challenge.title,
@@ -61,7 +62,7 @@ export function ChallengesCard({ challenge }: ChallengeCardProps) {
             className={styles.editButton}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => console.log("Edit clicked")}
+            onClick={onEdit}
           >
             <FaEdit />
           </motion.button>

@@ -31,7 +31,6 @@ class UploadsController
 
     try {
       \Log::info('Upload für User:', ['user_id' => $user->id]);
-
       // Speichern des Bildes im Storage
       $pathname = \Storage::putFileAs(
         'uploads/' . $user->id,

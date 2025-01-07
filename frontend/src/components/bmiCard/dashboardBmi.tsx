@@ -14,6 +14,7 @@ import {
   Legend,
   CategoryScale,
   ChartOptions,
+  Filler,
 } from "chart.js";
 import Skeleton from "@mui/material/Skeleton";
 import styles from "./dashboardBmi.module.css";
@@ -25,7 +26,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  CategoryScale
+  CategoryScale,
+  Filler
 );
 
 interface BmiData {

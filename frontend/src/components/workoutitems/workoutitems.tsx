@@ -24,7 +24,6 @@ export default function WorkoutItems() {
     null
   );
   const router = useRouter();
-  //TODO:Validierung einfügen
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -33,9 +32,12 @@ export default function WorkoutItems() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (workoutId: number) => {
-    console.log("workoutId", workoutId);
+  /*
+  handeDelte: 
+  return: workoutId
+  */
 
+  const handleDelete = async (workoutId: number) => {
     await deleteWorkout(
       workoutId,
       session?.accessToken ?? undefined,
@@ -48,9 +50,7 @@ export default function WorkoutItems() {
   };
 
   const handleSave = async (workoutData: WorkoutData) => {
-    console.log("workoutData", workoutData);
     if (editingWorkout?.id) {
-      // Wenn ein Workout bearbeitet wird
       await updateWorkout(
         workoutData,
         session?.accessToken ?? undefined,
@@ -61,7 +61,6 @@ export default function WorkoutItems() {
         }
       );
     } else {
-      // Wenn ein neues Workout erstellt wird
       await createWorkout(
         workoutData,
         session?.accessToken ?? undefined,
@@ -80,7 +79,6 @@ export default function WorkoutItems() {
         if (!session?.accessToken) return;
         const workoutsData = await fetchWorkouts(session.accessToken);
         setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-        console.log("Geladene Workouts:", workoutsData);
       } catch (error) {
         console.error("Fehler beim Laden der Workouts:", error);
         setSavedWorkouts([]);
