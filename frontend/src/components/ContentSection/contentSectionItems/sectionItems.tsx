@@ -1,18 +1,23 @@
 "use client";
 
+import Typography from "@/components/typography/typography";
 import useContentStore from "@/store/contentStore";
 import Image from "next/image";
 import Style from "./sectionItems.module.css";
-import { TitelComponent, titelStyle } from "@/components/titel/titel";
 import { Button, ButtonStyle } from "@/components/button/button";
+import useHeroStore from "@/store/heroStore";
 
 interface ContentSectionItemsProps {
   pageKey: string;
   title: string;
 }
 
-export default function SectionItems({ pageKey, title }: ContentSectionItemsProps) {
+export default function SectionItems({
+  pageKey,
+  title,
+}: ContentSectionItemsProps) {
   const getContent = useContentStore((state) => state.getContent);
+  const heroText = useHeroStore((state) => state.heroText);
   const content = getContent(pageKey);
 
   if (!content)
@@ -26,6 +31,12 @@ export default function SectionItems({ pageKey, title }: ContentSectionItemsProp
 
   return (
     <section className={Style["content-section"]}>
+      {pageKey === "homePage" && (
+        <div className={Style["hero-text-section"]}>
+          <Typography variant="body1">{heroText}</Typography>
+          <Button style={ButtonStyle.PRIMARY} label="Erfahre mehr" />
+        </div>
+      )}
       <div className={Style["content-wrapper"]}>
         <div className={Style["image-container"]}>
           <Image
@@ -37,12 +48,11 @@ export default function SectionItems({ pageKey, title }: ContentSectionItemsProp
           />
         </div>
 
-        {/* Text mit Button */}
         <div className={Style["text-container"]}>
           <div className={Style["title"]}>
-            <TitelComponent style={titelStyle.SECONDARY} label={title} />
+            <Typography variant="h2">{title}</Typography>
           </div>
-          <p className={Style["description"]}>{text}</p>
+          <Typography variant="body1">{text}</Typography>
           {pageKey === "homePage" && (
             <div className={Style["button-container"]}>
               <Button style={ButtonStyle.PRIMARY} label="Erfahre mehr" />

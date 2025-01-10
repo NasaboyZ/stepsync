@@ -6,6 +6,7 @@ import productImage from "@/assets/man-nimmt-gewicht-auf.jpg";
 import drinkflasche from "@/assets/drink-flasche.png";
 import iphoneLinks from "@/assets/hintenlinks.png";
 export interface ContentData {
+  title?: string;
   text: string;
   imageSrc: StaticImageData;
   imageAlt: string;

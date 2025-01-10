@@ -1,22 +1,19 @@
 "use client";
 import Style from "./heroItems.module.css";
 import Image from "next/image";
-import iphonefront from "@/assets/phone-front.png";
-import iphonehintellinks from "@/assets/hintenlinks.png";
-import iphonehintenrechts from "@/assets/hintenrechts.png";
 import { Button, ButtonStyle } from "../../button/button";
 import { motion } from "framer-motion";
-import HeroSectionText from "../heroSectionText/heroSectionText";
-import { TitelComponent, titelStyle } from "@/components/titel/titel";
+
+import Typography from "@/components/typography/typography";
+import useHeroStore from "@/store/heroStore";
 
 export default function HeroItems() {
+  const { images, animations } = useHeroStore();
+
   return (
     <>
       <div className={Style["hero_wrapper"]}>
-        <TitelComponent
-          style={titelStyle.PRIMARY}
-          label={"Tracke deinen Erfolg"}
-        />
+        <Typography variant="h1">Tracke deinen Erfolg</Typography>
 
         <motion.div
           className="box"
@@ -28,44 +25,44 @@ export default function HeroItems() {
 
         <motion.div
           className={Style["hero_image_bg_left"]}
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={animations.backLeft.initial}
+          animate={animations.backLeft.animate}
           transition={{ duration: 0.5 }}
         >
           <Image
             className={Style["image"]}
-            src={iphonehintellinks}
+            src={images.backLeft}
             alt="Hinten Links Bild"
           />
         </motion.div>
 
         <motion.div
           className={Style["hero_image_bg_right"]}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={animations.backRight.initial}
+          animate={animations.backRight.animate}
           transition={{ duration: 0.5 }}
         >
           <Image
             className={Style["image"]}
-            src={iphonehintenrechts}
+            src={images.backRight}
             alt="Hinten Rechts Bild"
           />
         </motion.div>
 
         <motion.div
           className={Style["hero_image_front"]}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={animations.front.initial}
+          animate={animations.front.animate}
           transition={{ duration: 0.5 }}
         >
           <Image
-            src={iphonefront}
+            src={images.front}
             className={Style["image"]}
             alt="Vorderseite des Handys"
           />
         </motion.div>
       </div>
-      <HeroSectionText />
+      
     </>
   );
 }
