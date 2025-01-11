@@ -57,7 +57,12 @@ export default function WorkoutItems() {
         router,
         () => {
           handleCloseModal();
-          router.refresh();
+          // Aktualisiere die Workouts direkt im State
+          setSavedWorkouts((prevWorkouts) =>
+            prevWorkouts.map((workout) =>
+              workout.id === editingWorkout.id ? workoutData : workout
+            )
+          );
         }
       );
     } else {
@@ -66,8 +71,7 @@ export default function WorkoutItems() {
         session?.accessToken ?? undefined,
         router,
         () => {
-          handleCloseModal();
-          router.refresh();
+          setSavedWorkouts((prevWorkouts) => [...prevWorkouts, workoutData]);
         }
       );
     }
@@ -153,8 +157,6 @@ export default function WorkoutItems() {
                   transform: "translate(-50%, -50%)",
                   width: 400,
                   maxWidth: "100%",
-                  bgcolor: "background.paper",
-                  boxShadow: 24,
                   p: 4,
                   borderRadius: 2,
                 }}

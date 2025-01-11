@@ -7,7 +7,7 @@ import {
   LoginFormInputs,
 } from "@/validations/login-form-schema";
 import { FormWrapper } from "./form-wrapper";
-import { Button, ButtonStyle } from "../button/button";
+import { Button, ButtonStyle } from "../button/button"; 
 import { TextInput } from "./text-input";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -48,7 +48,7 @@ export const LoginForm = () => {
       setError("login fehlgeschlagen");
       console.log(error);
     } else {
-      console.log("Login successful", response);
+  
       const token = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
         method: 'POST',
         headers: {

@@ -1,7 +1,7 @@
 "use client";
 import Style from "./heroItems.module.css";
 import Image from "next/image";
-import { Button, ButtonStyle } from "../../button/button";
+import { Button, ButtonStyle } from "../../button/Button";
 import { motion } from "framer-motion";
 
 import Typography from "@/components/typography/typography";
@@ -62,7 +62,6 @@ export default function HeroItems() {
           />
         </motion.div>
       </div>
-      
     </>
   );
 }

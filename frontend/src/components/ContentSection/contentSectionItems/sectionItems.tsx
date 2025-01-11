@@ -2,10 +2,11 @@
 
 import Typography from "@/components/typography/typography";
 import useContentStore from "@/store/contentStore";
-import Image from "next/image";
+
 import Style from "./sectionItems.module.css";
-import { Button, ButtonStyle } from "@/components/button/button";
+
 import useHeroStore from "@/store/heroStore";
+import { Card, CardMedia, CardContent, Box } from "@mui/material";
 
 interface ContentSectionItemsProps {
   pageKey: string;
@@ -34,32 +35,48 @@ export default function SectionItems({
       {pageKey === "homePage" && (
         <div className={Style["hero-text-section"]}>
           <Typography variant="body1">{heroText}</Typography>
-          <Button style={ButtonStyle.PRIMARY} label="Erfahre mehr" />
         </div>
       )}
-      <div className={Style["content-wrapper"]}>
-        <div className={Style["image-container"]}>
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            width={500}
-            height={500}
-            className={Style["image"]}
-          />
-        </div>
-
-        <div className={Style["text-container"]}>
-          <div className={Style["title"]}>
-            <Typography variant="h2">{title}</Typography>
-          </div>
-          <Typography variant="body1">{text}</Typography>
-          {pageKey === "homePage" && (
-            <div className={Style["button-container"]}>
-              <Button style={ButtonStyle.PRIMARY} label="Erfahre mehr" />
-            </div>
-          )}
-        </div>
-      </div>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          maxWidth: "1200px",
+          margin: "2rem auto",
+          background: "transparent",
+          boxShadow: "none",
+          borderRadius: 0,
+          color: "var(--white)",
+        }}
+      >
+        <CardMedia
+          component="img"
+          sx={{
+            width: { xs: "100%", md: "40%" },
+            height: { xs: "300px", md: "auto" },
+            objectFit: "cover",
+            aspectRatio: "1 / 1",
+          }}
+          image={imageSrc.src}
+          alt={imageAlt}
+        />
+        <Box sx={{ width: { xs: "100%", md: "60%" } }}>
+          <CardContent
+            sx={{
+              padding: 3,
+              "& .MuiTypography-root": {
+                color: "var(--white)",
+              },
+            }}
+          >
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="h3">{title}</Typography>
+            </Box>
+            <Typography variant="body1">{text}</Typography>
+            {pageKey === "homePage" && <Box sx={{ marginTop: 2 }}></Box>}
+          </CardContent>
+        </Box>
+      </Card>
     </section>
   );
 }

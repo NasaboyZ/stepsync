@@ -6,20 +6,22 @@ const ImageLogo = ({
   width,
   height,
   alt,
+  className,
 }: {
   src: string;
   width: number;
   height: number;
   alt: string;
+  className?: string;
 }) => {
-  return <Image src={src} width={width} height={height} alt={alt} />;
+  return <Image src={src} width={width} height={height} alt={alt} className={className} />;
 };
 
-export default function Logo() {
+export default function Logo({ className }: { className?: string }) {
   return (
     <div>
       <Link href="/">
-        <ImageLogo src={asset} width={100} height={50} alt="Logo stepsync" />
+        <ImageLogo src={asset} width={100} height={50} alt="Logo stepsync" className={className} />
       </Link>
     </div>
   );

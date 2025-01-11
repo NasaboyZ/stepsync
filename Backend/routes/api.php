@@ -59,12 +59,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::delete('/bmi', [BmiController::class, 'destroy']);
 });
 
-// example endpoints
-// Route::get('/examples/ping', [ExamplesController::class, 'ping']);
-// Route::get('/examples/about', [ExamplesController::class, 'about']);
-// Route::post('/examples/echo', [ExamplesController::class, 'echo']);
-// Route::post('/examples/reverse', [ExamplesController::class, 'reverse']);
-// Route::post('/examples/sum', [ExamplesController::class, 'sum']);
-// Route::post('/examples/count', [ExamplesController::class, 'count']);
-// Route::post('/examples/temperature', [ExamplesController::class, 'temperature']);
-// Route::post('/examples/bmi', [ExamplesController::class, 'bmi']);

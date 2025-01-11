@@ -7,16 +7,19 @@ const internItelic = localFont({
   src: "./fonts/intern/Inter-Italic-VariableFont_opsz,wght.ttf",
   variable: "--font-inter-itelic",
   weight: "100 900",
+  preload: false,
 });
 const internFont = localFont({
   src: "./fonts/intern/Inter-VariableFont_opsz,wght.ttf",
   variable: "--font-inter-regular",
   weight: "100 900",
+  preload: false,
 });
 const ibnsansBold = localFont({
   src: "./fonts/ibnsans/IBMPlexSans-Bold.ttf",
   variable: "--font-ibnsansBold",
   weight: "100 900",
+  preload: false,
 });
 
 export const metadata: Metadata = {

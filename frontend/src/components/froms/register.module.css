@@ -1,26 +1,23 @@
 .formWrapper {
-  display: grid; /* Grid anzeigen */
-  grid-template-columns: 1fr 1fr; /* Zwei gleich große Spalten */
-  gap: 20px; /* Abstand zwischen den Grid-Items */
-  background-color: #f9f9f9;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px; /* Padding hinzugefügt, um Platz im Formular zu schaffen */
+
+  padding: 20px;
+  width: 100%;
+
+  margin: 0 auto;
 }
 
 .input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
 
-.secondaryButton {
-  background-color: #fff;
-  color: #0070f3;
-  border: 1px solid #0070f3;
+  margin-bottom: 15px;
+
+  border-radius: 4px;
+  background-color: var(--white);
 }
 
 .primaryButton {
@@ -30,8 +27,69 @@
 }
 
 .alreadyMember {
-  grid-column: span 2; /* Diese Zeile über beide Spalten hinweg setzen */
+  grid-column: span 2;
   margin: 10px 0;
   font-size: 14px;
-  text-align: center; /* Zentriert den Text */
+  text-align: center;
+}
+
+/* Media Query für Tablets */
+@media (max-width: 768px) {
+  .formWrapper {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    padding: 15px;
+  }
+
+  .alreadyMember {
+    grid-column: 1;
+  }
+}
+
+/* Media Query für Mobilgeräte */
+@media (max-width: 480px) {
+  .formWrapper {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .input {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+}
+
+.goalCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.goalCard {
+  position: relative;
+  padding: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.goalCard.selected {
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.checkmark {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #007bff;
+  font-size: 1.2rem;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }

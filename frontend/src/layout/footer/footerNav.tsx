@@ -1,13 +1,10 @@
-import Logo from "@/components/logo/Logo";
+import Logo from "@/components/logo/logo";
 import Style from "./footerNav.module.css";
 
 import { FaGithub, FaInstagram } from "react-icons/fa";
-import { FooterContent } from "@/components/footerMassage/footerContent";
+
 import Link from "next/link";
 
-// TODO: Footer Resopnisive machen (josef)
-// TODO: Footer icons wie Instagram und Github einfügen (josef)
-// TODO: Text im Footer anpassen und ebben falls Responsive (josef)
 const NavigationItem = () => {
   // Array mit Links und Labels für Hauptnavigation
   const navItems = [
@@ -31,15 +28,14 @@ const NavigationItem = () => {
 
 export default function FooterNav() {
   const legalItems = [
-    { href: "/privacy-policy", label: "Privacy Policy" },
-    { href: "/terms-and-conditions", label: "Terms & Conditions" },
+    { href: "/privacy-policy", label: "Datenschutzerklärung" },
+    { href: "/terms-and-conditions", label: "AGB" },
   ];
 
   return (
-    <>
-      <FooterContent />
+    <footer>
       <div className={Style["footerContent"]}>
-        <Logo />
+        <Logo className={Style["footerLogo"]} />
         <NavigationItem />
 
         <div className={Style["socialMedia"]}>
@@ -67,6 +63,6 @@ export default function FooterNav() {
           ))}
         </ul>
       </div>
-    </>
+    </footer>
   );
 }

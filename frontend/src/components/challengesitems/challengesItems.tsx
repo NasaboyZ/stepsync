@@ -75,12 +75,10 @@ export default function ChallengesItems() {
     }
 
     try {
-      // Validiere die Eingaben mit dem Schema
       challengesSchema.parse(newChallenge);
       setValidationErrors({});
 
       if ("id" in newChallenge && newChallenge.id !== undefined) {
-        // Wenn die Challenge eine ID hat, aktualisieren
         await updateChallenge(
           {
             id: newChallenge.id.toString(),
@@ -93,7 +91,7 @@ export default function ChallengesItems() {
           router,
           () => {
             setIsModalOpen(false);
-            // Aktualisiere die Challenge-Liste
+
             const loadChallenges = async () => {
               const challengesData = await fetchChallenges(
                 session.accessToken!
@@ -106,7 +104,6 @@ export default function ChallengesItems() {
           }
         );
       } else {
-        // Wenn keine ID vorhanden ist, erstellen
         await createChallenge(
           {
             title: newChallenge.title,
@@ -118,7 +115,7 @@ export default function ChallengesItems() {
           router,
           () => {
             setIsModalOpen(false);
-            // Aktualisiere die Challenge-Liste
+
             const loadChallenges = async () => {
               const challengesData = await fetchChallenges(
                 session.accessToken!

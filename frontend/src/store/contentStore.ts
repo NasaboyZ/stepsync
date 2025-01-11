@@ -4,7 +4,7 @@ import manInRollstuhl from "@/assets/man-Rollstuhl.jpg";
 import aboutImage from "@/assets/jogger.jpg";
 import productImage from "@/assets/man-nimmt-gewicht-auf.jpg";
 import drinkflasche from "@/assets/drink-flasche.png";
-import iphoneLinks from "@/assets/hintenlinks.png";
+import pinkehantel from "@/assets/pinkehantel.png";
 export interface ContentData {
   title?: string;
   text: string;
@@ -36,7 +36,7 @@ const useContentStore = create<ContentStore>((set, get) => ({
     },
     productTeaser: {
       text: "Werde Teil unserer Community und verwandle jeden Schritt in Motivation! Verfolge deine Fortschritte, setze neue Ziele und bleib immer auf Kurs egal, wo du bist. Starte jetzt und erlebe Fitness neu.",
-      imageSrc: iphoneLinks,
+      imageSrc: pinkehantel,
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
     productPage: {

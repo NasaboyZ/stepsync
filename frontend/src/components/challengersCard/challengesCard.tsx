@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { updateChallenge } from "@/services/servicesChallenge";
 import { Challenge } from "@/types/interfaces/challenges";
-import { FaEdit } from "react-icons/fa";
+
+import { MdModeEdit } from "react-icons/md";
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -64,7 +65,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
             whileTap={{ scale: 0.9 }}
             onClick={onEdit}
           >
-            <FaEdit />
+            <MdModeEdit size={20} color="white" />
           </motion.button>
         </div>
         <div className={styles.description}>{challenge.description}</div>
