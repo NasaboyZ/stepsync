@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-wrap: wrap;
 }
 
@@ -28,7 +27,7 @@
 
 .navLinks li:hover,
 .legalLinks li:hover {
-  color: #e94f37; /* Hover-Farbe (z.B. rot) */
+  color: #e94f37; 
 }
 
 .socialMedia a {
