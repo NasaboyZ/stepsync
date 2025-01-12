@@ -318,11 +318,16 @@ export const RegisterForm = () => {
               Wähle dein Geschlecht
             </Typography>
             <Box
-              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: 2,
+              }}
             >
               {[
                 { id: "male", label: "Männlich", icon: "👨" },
                 { id: "female", label: "Weiblich", icon: "👩" },
+                { id: "other", label: "Divers", icon: "🧑" },
               ].map((option) => (
                 <Card
                   key={option.id}
@@ -331,9 +336,10 @@ export const RegisterForm = () => {
                     border: form.watch("gender") === option.id ? 2 : 1,
                     borderColor:
                       form.watch("gender") === option.id
-                        ? "primary.main"
+                        ? "var(--brown-light)"
                         : "grey.300",
-                    "&:hover": { borderColor: "primary.main" },
+                    "&:hover": { borderColor: "var(--brown-light)" },
+                    position: "relative",
                   }}
                   onClick={() => {
                     form.setValue("gender", option.id, {
@@ -347,6 +353,18 @@ export const RegisterForm = () => {
                       {option.icon} {option.label}
                     </Typography>
                   </CardContent>
+                  {form.watch("gender") === option.id && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        color: "var(--red)",
+                      }}
+                    >
+                      ✓
+                    </Box>
+                  )}
                 </Card>
               ))}
             </Box>
