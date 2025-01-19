@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-
+import React, { useState } from "react";
+import useSWR, { mutate } from "swr";
 import { Fab, Modal, Box, Grid } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
@@ -19,11 +19,17 @@ import { useRouter } from "next/navigation";
 export default function WorkoutItems() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
     null
   );
   const router = useRouter();
+
+  // SWR Hook nur mit den wichtigsten Revalidierungsoptionen
+  const { data: savedWorkouts = [] } = useSWR<WorkoutData[]>(
+    session?.accessToken ? "/api/workouts" : null,
+    () => fetchWorkouts(session?.accessToken ?? "")
+  );
+
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -32,67 +38,44 @@ export default function WorkoutItems() {
     setIsModalOpen(true);
   };
 
-  /*
-  handeDelte: 
-  return: workoutId
-  */
-
   const handleDelete = async (workoutId: number) => {
-    await deleteWorkout(
-      workoutId,
-      session?.accessToken ?? undefined,
-      router,
-      () => {
-        handleCloseModal();
-        router.refresh();
-      }
-    );
+    try {
+      await deleteWorkout(
+        workoutId,
+        session?.accessToken ?? undefined,
+        router,
+        () => handleCloseModal()
+      );
+      // Boundary Mutation - löst Revalidierung nur nach erfolgreicher Aktion aus
+      await mutate("/api/workouts");
+    } catch (error) {
+      console.error("Fehler beim Löschen des Workouts:", error);
+    }
   };
 
   const handleSave = async (workoutData: WorkoutData) => {
-    if (editingWorkout?.id) {
-      await updateWorkout(
-        workoutData,
-        session?.accessToken ?? undefined,
-        router,
-        () => {
-          handleCloseModal();
-  
-          setSavedWorkouts((prevWorkouts) =>
-            prevWorkouts.map((workout) =>
-              workout.id === editingWorkout.id ? workoutData : workout
-            )
-          );
-        }
-      );
-    } else {
-      await createWorkout(
-        workoutData,
-        session?.accessToken ?? undefined,
-        router,
-        () => {
-          setSavedWorkouts((prevWorkouts) => [...prevWorkouts, workoutData]);
-        }
-      );
+    try {
+      if (editingWorkout?.id) {
+        await updateWorkout(
+          workoutData,
+          session?.accessToken ?? undefined,
+          router,
+          () => handleCloseModal()
+        );
+      } else {
+        await createWorkout(
+          workoutData,
+          session?.accessToken ?? undefined,
+          router,
+          () => handleCloseModal()
+        );
+      }
+      // Boundary Mutation - löst Revalidierung nur nach erfolgreicher Aktion aus
+      await mutate("/api/workouts");
+    } catch (error) {
+      console.error("Fehler beim Speichern des Workouts:", error);
     }
   };
-
-  useEffect(() => {
-    const loadWorkouts = async () => {
-      try {
-        if (!session?.accessToken) return;
-        const workoutsData = await fetchWorkouts(session.accessToken);
-        setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-      } catch (error) {
-        console.error("Fehler beim Laden der Workouts:", error);
-        setSavedWorkouts([]);
-      }
-    };
-
-    if (session?.accessToken) {
-      loadWorkouts();
-    }
-  }, [session]);
 
   return (
     <>
