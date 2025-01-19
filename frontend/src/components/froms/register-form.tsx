@@ -1,26 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  TextField,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  Container,
-  Box,
-  LinearProgress,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import {
-  Visibility,
-  VisibilityOff,
-  ArrowBack,
-  CheckCircle,
-} from "@mui/icons-material";
+import { Button, Container, Box, LinearProgress } from "@mui/material";
+import { ArrowBack, CheckCircle } from "@mui/icons-material";
 import { handleSignup } from "@/actions/auth-actions";
 import {
   step1Schema,
@@ -33,6 +16,12 @@ import {
 } from "@/validations/register-form-schema";
 import { useRouter } from "next/navigation";
 import { useSnackbarStore } from "@/store/snackbarStore";
+import { Step1 } from "./registersteps/step1";
+import { Step2 } from "./registersteps/step2";
+import { Step3 } from "./registersteps/step3";
+import { Step4 } from "./registersteps/step4";
+import { Step5 } from "./registersteps/step5";
+import { Step6 } from "./registersteps/step6";
 
 export const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -111,22 +100,6 @@ export const RegisterForm = () => {
     }
   };
 
-  const goalCards = [
-    {
-      id: "muscle",
-      title: "Muskelaufbau",
-      description: "Baue Muskelmasse auf und werde stärker und gesünder",
-      icon: "💪",
-    },
-    {
-      id: "weight_loss",
-      title: "Gewicht verlieren",
-      description:
-        "Fokussiere dich auf kalorienverbrennende Übungen, um Gewicht zu verlieren und definiert zu werden",
-      icon: "🏃",
-    },
-  ];
-
   const NextButton = () => {
     const isCurrentStepValid = () => {
       const values = form.getValues();
@@ -167,6 +140,9 @@ export const RegisterForm = () => {
         variant="contained"
         onClick={() => setCurrentStep((prev) => prev + 1)}
         fullWidth
+        sx={{
+          backgroundColor: "var(--brown-light)",
+        }}
         endIcon={<CheckCircle />}
         disabled={!isCurrentStepValid()}
       >
@@ -179,280 +155,68 @@ export const RegisterForm = () => {
     switch (currentStep) {
       case 1:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Lass uns deine Reise beginnen
-            </Typography>
-            <TextField
-              fullWidth
-              label="Vorname"
-              {...form.register("first_name")}
-              error={!!form.formState.errors.first_name}
-              helperText={form.formState.errors.first_name?.message}
-              onChange={(e) => {
-                form.setValue("first_name", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-            <TextField
-              fullWidth
-              label="Nachname"
-              {...form.register("last_name")}
-              error={!!form.formState.errors.last_name}
-              helperText={form.formState.errors.last_name?.message}
-              onChange={(e) => {
-                form.setValue("last_name", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-            <TextField
-              fullWidth
-              label="E-Mail"
-              type="email"
-              {...form.register("email")}
-              error={!!form.formState.errors.email}
-              helperText={form.formState.errors.email?.message}
-              onChange={(e) => {
-                form.setValue("email", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-            <TextField
-              fullWidth
-              label="Passwort"
-              type={showPassword ? "text" : "password"}
-              {...form.register("password")}
-              error={!!form.formState.errors.password}
-              helperText={form.formState.errors.password?.message}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              onChange={(e) => {
-                form.setValue("password", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-          </Box>
+          <Step1
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+            }}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+          />
         );
-
       case 2:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Wähle dein Ziel
-            </Typography>
-            <Box
-              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}
-            >
-              {goalCards.map((card) => (
-                <Card
-                  key={card.id}
-                  sx={{
-                    cursor: "pointer",
-                    border: form.watch("goal") === card.id ? 2 : 1,
-                    borderColor: form.formState.errors.goal
-                      ? "error.main"
-                      : form.watch("goal") === card.id
-                      ? "primary.main"
-                      : "grey.300",
-                    "&:hover": { borderColor: "primary.main" },
-                    position: "relative",
-                  }}
-                  onClick={() => {
-                    form.setValue("goal", card.id, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    });
-                  }}
-                >
-                  <CardContent>
-                    {form.watch("goal") === card.id && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: 8,
-                          right: 8,
-                          color: "primary.main",
-                        }}
-                      >
-                        <CheckCircle />
-                      </Box>
-                    )}
-                    <Typography variant="h6">{card.title}</Typography>
-                    <Typography variant="body2">{card.description}</Typography>
-                  </CardContent>
-                </Card>
-              ))}
-            </Box>
-            {form.formState.errors.goal && (
-              <Typography color="error" variant="caption">
-                {form.formState.errors.goal.message}
-              </Typography>
-            )}
-          </Box>
+          <Step2
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+              watch: form.watch,
+            }}
+          />
         );
-
       case 3:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Wähle dein Geschlecht
-            </Typography>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 2,
-              }}
-            >
-              {[
-                { id: "male", label: "Männlich", icon: "👨" },
-                { id: "female", label: "Weiblich", icon: "👩" },
-                { id: "other", label: "Divers", icon: "🧑" },
-              ].map((option) => (
-                <Card
-                  key={option.id}
-                  sx={{
-                    cursor: "pointer",
-                    border: form.watch("gender") === option.id ? 2 : 1,
-                    borderColor:
-                      form.watch("gender") === option.id
-                        ? "var(--brown-light)"
-                        : "grey.300",
-                    "&:hover": { borderColor: "var(--brown-light)" },
-                    position: "relative",
-                  }}
-                  onClick={() => {
-                    form.setValue("gender", option.id, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    });
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h6">
-                      {option.icon} {option.label}
-                    </Typography>
-                  </CardContent>
-                  {form.watch("gender") === option.id && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        color: "var(--red)",
-                      }}
-                    >
-                      ✓
-                    </Box>
-                  )}
-                </Card>
-              ))}
-            </Box>
-          </Box>
+          <Step3
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+              watch: form.watch,
+            }}
+          />
         );
-
       case 4:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Wann wurdest du geboren?
-            </Typography>
-            <TextField
-              fullWidth
-              type="date"
-              {...form.register("date_of_birth")}
-              error={!!form.formState.errors.date_of_birth}
-              helperText={form.formState.errors.date_of_birth?.message}
-              slotProps={{
-                inputLabel: { shrink: true },
-              }}
-              onChange={(e) => {
-                form.setValue("date_of_birth", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-          </Box>
+          <Step4
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+              control: form.control,
+            }}
+          />
         );
-
       case 5:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Wie groß und schwer bist du?
-            </Typography>
-            <TextField
-              fullWidth
-              type="number"
-              label="Größe (cm)"
-              {...form.register("height", { valueAsNumber: true })}
-              error={!!form.formState.errors.height}
-              helperText={form.formState.errors.height?.message}
-              onChange={(e) => {
-                form.setValue("height", Number(e.target.value), {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-            <TextField
-              fullWidth
-              type="number"
-              label="Gewicht (kg)"
-              {...form.register("weight", { valueAsNumber: true })}
-              error={!!form.formState.errors.weight}
-              helperText={form.formState.errors.weight?.message}
-              onChange={(e) => {
-                form.setValue("weight", Number(e.target.value), {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-          </Box>
+          <Step5
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+            }}
+          />
         );
-
       case 6:
         return (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Wähle deinen Benutzernamen
-            </Typography>
-            <TextField
-              fullWidth
-              label="Benutzername"
-              {...form.register("username")}
-              error={!!form.formState.errors.username}
-              helperText={form.formState.errors.username?.message}
-              onChange={(e) => {
-                form.setValue("username", e.target.value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
-              }}
-            />
-          </Box>
+          <Step6
+            form={{
+              register: form.register,
+              formState: form.formState,
+              setValue: form.setValue,
+            }}
+          />
         );
     }
   };
@@ -463,16 +227,27 @@ export const RegisterForm = () => {
         <LinearProgress
           variant="determinate"
           value={(currentStep / 6) * 100}
-          sx={{ mb: 4 }}
+          sx={{
+            mb: 4,
+            "& .MuiLinearProgress-bar": { backgroundColor: "var(--red)" },
+          }}
         />
 
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {renderStepContent()}
 
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              mt: 3,
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
             {currentStep > 1 && (
               <Button
                 variant="outlined"
+                sx={{ color: "white", borderColor: "white" }}
                 onClick={() => setCurrentStep((prev) => prev - 1)}
                 startIcon={<ArrowBack />}
               >
@@ -484,7 +259,7 @@ export const RegisterForm = () => {
               <NextButton />
             ) : (
               <Button type="submit" variant="contained" fullWidth>
-                Registrierung abschließen
+                Registrierung abschliessen
               </Button>
             )}
           </Box>

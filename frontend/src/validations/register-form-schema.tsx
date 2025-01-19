@@ -6,13 +6,13 @@ export const step1Schema = z.object({
   email: z.string().email("Ungültige E-Mail-Adresse"),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one digit")
+    .min(8, "Passwort muss mindestens 8 Zeichen lang sein")
+    .regex(/[A-Z]/, "Passwort muss mindestens einen Grossbuchstaben enthalten")
+    .regex(/[a-z]/, "Passwort muss mindestens einen Kleinbuchstaben enthalten")
+    .regex(/[0-9]/, "Passwort muss mindestens eine Ziffer enthalten")
     .regex(
-      /[@$!%*#?&]/,
-      "Password must contain at least one special character"
+      /[@$!%*#?&_]/,
+      "Passwort muss mindestens ein Sonderzeichen enthalten"
     ),
   username: z
     .string()
@@ -27,7 +27,8 @@ export const step3Schema = z.object({
   gender: z
     .string()
     .refine((val) => ["male", "female", "other"].includes(val.toLowerCase()), {
-      message: "Ungültiges Geschlecht. Zulässige Werte: male, female, other",
+      message:
+        "Ungültiges Geschlecht. Bitte wählen Sie männlich, weiblich oder divers",
     }),
 });
 
@@ -39,7 +40,7 @@ export const step4Schema = z.object({
       const date = new Date(val);
       const today = new Date();
       const minDate = new Date();
-      minDate.setFullYear(today.getFullYear() - 100); // Minimum 100 Jahre alt
+      minDate.setFullYear(today.getFullYear() - 100);
 
       return date <= today && date >= minDate;
     }, "Das Geburtsdatum darf nicht in der Zukunft liegen und muss realistisch sein"),
@@ -50,7 +51,7 @@ export const step5Schema = z.object({
     .union([z.string(), z.number()])
     .transform((value) => Number(value))
     .refine((value) => !isNaN(value) && value >= 50 && value <= 300, {
-      message: "Größe muss zwischen 50 und 300 cm liegen",
+      message: "Grösse muss zwischen 50 und 300 cm liegen",
     }),
   weight: z
     .union([z.string(), z.number()])
@@ -68,7 +69,7 @@ export const registerFormSchema = z.object({
   ...step5Schema.shape,
 });
 
-// Types für jeden Step
+
 export type Step1Schema = z.infer<typeof step1Schema>;
 export type Step2Schema = z.infer<typeof step2Schema>;
 export type Step3Schema = z.infer<typeof step3Schema>;

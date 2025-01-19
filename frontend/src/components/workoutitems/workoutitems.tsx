@@ -57,7 +57,7 @@ export default function WorkoutItems() {
         router,
         () => {
           handleCloseModal();
-          // Aktualisiere die Workouts direkt im State
+  
           setSavedWorkouts((prevWorkouts) =>
             prevWorkouts.map((workout) =>
               workout.id === editingWorkout.id ? workoutData : workout
