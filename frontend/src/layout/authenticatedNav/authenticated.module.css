@@ -15,6 +15,12 @@
   overflow-y: auto;
 }
 
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
 .drawer {
   width: 250px;
   background-color: #f5f5f5;
@@ -46,12 +52,12 @@
 .listItemIcon {
   font-size: 24px;
   margin-right: 16px;
-  color: #1976d2;
+  color: var(--white);
 }
 
 .listItemText {
   font-size: 16px;
-  color: #333333;
+  color: var(--white);
   font-weight: 500;
 }
 .userSection {

@@ -1,9 +1,14 @@
 .appBar {
-  background-color: var(--brown-light);
+  background-color: #837c6ad6;
   position: sticky !important;
   top: 0;
   z-index: 1000;
   margin-bottom: 24px;
+}
+
+.iconButton {
+  background-color: var(--brown-light);
+  border-radius: 12%;
 }
 
 .menuButton {
@@ -21,6 +26,13 @@
   align-items: center;
   margin-left: auto;
   gap: 8px;
+}
+
+.separator {
+  width: 2px;
+  height: 29px;
+  background-color: #121010;
+  margin: 0 8px;
 }
 
 .avatar {

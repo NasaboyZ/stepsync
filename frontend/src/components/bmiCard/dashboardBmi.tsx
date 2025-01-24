@@ -84,16 +84,20 @@ export default function DashboardBmi() {
   }, [session]);
 
   const chartData = {
-    labels: bmiData.map((_, index) => `Messung ${index + 1}`),
+    labels: bmiData.map((_, index) => `Tag ${index + 1}`),
     datasets: [
       {
         label: "BMI",
         data: bmiData.map((entry) => entry.bmi),
-        borderColor: "rgba(0,0,0,9)",
-        backgroundColor: "rgba(0,0,0,0.2)",
-        borderWidth: 2,
+        borderColor: "rgba(0, 0, 0, 1)",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+        borderWidth: 5,
         fill: true,
-        tension: 0.3,
+        tension: 0.4,
+        pointRadius: 6,
+        pointBackgroundColor: "rgba(0, 0, 0, 1)",
+        pointBorderColor: "rgba(0, 0, 0, 1)",
+        pointBorderWidth: 2,
       },
     ],
   };
@@ -102,19 +106,34 @@ export default function DashboardBmi() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: true, position: "top" },
-      tooltip: { mode: "index", intersect: false },
+      legend: { display: false },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        backgroundColor: "white",
+        titleColor: "#000",
+        bodyColor: "#000",
+        borderColor: "#00",
+        borderWidth: 1,
+      },
     },
     scales: {
       x: {
-        display: true,
-        title: { display: true, text: "Messung (Index)" },
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: "rgba(0, 0, 0, 0.6)",
+        },
       },
       y: {
         display: true,
-        title: { display: true, text: "BMI-Wert" },
-        suggestedMin: 15,
-        suggestedMax: 40,
+        grid: {
+          color: "rgba(0, 0, 0, 0.6)",
+        },
+        ticks: {
+          color: "rgba(0, 0, 0, 0.6)",
+        },
       },
     },
   };
@@ -136,15 +155,17 @@ export default function DashboardBmi() {
 
   if (error) return <div>Fehler: {error}</div>;
 
-  const chartHeight = `${Math.max(300, bmiData.length * 50)}px`;
-
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} style={{ backgroundColor: "#8B8878" }}>
       <CardContent>
-        <Typography variant="h6" className={styles.title}>
-          BMI Verlauf
+        <Typography
+          variant="h6"
+          className={styles.title}
+          style={{ color: "white" }}
+        >
+          BMI Progress
         </Typography>
-        <div className={styles.chartContainer} style={{ height: chartHeight }}>
+        <div className={styles.chartContainer} style={{ height: "300px" }}>
           <Line data={chartData} options={options} />
         </div>
       </CardContent>

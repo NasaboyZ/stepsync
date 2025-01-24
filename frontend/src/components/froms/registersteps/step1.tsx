@@ -31,12 +31,25 @@ export const Step1: React.FC<Step1Props> = ({
     </Typography>
     <TextField
       fullWidth
-      
       label="Vorname"
       {...form.register("first_name")}
       error={!!form.formState.errors.first_name}
       helperText={form.formState.errors.first_name?.message || ""}
-      sx={{ backgroundColor: "white" }}
+      sx={{
+        backgroundColor: "white",
+        "& .MuiInputLabel-root": {
+          color: "black",
+        },
+        "& .MuiInputLabel-root.Mui-focused": {
+          color: "white",
+        },
+        "& .MuiInputLabel-root.MuiFormLabel-filled": {
+          color: "white",
+        },
+        "& .MuiInputBase-root": {
+          height: "56px",
+        },
+      }}
       onChange={(e) => {
         form.setValue("first_name", e.target.value, {
           shouldValidate: true,

@@ -20,6 +20,7 @@ import {
 } from "react-icons/md";
 
 import styles from "./authenticated.module.css";
+import Logo from "@/components/logo/logo";
 
 export default function AuthenticatedNav() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -38,6 +39,9 @@ export default function AuthenticatedNav() {
     <div className={styles.container}>
       {isLargeScreen ? (
         <aside className={styles.permanentDrawer}>
+          <div className={styles.logoContainer}>
+            <Logo />
+          </div>
           <List>
             <ListItem className={styles.listItem}>
               <ListItemIcon className={styles.listItemIcon}>
