@@ -1,25 +1,27 @@
 import DashboardBmi from "../bmiCard/dashboardBmi";
 import ChallengeCounter from "../challengCounter/challengeCounter";
-
 import ProfileBioCard from "../profileBioCard/profileBioCard";
 import WorkoutChart from "../workoutChart/workoutchart";
-import styles from "./dashboaritems.module.css";
+import { Grid, Container } from "@mui/material";
 
 export default function DashboardItems() {
   return (
-    <div className={styles.dashboardGrid}>
-      <div className={styles.challengeCounterArea}>
-        <ChallengeCounter />
-      </div>
-      <div className={styles.workoutChartArea}>
-        <WorkoutChart />
-      </div>
-      <div className={styles.bmiArea}>
-        <DashboardBmi />
-      </div>
-      <div className={styles.profileArea}>
-        <ProfileBioCard />
-      </div>
-    </div>
+    <Container maxWidth="lg">
+      <Grid container spacing={2} sx={{ my: 2 }}>
+        <Grid item xs={12}>
+          <ChallengeCounter />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <DashboardBmi />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <WorkoutChart />
+        </Grid>
+
+        <Grid item xs={12}>
+          <ProfileBioCard />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
