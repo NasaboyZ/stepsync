@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import useSWR, { mutate } from "swr";
-import { Fab, Modal, Box, Grid } from "@mui/material";
+import { Fab, Modal, Box, Grid, Tabs, Tab, Typography } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
@@ -15,6 +15,7 @@ import {
   updateWorkout,
 } from "@/services/servicesWorkout";
 import { useRouter } from "next/navigation";
+import styles from "./workoutitems.module.css";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
@@ -23,8 +24,8 @@ export default function WorkoutItems() {
     null
   );
   const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  // SWR Hook nur mit den wichtigsten Revalidierungsoptionen
   const { data: savedWorkouts = [] } = useSWR<WorkoutData[]>(
     session?.accessToken ? "/api/workouts" : null,
     () => fetchWorkouts(session?.accessToken ?? "")
@@ -46,7 +47,7 @@ export default function WorkoutItems() {
         router,
         () => handleCloseModal()
       );
-      // Boundary Mutation - löst Revalidierung nur nach erfolgreicher Aktion aus
+
       await mutate("/api/workouts");
     } catch (error) {
       console.error("Fehler beim Löschen des Workouts:", error);
@@ -70,15 +71,54 @@ export default function WorkoutItems() {
           () => handleCloseModal()
         );
       }
-      // Boundary Mutation - löst Revalidierung nur nach erfolgreicher Aktion aus
+
       await mutate("/api/workouts");
     } catch (error) {
       console.error("Fehler beim Speichern des Workouts:", error);
     }
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue);
+  };
+
   return (
     <>
+      <Typography variant="h4" component="h1" className={styles.workoutHeader}>
+        Workouts
+      </Typography>
+
+      <Box className={styles.tabsContainer}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="workout periods"
+          className={styles.tabs}
+          TabIndicatorProps={{
+            className: styles.tabIndicator,
+          }}
+        >
+          <Tab
+            label="Heute"
+            className={`${styles.tab} ${
+              selectedTab === 0 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Last 7 Days"
+            className={`${styles.tab} ${
+              selectedTab === 1 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Month"
+            className={`${styles.tab} ${
+              selectedTab === 2 ? styles.selected : ""
+            }`}
+          />
+        </Tabs>
+      </Box>
+
       <Grid container spacing={2}>
         {savedWorkouts && savedWorkouts.length > 0 ? (
           savedWorkouts.map((workout, index) => (

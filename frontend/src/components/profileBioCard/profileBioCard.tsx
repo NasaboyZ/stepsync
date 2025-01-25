@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Avatar, Skeleton } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  Skeleton,
+  Button,
+} from "@mui/material";
 import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
@@ -70,32 +77,45 @@ export default function ProfileBioCard() {
         <CardContent>
           <div className={styles.cardContent}>
             <div className={styles.headerSection}>
-              <div className={styles.avatarSection}>
-                <Avatar className={styles.avatar} />
+              <div className={styles.leftSection}>
+                <div className={styles.avatarSection}>
+                  <Avatar className={styles.avatar} />
+                </div>
+                <div className={styles.headerInfo}>
+                  <Typography variant="h5" className={styles.username}>
+                    {userProfile.username}
+                  </Typography>
+                  <Typography variant="body2" className={styles.statsInfo}>
+                    Level {userProfile.level}{" "}
+                    <span className={styles.divider}>|</span>
+                    {userProfile.age} Jahre{" "}
+                    <span className={styles.divider}>|</span>
+                    {userProfile.xp} XP{" "}
+                    <span className={styles.divider}>|</span>
+                    {userProfile.workouts} Workouts diesen Monat
+                  </Typography>
+                  <Typography variant="body2" className={styles.physicalInfo}>
+                    {userProfile.height && `${userProfile.height}cm`}{" "}
+                    <span className={styles.divider}>|</span>
+                    {userProfile.weight && `${userProfile.weight}kg`}{" "}
+                    <span className={styles.divider}>|</span>
+                    {userProfile.goal}
+                  </Typography>
+                  <Typography variant="caption" className={styles.memberSince}>
+                    Mitglied seit {userProfile.memberSince}
+                  </Typography>
+                </div>
               </div>
-              <div className={styles.headerInfo}>
-                <Typography variant="h5" className={styles.username}>
-                  {userProfile.username}
-                </Typography>
-                <Typography variant="body2" className={styles.statsInfo}>
-                  Level {userProfile.level}{" "}
-                  <span className={styles.divider}>|</span>
-                  {userProfile.age} Jahre{" "}
-                  <span className={styles.divider}>|</span>
-                  {userProfile.xp} XP <span className={styles.divider}>|</span>
-                  {userProfile.workouts} Workouts diesen Monat
-                </Typography>
-                <Typography variant="body2" className={styles.physicalInfo}>
-                  {userProfile.height && `${userProfile.height}cm`}{" "}
-                  <span className={styles.divider}>|</span>
-                  {userProfile.weight && `${userProfile.weight}kg`}{" "}
-                  <span className={styles.divider}>|</span>
-                  {userProfile.goal}
-                </Typography>
-                <Typography variant="caption" className={styles.memberSince}>
-                  Mitglied seit {userProfile.memberSince}
-                </Typography>
-              </div>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.editButton}
+                onClick={() => {
+                  /* TODO: Implement edit functionality */
+                }}
+              >
+                Edit
+              </Button>
             </div>
           </div>
         </CardContent>

@@ -2,11 +2,17 @@
   max-width: 100%;
 
   margin: 1rem;
-  border-radius: 12px !important;
+  border-radius: 12px;
   background: var(--brown-light);
 }
 
 .headerSection {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.leftSection {
   display: flex;
   align-items: center;
 }
@@ -16,8 +22,8 @@
 }
 
 .avatar {
-  width: 80px !important;
-  height: 80px !important;
+  width: 80px;
+  height: 80px;
 }
 
 .headerInfo {
@@ -54,4 +60,17 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.25rem;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.editButton {
+  background-color: var(--white) !important;
+  color: var(--font-dark) !important;
+  text-transform: none !important;
 }

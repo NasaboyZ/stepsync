@@ -46,7 +46,7 @@
 }
 
 .listItem:hover {
-  background-color: #e0e0e0;
+  background-color: var(--brown-dark);
 }
 
 .listItemIcon {
