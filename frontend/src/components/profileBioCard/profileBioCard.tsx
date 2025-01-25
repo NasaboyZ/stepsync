@@ -29,7 +29,7 @@ export default function ProfileBioCard() {
   }, [session]);
 
   if (!userProfile) {
-    // Skeleton Loader
+    // Skeleton Loader grund Gerüst
     return (
       <Card className={styles.bioCard}>
         <CardContent>
