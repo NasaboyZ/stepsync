@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Grid, Avatar } from "@mui/material";
+import { Card, CardContent, Typography, Avatar, Skeleton } from "@mui/material";
+import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import Skeleton from "@mui/material/Skeleton";
 import styles from "./profileBioCard.module.css";
 import { UserProfile } from "@/types/interfaces/userProfile";
 import { fetchUserData } from "@/utils/api";
@@ -39,7 +39,7 @@ export default function ProfileBioCard() {
             </div>
 
             <div className={styles.infoSection}>
-              <Skeleton variant="text" width="60%" height={30} />
+              <Skeleton variant="text" width="100%" height={30} />
 
               <Grid container spacing={2}>
                 {Array.from({ length: 5 }).map((_, index) => (
@@ -69,71 +69,33 @@ export default function ProfileBioCard() {
       <Card className={styles.bioCard}>
         <CardContent>
           <div className={styles.cardContent}>
-            <div className={styles.avatarSection}>
-              <Avatar className={styles.avatar} />
-            </div>
-
-            <div className={styles.infoSection}>
-              <Typography className={styles.username}>
-                {userProfile.username}
-              </Typography>
-
-              <Grid container spacing={2} className={styles.infoGrid}>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoLabel}>Alter</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoValue}>
-                    {userProfile.age !== null
-                      ? userProfile.age
-                      : "Nicht angegeben"}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography className={styles.infoLabel}>
-                    Geschlecht
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoValue}>
-                    {userProfile.sex}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography className={styles.infoLabel}>Grösse</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoValue}>
-                    {userProfile.height !== null &&
-                    userProfile.height !== undefined
-                      ? `${userProfile.height} cm`
-                      : "Nicht angegeben"}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography className={styles.infoLabel}>Gewicht</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoValue}>
-                    {userProfile.weight !== null &&
-                    userProfile.weight !== undefined
-                      ? `${userProfile.weight} kg`
-                      : "Nicht angegeben"}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography className={styles.infoLabel}>Ziel</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={styles.infoValue}>
-                    {userProfile.goal}
-                  </Typography>
-                </Grid>
-              </Grid>
+            <div className={styles.headerSection}>
+              <div className={styles.avatarSection}>
+                <Avatar className={styles.avatar} />
+              </div>
+              <div className={styles.headerInfo}>
+                <Typography variant="h5" className={styles.username}>
+                  {userProfile.username}
+                </Typography>
+                <Typography variant="body2" className={styles.statsInfo}>
+                  Level {userProfile.level}{" "}
+                  <span className={styles.divider}>|</span>
+                  {userProfile.age} Jahre{" "}
+                  <span className={styles.divider}>|</span>
+                  {userProfile.xp} XP <span className={styles.divider}>|</span>
+                  {userProfile.workouts} Workouts diesen Monat
+                </Typography>
+                <Typography variant="body2" className={styles.physicalInfo}>
+                  {userProfile.height && `${userProfile.height}cm`}{" "}
+                  <span className={styles.divider}>|</span>
+                  {userProfile.weight && `${userProfile.weight}kg`}{" "}
+                  <span className={styles.divider}>|</span>
+                  {userProfile.goal}
+                </Typography>
+                <Typography variant="caption" className={styles.memberSince}>
+                  Mitglied seit {userProfile.memberSince}
+                </Typography>
+              </div>
             </div>
           </div>
         </CardContent>

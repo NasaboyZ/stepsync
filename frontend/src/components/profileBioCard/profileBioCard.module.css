@@ -1,58 +1,57 @@
 .bioCard {
-  max-width: 300px;
+  max-width: 100%;
+
   margin: 1rem;
-  border-radius: 20px !important;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px !important;
+  background: var(--brown-light);
 }
 
-.cardContent {
+.headerSection {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 1rem;
 }
 
 .avatarSection {
-  margin-bottom: 1.5rem;
-  width: 114px;
-  height: 114px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-right: 1rem;
 }
 
 .avatar {
-  width: 100px !important;
-  height: 100px !important;
-  background-color: #1976d2 !important; /* MUI default primary color */
-  font-size: 2.5rem !important;
+  width: 80px !important;
+  height: 80px !important;
 }
 
-.infoSection {
-  width: 100%;
-  text-align: center;
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .username {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  color: #000;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
 }
 
-.infoGrid {
-  text-align: left;
-  padding: 0 1rem;
+.memberInfo {
+  color: var(--white);
 }
 
-.infoLabel {
-  color: #78858f;
-  font-weight: 500;
+.memberSince {
+  color: var(--white);
 }
 
-.infoValue {
-  color: #000;
+.divider {
+  color: var(--white);
+  margin: 0 0.5rem;
+  font-weight: 300;
+}
+
+.statsInfo,
+.physicalInfo {
+  color: var(--white);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
