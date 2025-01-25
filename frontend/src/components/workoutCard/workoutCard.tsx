@@ -3,42 +3,44 @@
 import React, { useState } from "react";
 import {
   Card,
-  CardContent,
   Typography,
+  IconButton,
+  Menu,
+  MenuItem,
   TextField,
   Button,
 } from "@mui/material";
-import { FaDumbbell } from "react-icons/fa";
+import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
-import { workoutSchema } from "../../validations/workout-shema";
-import { z } from "zod";
 
 interface WorkoutCardProps {
   variant: "primary" | "secondary";
-  initialData?: WorkoutData;
-  readOnly?: boolean;
-  onSave?: (data: WorkoutData) => void;
+  initialData?: {
+    category: string;
+    description: string;
+    weight: number;
+    repetitions: number;
+    created_at?: string;
+  };
+  isEditing?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
-}
-
-interface WorkoutData {
-  id?: number;
-  category: string;
-  description: string;
-  weight: number;
-  repetitions: number;
-  user_id?: number;
+  onSave?: (data: {
+    category: string;
+    description: string;
+    weight: number;
+    repetitions: number;
+  }) => void;
 }
 
 export function WorkoutCard({
-  variant,
   initialData,
-  readOnly = false,
-  onSave,
+  isEditing = false,
   onEdit,
   onDelete,
+  onSave,
 }: WorkoutCardProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [category, setCategory] = useState(initialData?.category || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -47,137 +49,146 @@ export function WorkoutCard({
   const [repetitions, setRepetitions] = useState(
     initialData?.repetitions?.toString() || ""
   );
-  const [errors, setErrors] = useState<{
-    category?: string;
-    description?: string;
-    weight?: string;
-    repetitions?: string;
-  }>({});
 
-  const handleSave = () => {
-    try {
-      const validatedData = workoutSchema.parse({
-        category,
-        description,
-        weight,
-        repetitions,
-      });
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-      setErrors({});
-
-      if (onSave && initialData?.id) {
-        onSave({
-          id: initialData.id,
-          ...validatedData,
-        });
-      } else if (onSave) {
-        onSave(validatedData);
-      }
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const formattedErrors: {
-          [key: string]: string;
-        } = {};
-        error.errors.forEach((err) => {
-          const path = err.path[0] as string;
-          formattedErrors[path] = err.message;
-        });
-        setErrors(formattedErrors);
-      }
-    }
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const handleEdit = () => {
-    if (onEdit) {
-      onEdit();
+    handleClose();
+    if (onEdit) onEdit();
+  };
+
+  const handleDelete = () => {
+    handleClose();
+    if (onDelete) onDelete();
+  };
+
+  const handleSave = () => {
+    if (onSave) {
+      onSave({
+        category,
+        description,
+        weight: Number(weight),
+        repetitions: Number(repetitions),
+      });
     }
   };
 
-  return (
-    <Card className={`${styles.card} ${styles[variant]}`}>
-      <CardContent>
-        <Typography variant="h5" className={styles.title}>
-          <FaDumbbell /> Workout
-        </Typography>
-        <TextField
-          label="Kategorie"
-          variant="outlined"
-          fullWidth
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className={styles.input}
-          disabled={readOnly}
-          error={!!errors.category}
-          helperText={errors.category}
-        />
-        <TextField
-          label="Beschreibung"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className={styles.input}
-          disabled={readOnly}
-          error={!!errors.description}
-          helperText={errors.description}
-        />
-        <TextField
-          label="Gewicht"
-          variant="outlined"
-          fullWidth
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-          className={styles.input}
-          disabled={readOnly}
-          error={!!errors.weight}
-          helperText={errors.weight}
-        />
-        <TextField
-          label="Wiederholungen"
-          variant="outlined"
-          fullWidth
-          value={repetitions}
-          onChange={(e) => setRepetitions(e.target.value)}
-          className={styles.input}
-          disabled={readOnly}
-          error={!!errors.repetitions}
-          helperText={errors.repetitions}
-        />
-        <div className={styles.buttonContainer}>
-          {onSave && !readOnly && (
+  // Formular für das Modal
+  if (isEditing) {
+    return (
+      <Card className={styles.listCard}>
+        <div className={styles.editContainer}>
+          <Typography variant="h6" className={styles.category}>
+            {initialData ? "Workout bearbeiten" : "Neues Workout"}
+          </Typography>
+
+          <div className={styles.editForm}>
+            <TextField
+              label="Kategorie"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              variant="outlined"
+              size="small"
+              sx={{
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "white",
+                },
+              }}
+              fullWidth
+              placeholder="z.B. Krafttraining, Cardio..."
+            />
+
+            <TextField
+              label="Beschreibung"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              variant="outlined"
+              size="small"
+              fullWidth
+              placeholder="Beschreibe dein Workout..."
+            />
+
+            <div className={styles.numberInputs}>
+              <TextField
+                label="Gewicht (kg)"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                type="number"
+                variant="outlined"
+                size="small"
+              />
+              <TextField
+                label="Wiederholungen"
+                value={repetitions}
+                onChange={(e) => setRepetitions(e.target.value)}
+                type="number"
+                variant="outlined"
+                size="small"
+              />
+            </div>
+
             <Button
               variant="contained"
               color="primary"
               onClick={handleSave}
-              className={styles.button}
+              fullWidth
+              size="small"
             >
               Speichern
             </Button>
-          )}
-          {onEdit && readOnly && (
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleEdit}
-              className={styles.button}
-            >
-              Bearbeiten
-            </Button>
-          )}
-          {onDelete && readOnly && (
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={onDelete}
-              className={styles.button}
-            >
-              Löschen
-            </Button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className={styles.listCard}>
+      <div className={styles.workoutInfo}>
+        <div className={styles.mainInfo}>
+          <Typography variant="h6" className={styles.category}>
+            {initialData?.category}
+          </Typography>
+          <Typography variant="body2" className={styles.details}>
+            {initialData?.description} - {initialData?.weight}kg ×{" "}
+            {initialData?.repetitions} Wdh.
+          </Typography>
+        </div>
+
+        <div className={styles.dateInfo}>
+          {initialData?.created_at && (
+            <Typography variant="body2">
+              {new Date(initialData.created_at).toLocaleDateString()}
+            </Typography>
           )}
         </div>
-      </CardContent>
+
+        <div className={styles.actions}>
+          <IconButton onClick={handleClick}>
+            <MoreVert />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleEdit}>Bearbeiten</MenuItem>
+            <MenuItem onClick={handleDelete}>Löschen</MenuItem>
+          </Menu>
+        </div>
+      </div>
     </Card>
   );
 }

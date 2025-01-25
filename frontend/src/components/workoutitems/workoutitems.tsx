@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Fab, Modal, Box, Grid, Tabs, Tab, Typography } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
@@ -122,11 +122,10 @@ export default function WorkoutItems() {
       <Grid container spacing={2}>
         {savedWorkouts && savedWorkouts.length > 0 ? (
           savedWorkouts.map((workout, index) => (
-            <Grid item xs={12} sm={6} md={4} key={workout.id || index}>
+            <Grid item xs={12} key={workout.id || index}>
               <WorkoutCard
                 variant="primary"
                 initialData={workout}
-                readOnly={true}
                 onEdit={() => handleEdit(workout)}
                 onDelete={() => workout.id && handleDelete(workout.id)}
               />
@@ -157,43 +156,28 @@ export default function WorkoutItems() {
         </Fab>
       </motion.div>
 
-      <AnimatePresence>
-        {isModalOpen && (
-          <Modal
-            open={isModalOpen}
-            onClose={handleCloseModal}
-            aria-labelledby="workout-modal"
-            aria-describedby="workout-card-modal"
-            closeAfterTransition
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 400,
-                  maxWidth: "100%",
-                  p: 4,
-                  borderRadius: 2,
-                }}
-              >
-                <WorkoutCard
-                  variant="primary"
-                  initialData={editingWorkout || undefined}
-                  onSave={handleSave}
-                />
-              </Box>
-            </motion.div>
-          </Modal>
-        )}
-      </AnimatePresence>
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="workout-modal"
+        className={styles.modal}
+      >
+        <Box className={styles.modalContent}>
+          <WorkoutCard
+            variant="primary"
+            initialData={
+              editingWorkout || {
+                category: "",
+                description: "",
+                weight: 0,
+                repetitions: 0,
+              }
+            }
+            isEditing={true}
+            onSave={handleSave}
+          />
+        </Box>
+      </Modal>
     </>
   );
 }
