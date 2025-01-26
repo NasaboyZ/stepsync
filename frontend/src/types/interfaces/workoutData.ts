@@ -2,8 +2,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 export interface WorkoutData {
   id?: number;
-  workoutType: "Krafttraining" | "Cardio";
-  category: string;
+  category: "cardio" | "krafttraining";
+  title: string;
   description: string;
   weight: number;
   repetitions: number;

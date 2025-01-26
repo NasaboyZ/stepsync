@@ -15,31 +15,7 @@ import {
 } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
-
-const WORKOUT_TYPES = ["Krafttraining", "Cardio"] as const;
-type WorkoutType = (typeof WORKOUT_TYPES)[number];
-
-interface WorkoutCardProps {
-  variant: "primary" | "secondary";
-  initialData?: {
-    workoutType: WorkoutType;
-    category: string;
-    description: string;
-    weight: number;
-    repetitions: number;
-    created_at?: string;
-  };
-  isEditing?: boolean;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onSave?: (data: {
-    workoutType: WorkoutType;
-    category: string;
-    description: string;
-    weight: number;
-    repetitions: number;
-  }) => void;
-}
+import { WorkoutCardProps, WorkoutData } from "@/types/interfaces/workoutData";
 
 export function WorkoutCard({
   initialData,
@@ -49,10 +25,10 @@ export function WorkoutCard({
   onSave,
 }: WorkoutCardProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [workoutType, setWorkoutType] = useState<WorkoutType>(
-    initialData?.workoutType || "Krafttraining"
+  const [category, setCategory] = useState<WorkoutData["category"]>(
+    initialData?.category || "krafttraining"
   );
-  const [category, setCategory] = useState(initialData?.category || "");
+  const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
   );
@@ -82,8 +58,8 @@ export function WorkoutCard({
   const handleSave = () => {
     if (onSave) {
       onSave({
-        workoutType,
         category,
+        title,
         description,
         weight: Number(weight),
         repetitions: Number(repetitions),
@@ -104,22 +80,21 @@ export function WorkoutCard({
             <FormControl fullWidth size="small" sx={{ mb: 2 }}>
               <InputLabel>Trainingsart</InputLabel>
               <Select
-                value={workoutType}
+                value={category}
                 label="Trainingsart"
-                onChange={(e) => setWorkoutType(e.target.value as WorkoutType)}
+                onChange={(e) =>
+                  setCategory(e.target.value as WorkoutData["category"])
+                }
               >
-                {WORKOUT_TYPES.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
+                <MenuItem value="krafttraining">Krafttraining</MenuItem>
+                <MenuItem value="cardio">Cardio</MenuItem>
               </Select>
             </FormControl>
 
             <TextField
               label="Titel"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               variant="outlined"
               size="small"
               sx={{
@@ -186,14 +161,13 @@ export function WorkoutCard({
       <div className={styles.workoutInfo}>
         <div className={styles.mainInfo}>
           <Typography variant="body2" className={styles.workoutType}>
-            {initialData?.workoutType}
+            {category === "krafttraining" ? "Krafttraining" : "Cardio"}
           </Typography>
           <Typography variant="h6" className={styles.category}>
-            {initialData?.category}
+            {title}
           </Typography>
           <Typography variant="body2" className={styles.details}>
-            {initialData?.description} - {initialData?.weight}kg ×{" "}
-            {initialData?.repetitions} Wdh.
+            {description} - {weight}kg × {repetitions} Wdh.
           </Typography>
         </div>
 

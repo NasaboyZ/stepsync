@@ -12,7 +12,7 @@ class WorkoutsController
   // Gibt alle Workouts des angemeldeten Benutzers zurück
   function index(Request $request)
   {
-    return Workout::all();
+    return \Auth::user()->workouts()->get();
   }
 
   // Erstellt ein neues Workout für den angemeldeten Benutzer

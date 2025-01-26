@@ -14,6 +14,9 @@ class Workout extends Model
     public string $category;
 
     #[Column]
+    public string $title;
+
+    #[Column]
     public string $description;
 
     #[Column]
@@ -33,15 +36,17 @@ class Workout extends Model
     static function validate(Request $request)
     {
         $rules = [
-            'category' => 'string|max:255',
+            'category' => 'string|in:cardio,krafttraining',
+            'title' => 'string|max:255',
             'description' => 'string',
-            'weight' => 'nullable|integer',
-            'repetitions' => 'nullable|integer',
+            'weight' => 'nullable|integer|min:0',
+            'repetitions' => 'nullable|integer|min:0',
         ];
 
 
         if ($request->isMethod('POST')) {
             $rules['category'] = 'required|' . $rules['category'];
+            $rules['title'] = 'required|' . $rules['title'];
             $rules['description'] = 'required|' . $rules['description'];
         }
 

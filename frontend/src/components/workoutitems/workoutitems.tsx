@@ -82,6 +82,13 @@ export default function WorkoutItems() {
     setSelectedTab(newValue);
   };
 
+  const filteredWorkouts = savedWorkouts.filter((workout) => {
+    if (selectedTab === 0) return true; // Alle Workouts
+    if (selectedTab === 1) return workout.workoutType === "Krafttraining";
+    if (selectedTab === 2) return workout.workoutType === "Cardio";
+    return true;
+  });
+
   return (
     <>
       <Typography variant="h4" component="h1" className={styles.workoutHeader}>
@@ -120,8 +127,8 @@ export default function WorkoutItems() {
       </Box>
 
       <Grid container spacing={2}>
-        {savedWorkouts && savedWorkouts.length > 0 ? (
-          savedWorkouts.map((workout, index) => (
+        {filteredWorkouts && filteredWorkouts.length > 0 ? (
+          filteredWorkouts.map((workout, index) => (
             <Grid item xs={12} key={workout.id || index}>
               <WorkoutCard
                 variant="primary"
