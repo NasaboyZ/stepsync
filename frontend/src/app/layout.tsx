@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SessionProvider from "@/providers/session-provider";
+import SnackbarComponent from "@/components/snackbarComponent/snackbarComponent";
 
 const internItelic = localFont({
   src: "./fonts/intern/Inter-Italic-VariableFont_opsz,wght.ttf",
@@ -38,6 +39,7 @@ export default function RootLayout({
         className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
       >
         <SessionProvider>{children}</SessionProvider>
+        <SnackbarComponent />
       </body>
     </html>
   );

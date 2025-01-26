@@ -1,59 +1,57 @@
 .card {
   position: relative;
-  width: 300px;
+  width: auto;
   height: auto;
-  min-height: 250px;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 8px;
   background: var(--brown-light);
-  padding: 20px;
-  margin: 1rem;
+  padding: 12px 16px;
+  margin: 0.2rem 1rem;
+  max-width: 100%;
 }
 
 .title {
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 1.25rem;
   color: var(--white);
+  margin-bottom: 4px;
   text-align: center;
   padding: 0 20px;
 }
 
 .description {
-  margin-top: 10px;
-  font-weight: 400;
-  font-size: 15px;
   color: var(--white);
-  text-align: center;
+  font-size: 0.875rem;
+  margin: 4px 0;
+  text-align: left;
   padding: 0 20px;
 }
 
 .goal {
-  margin-top: 10px;
-  font-style: italic;
-  font-size: 14px;
   color: var(--white);
-  text-align: center;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin: 4px 0;
+  text-align: left;
   padding: 0 20px;
 }
 
 .buttonContainer {
   display: flex;
-  gap: 1rem;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 12px;
   justify-content: center;
 }
 
 .button {
-  min-width: 120px;
-  height: 40px;
-  border: 2px solid var(--brown-light);
+  padding: 6px 16px;
   border-radius: 4px;
-  font-weight: 700;
-  font-size: 12px;
-  text-transform: uppercase;
-  transition: all 0.3s;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: none;
 }
 
 .button:hover {
@@ -61,8 +59,10 @@
 }
 
 .statusText {
+  color: var(--white);
+  font-size: 0.875rem;
+  margin-top: 12px;
   text-align: center;
-  margin-top: 20px;
   font-weight: bold;
   color: var(--brown-dark);
 }
@@ -79,8 +79,9 @@
 
 .cardHeader {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
+  margin-bottom: 8px;
   width: 100%;
 }
 
@@ -88,7 +89,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color:  black;
+  color: black;
   padding: 8px;
   display: flex;
   align-items: center;
@@ -98,4 +99,104 @@
 
 .editButton:hover {
   color: #000;
+}
+
+.listItem {
+  background: var(--brown-light);
+  border-radius: 8px;
+  margin: 8px 16px;
+  padding: 12px 16px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mainInfo {
+  flex: 1;
+}
+
+.infoContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.infoGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  color: var(--white);
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.title,
+.description,
+.goal {
+  color: var(--white);
+  font-size: 0.9rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.description {
+  flex: 1;
+}
+
+.goal {
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acceptButton,
+.rejectButton {
+  color: white !important;
+  text-transform: none !important;
+}
+
+.acceptButton {
+  background-color: var(--brown-dark) !important;
+}
+
+.rejectButton {
+  background-color: #d32f2f !important;
+}
+
+.menuButton {
+  color: var(--white) !important;
+}
+
+@media (max-width: 600px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .infoContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

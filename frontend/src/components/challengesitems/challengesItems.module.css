@@ -21,6 +21,36 @@
   }
 }
 
+.challengeHeader {
+  color: black;
+  font-weight: bold;
+  margin-left: 2rem;
+}
+
+.tabsContainer {
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  border-bottom: 3px solid var(--red);
+  margin-top: 1rem;
+  padding-bottom: 8px;
+}
+
+.tab {
+  padding: 1rem 1.5rem;
+  margin-left: 1rem;
+}
+
+.tab.selected {
+  color: black;
+}
+
+.tabIndicator {
+  background-color: black;
+  height: 3px;
+}
+
 .modalContent {
   background-color: var(--brown-light);
   padding: 2rem;
@@ -50,9 +80,21 @@
   margin-bottom: 8px;
 }
 
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .modalContent {
   .MuiFormHelperText-root {
     color: #d32f2f;
     margin-top: 3px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modalContent {
+    margin: 10px;
   }
 }

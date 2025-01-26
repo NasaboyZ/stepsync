@@ -18,6 +18,7 @@ import {
 } from "chart.js";
 import Skeleton from "@mui/material/Skeleton";
 import styles from "./dashboardBmi.module.css";
+import { fetchBmiHistory, BmiHistoryData } from "@/utils/api";
 
 ChartJS.register(
   LineElement,
@@ -30,65 +31,43 @@ ChartJS.register(
   Filler
 );
 
-interface BmiData {
-  height: number;
-  weight: number;
-  bmi: number;
-}
-
 export default function DashboardBmi() {
-  const [bmiData, setBmiData] = useState<BmiData[]>([]);
+  const [bmiHistory, setBmiHistory] = useState<BmiHistoryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
 
   useEffect(() => {
-    async function fetchBmiData() {
+    async function fetchData() {
       if (session?.accessToken) {
         try {
-          const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/bmi`;
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            setError(errorData.message || `Fehler: ${response.status}`);
-            setLoading(false);
-            return;
-          }
-
-          const data = await response.json();
-          setBmiData([
-            {
-              height: data.height,
-              weight: data.weight,
-              bmi: data.bmi,
-            },
-          ]);
+          const historyData = await fetchBmiHistory(session.accessToken);
+          const sortedData = historyData.sort(
+            (a, b) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime()
+          );
+          setBmiHistory(sortedData);
           setLoading(false);
         } catch (error) {
-          console.error("Fehler beim Abrufen der Daten:", error);
-          setError("Daten konnten nicht geladen werden");
+          console.error("Fehler beim Abrufen der BMI-Historie:", error);
+          setError("BMI-Historie konnte nicht geladen werden");
           setLoading(false);
         }
       }
     }
 
-    fetchBmiData();
+    fetchData();
   }, [session]);
 
   const chartData = {
-    labels: bmiData.map((_, index) => `Tag ${index + 1}`),
+    labels: bmiHistory.map((entry) =>
+      new Date(entry.created_at).toLocaleDateString("de-DE")
+    ),
     datasets: [
       {
         label: "BMI",
-        data: bmiData.map((entry) => entry.bmi),
+        data: bmiHistory.map((entry) => entry.bmi_value),
         borderColor: "rgba(0, 0, 0, 1)",
         backgroundColor: "rgba(0, 0, 0, 0.2)",
         borderWidth: 5,

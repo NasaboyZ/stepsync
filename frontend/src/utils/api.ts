@@ -28,6 +28,13 @@ export interface UploadResponse {
   pathname: string;
 }
 
+export interface BmiHistoryData {
+  height: number;
+  weight: number;
+  bmi_value: number;
+  created_at: string;
+}
+
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
   const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
@@ -41,7 +48,10 @@ export const fetchUserData = async (token: string): Promise<UserProfile> => {
     height: data.height,
     weight: data.weight,
     goal: data.goal,
-    avatar: data.avatar,
+    level: data.level,
+    xp: data.xp,
+    workouts: data.workouts,
+    memberSince: data.memberSince,
   };
 };
 
@@ -77,6 +87,16 @@ export const fetchWorkouts = async (token: string): Promise<WorkoutData[]> => {
   }
 
   return await response.json();
+};
+
+export const fetchBmiHistory = async (
+  token: string
+): Promise<BmiHistoryData[]> => {
+  const data = await dataFetchWithToken(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/bmi/history`,
+    token
+  );
+  return data.history;
 };
 
 // export const uploadAvatar = async (

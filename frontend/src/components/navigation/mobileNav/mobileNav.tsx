@@ -5,8 +5,8 @@ import closingBurger from "@/assets/svg/closingicon.svg";
 import Style from "./mobileNav.module.css";
 
 import { useState } from "react";
-import Logo from "@/components/logo/Logo";
-import NavigationItem from "../navigationItems/NavigationItems";
+import Logo from "@/components/logo/logo";
+import NavigationItem from "../navigationItems/navigationItems";
 import SwitchLoginComponent from "@/components/switchlogin/switchlogincomponents";
 
 interface MobileNavProps {

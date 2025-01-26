@@ -33,10 +33,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-  Route::get('/user/challenges', [UserController::class, 'showChallenges']); 
+  Route::get('/user/challenges', [UserController::class, 'showChallenges']);
 
 
-  Route::post('/challenges', [ChallengesController::class, 'create']); 
+  Route::post('/challenges', [ChallengesController::class, 'create']);
   Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']);
   Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']);
 
@@ -57,5 +57,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::get('/bmi', [BmiController::class, 'index']);
   Route::patch('/bmi', [BmiController::class, 'update']);
   Route::delete('/bmi', [BmiController::class, 'destroy']);
+  Route::get('/bmi/history', [BmiController::class, 'history']);
 });
-

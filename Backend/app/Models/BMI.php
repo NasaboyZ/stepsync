@@ -51,9 +51,17 @@ class BMI extends Model
 
     protected static function booted()
     {
-        // Vor dem Speichern berechnen wir den BMI
         static::saving(function ($model) {
             $model->calculateBMI();
+        });
+
+        static::saved(function ($model) {
+            BmiHistory::create([
+                'height' => $model->height,
+                'weight' => $model->weight,
+                'bmi_value' => $model->calculateBMI(),
+                'user_id' => $model->user_id
+            ]);
         });
     }
 }

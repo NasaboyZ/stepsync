@@ -1,6 +1,6 @@
-import Logo from "@/components/logo/Logo";
+import Logo from "@/components/logo/logo";
 import Style from "./headerNav.module.css";
-import NavigationItem from "../navigationItems/NavigationItems";
+import NavigationItem from "../navigationItems/navigationItems";
 import SwitchLoginComponent from "@/components/switchlogin/switchlogincomponents";
 
 interface NavigationItemProps {

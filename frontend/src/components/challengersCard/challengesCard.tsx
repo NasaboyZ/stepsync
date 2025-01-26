@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { updateChallenge } from "@/services/servicesChallenge";
 import { Challenge } from "@/types/interfaces/challenges";
-
-import { MdModeEdit } from "react-icons/md";
+import { MoreVert } from "@mui/icons-material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { useSnackbarStore } from "@/store/snackbarStore";
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -20,9 +20,24 @@ interface ChallengeCardProps {
 export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
   const router = useRouter();
   const { data: session } = useSession();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [status, setStatus] = useState<
     "pending" | "accepted" | "completed" | "failed"
   >(challenge.status);
+  const { openSnackbar } = useSnackbarStore();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    handleClose();
+    onEdit();
+  };
 
   const handleStatusUpdate = async (
     newStatus: "accepted" | "completed" | "failed"
@@ -42,101 +57,106 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
         router,
         () => {
           setStatus(newStatus);
-          router.refresh();
+
+          // Snackbar Nachrichten für die verschiedenen Status
+          switch (newStatus) {
+            case "completed":
+              openSnackbar(
+                "Challenge erfolgreich abgeschlossen! 🎉",
+                "success"
+              );
+              break;
+            case "failed":
+              openSnackbar(
+                "Challenge nicht geschafft. Beim nächsten Mal klappt es bestimmt! 💪",
+                "info"
+              );
+              break;
+            case "accepted":
+              openSnackbar("Challenge angenommen! Viel Erfolg! 💪", "success");
+              break;
+          }
         }
       );
     } catch (error) {
       console.error("Fehler beim Status-Update:", error);
+      openSnackbar("Fehler beim Aktualisieren der Challenge", "error");
     }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div className={styles.title}>{challenge.title}</div>
-          <motion.button
-            className={styles.editButton}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onEdit}
-          >
-            <MdModeEdit size={20} color="white" />
-          </motion.button>
-        </div>
-        <div className={styles.description}>{challenge.description}</div>
-        <div className={styles.goal}>{challenge.goal}</div>
-
-        {status === "pending" && (
-          <motion.div
-            className={styles.buttonContainer}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Button
-              onClick={() => handleStatusUpdate("accepted")}
-              className={`${styles.button} ${styles.primary}`}
-            >
-              Annehmen
-            </Button>
-            <Button
-              onClick={() => handleStatusUpdate("failed")}
-              className={`${styles.button} ${styles.secondary}`}
-            >
-              Ablehnen
-            </Button>
-          </motion.div>
-        )}
-
-        {status === "accepted" && (
-          <motion.div
-            className={styles.buttonContainer}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Button
-              onClick={() => handleStatusUpdate("completed")}
-              className={`${styles.button} ${styles.primary}`}
-            >
-              Geschafft
-            </Button>
-            <Button
-              onClick={() => handleStatusUpdate("failed")}
-              className={`${styles.button} ${styles.secondary}`}
-            >
-              Nicht geschafft
-            </Button>
-          </motion.div>
-        )}
-
-        {status === "completed" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className={styles.statusText}>🎉 Challenge gemeistert!</div>
-          </motion.div>
-        )}
-
-        {status === "failed" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className={styles.statusText}>
-              Vielleicht klappt es beim nächsten Mal! 💪
+    <div className={styles.listItem}>
+      <div className={styles.content}>
+        <div className={styles.mainInfo}>
+          <div className={styles.infoContainer}>
+            <div className={styles.infoGroup}>
+              <span className={styles.label}>Titel:</span>
+              <span className={styles.title}>{challenge.title}</span>
             </div>
-          </motion.div>
-        )}
+            <div className={styles.infoGroup}>
+              <span className={styles.label}>Beschreibung:</span>
+              <span className={styles.description}>
+                {challenge.description}
+              </span>
+            </div>
+            <div className={styles.infoGroup}>
+              <span className={styles.label}>Ziel:</span>
+              <span className={styles.goal}>{challenge.goal}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.actions}>
+          {status === "pending" && (
+            <>
+              <Button
+                onClick={() => handleStatusUpdate("accepted")}
+                className={styles.acceptButton}
+                variant="contained"
+              >
+                Annehmen
+              </Button>
+              <Button
+                onClick={() => handleStatusUpdate("failed")}
+                className={styles.rejectButton}
+                variant="contained"
+              >
+                Ablehnen
+              </Button>
+            </>
+          )}
+
+          {status === "accepted" && (
+            <>
+              <Button
+                onClick={() => handleStatusUpdate("completed")}
+                className={styles.acceptButton}
+                variant="contained"
+              >
+                Geschafft
+              </Button>
+              <Button
+                onClick={() => handleStatusUpdate("failed")}
+                className={styles.rejectButton}
+                variant="contained"
+              >
+                Nicht geschafft
+              </Button>
+            </>
+          )}
+
+          <IconButton onClick={handleClick} className={styles.menuButton}>
+            <MoreVert />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleEdit}>Bearbeiten</MenuItem>
+          </Menu>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

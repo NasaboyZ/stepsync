@@ -7,6 +7,17 @@ export interface WorkoutData {
   weight: number;
   repetitions: number;
   user_id?: number;
+  created_at?: string;
+}
+
+export interface WorkoutCardProps {
+  variant: "primary" | "secondary";
+  initialData?: WorkoutData;
+  isEditing?: boolean;
+  isLoading?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onSave?: (data: WorkoutData) => void;
 }
 
 export type DeleteWorkoutFunction = (

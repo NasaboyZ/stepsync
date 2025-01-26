@@ -5,7 +5,17 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/interfaces/challenges";
-import { Fab, Modal, TextField, Button } from "@mui/material";
+import {
+  Fab,
+  Modal,
+  TextField,
+  Button,
+  Typography,
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 import styles from "./challengesItems.module.css";
@@ -16,6 +26,7 @@ import { challengesSchema } from "@/validations/challenges-shema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createChallenge, updateChallenge } from "@/services/servicesChallenge";
+import { useSnackbarStore } from "@/store/snackbarStore";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -24,7 +35,7 @@ const emptyChallenge: CreateChallenge = {
 };
 
 export default function ChallengesItems() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [challenges, setChallenges] = useState<Challenge[]>([]) ;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
@@ -38,6 +49,10 @@ export default function ChallengesItems() {
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
   }>({});
+
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const { openSnackbar } = useSnackbarStore();
 
   useEffect(() => {
     const loadChallenges = async () => {
@@ -92,6 +107,18 @@ export default function ChallengesItems() {
           () => {
             setIsModalOpen(false);
 
+            if (newChallenge.status === "completed") {
+              openSnackbar(
+                "Challenge erfolgreich abgeschlossen! 🎉",
+                "success"
+              );
+            } else if (newChallenge.status === "failed") {
+              openSnackbar(
+                "Challenge nicht geschafft. Beim nächsten Mal klappt es bestimmt! 💪",
+                "info"
+              );
+            }
+
             const loadChallenges = async () => {
               const challengesData = await fetchChallenges(
                 session.accessToken!
@@ -115,6 +142,7 @@ export default function ChallengesItems() {
           router,
           () => {
             setIsModalOpen(false);
+            openSnackbar("Neue Challenge erstellt! 🎯", "success");
 
             const loadChallenges = async () => {
               const challengesData = await fetchChallenges(
@@ -137,8 +165,10 @@ export default function ChallengesItems() {
           }
         });
         setValidationErrors(errors);
+        openSnackbar("Bitte überprüfen Sie Ihre Eingaben", "error");
       } else {
         console.error("Fehler beim Speichern der Challenge:", error);
+        openSnackbar("Fehler beim Speichern der Challenge", "error");
       }
     }
   };
@@ -148,29 +178,73 @@ export default function ChallengesItems() {
     setIsModalOpen(true);
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setSelectedTab(newValue);
+  };
+
   if (loading) return <div>Lädt...</div>;
   if (error) return <div>Fehler: {error}</div>;
 
   return (
     <>
-      <div className={styles.challengesContainer}>
+      <Typography
+        variant="h4"
+        component="h1"
+        className={styles.challengeHeader}
+      >
+        Challenges
+      </Typography>
+
+      <Box className={styles.tabsContainer}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="challenge periods"
+          className={styles.tabs}
+          TabIndicatorProps={{
+            className: styles.tabIndicator,
+          }}
+        >
+          <Tab
+            label="Heute"
+            className={`${styles.tab} ${
+              selectedTab === 0 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Last 7 Days"
+            className={`${styles.tab} ${
+              selectedTab === 1 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Month"
+            className={`${styles.tab} ${
+              selectedTab === 2 ? styles.selected : ""
+            }`}
+          />
+        </Tabs>
+      </Box>
+
+      <Grid container spacing={2}>
         {challenges
           .filter((challenge) => challenge.status === "pending")
           .map((challenge) => (
-            <ChallengesCard
-              key={challenge.id}
-              variant="primary"
-              challenge={challenge}
-              onEdit={() => handleEditChallenge(challenge)}
-            />
+            <Grid item xs={12} key={challenge.id}>
+              <ChallengesCard
+                variant="primary"
+                challenge={challenge}
+                onEdit={() => handleEditChallenge(challenge)}
+              />
+            </Grid>
           ))}
-      </div>
+      </Grid>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className={styles.fabButton}
+        style={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}
       >
         <Fab
           color="primary"

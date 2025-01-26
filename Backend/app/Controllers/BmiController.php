@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\BMI;
+use App\Models\BmiHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,5 +63,18 @@ class BmiController
         $bmi->delete();
 
         return response()->json(['message' => 'BMI data deleted successfully']);
+    }
+
+    // Zeigt die BMI-Historie des Benutzers an
+    public function history()
+    {
+        $user = Auth::user();
+        $history = BmiHistory::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'history' => $history
+        ]);
     }
 }
