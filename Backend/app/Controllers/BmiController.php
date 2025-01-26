@@ -12,8 +12,8 @@ class BmiController
     // Zeigt die BMI-Daten des authentifizierten Benutzers an
     public function index()
     {
-        $user = Auth::user();  // Authentifizierter Benutzer
-        $bmi = $user->bmi;  // BMI über die Beziehung laden
+        $user = Auth::user();
+        $bmi = BMI::where('user_id', $user->id)->first(); 
 
         if (!$bmi) {
             return response()->json(['message' => 'No BMI data found'], 404);
@@ -35,8 +35,8 @@ class BmiController
             'weight' => 'required|numeric|min:20|max:300',
         ]);
 
-        $user = Auth::user();  // Authentifizierter Benutzer
-        $bmi = $user->bmi ?? new BMI();  // Lade den BMI oder erstelle einen neuen
+        $user = Auth::user();
+        $bmi = BMI::where('user_id', $user->id)->first() ?? new BMI();  // Expliziter Zugriff
 
         $bmi->height = $request->input('height');
         $bmi->weight = $request->input('weight');
@@ -54,7 +54,7 @@ class BmiController
     public function destroy()
     {
         $user = Auth::user();
-        $bmi = $user->bmi;
+        $bmi = BMI::where('user_id', $user->id)->first();  // Expliziter Zugriff
 
         if (!$bmi) {
             return response()->json(['message' => 'No BMI data found to delete'], 404);

@@ -3,8 +3,7 @@
 use App\Controllers\BlogpostsController;
 use App\Controllers\AuthController;
 use App\Controllers\ChallengesController;
-use App\Controllers\CommentsController;
-use App\Controllers\ExamplesController;
+
 use App\Controllers\MailsController;
 use App\Controllers\TagsController;
 use App\Controllers\UploadsController;

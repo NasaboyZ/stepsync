@@ -48,6 +48,7 @@ export const fetchUserData = async (token: string): Promise<UserProfile> => {
     height: data.height,
     weight: data.weight,
     goal: data.goal,
+    avatar: data.avatar,
     level: data.level,
     xp: data.xp,
     workouts: data.workouts,

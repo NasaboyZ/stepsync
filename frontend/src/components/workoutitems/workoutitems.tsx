@@ -99,19 +99,19 @@ export default function WorkoutItems() {
           }}
         >
           <Tab
-            label="Heute"
+            label="Alle"
             className={`${styles.tab} ${
               selectedTab === 0 ? styles.selected : ""
             }`}
           />
           <Tab
-            label="Last 7 Days"
+            label="Krafttraining"
             className={`${styles.tab} ${
               selectedTab === 1 ? styles.selected : ""
             }`}
           />
           <Tab
-            label="Month"
+            label="Cardio"
             className={`${styles.tab} ${
               selectedTab === 2 ? styles.selected : ""
             }`}
@@ -167,6 +167,7 @@ export default function WorkoutItems() {
             variant="primary"
             initialData={
               editingWorkout || {
+                workoutType: "Krafttraining",
                 category: "",
                 description: "",
                 weight: 0,

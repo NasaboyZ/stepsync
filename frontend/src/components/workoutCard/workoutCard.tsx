@@ -9,13 +9,20 @@ import {
   MenuItem,
   TextField,
   Button,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
 
+const WORKOUT_TYPES = ["Krafttraining", "Cardio"] as const;
+type WorkoutType = (typeof WORKOUT_TYPES)[number];
+
 interface WorkoutCardProps {
   variant: "primary" | "secondary";
   initialData?: {
+    workoutType: WorkoutType;
     category: string;
     description: string;
     weight: number;
@@ -26,6 +33,7 @@ interface WorkoutCardProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onSave?: (data: {
+    workoutType: WorkoutType;
     category: string;
     description: string;
     weight: number;
@@ -41,6 +49,9 @@ export function WorkoutCard({
   onSave,
 }: WorkoutCardProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [workoutType, setWorkoutType] = useState<WorkoutType>(
+    initialData?.workoutType || "Krafttraining"
+  );
   const [category, setCategory] = useState(initialData?.category || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -71,6 +82,7 @@ export function WorkoutCard({
   const handleSave = () => {
     if (onSave) {
       onSave({
+        workoutType,
         category,
         description,
         weight: Number(weight),
@@ -89,8 +101,23 @@ export function WorkoutCard({
           </Typography>
 
           <div className={styles.editForm}>
+            <FormControl fullWidth size="small" sx={{ mb: 2 }}>
+              <InputLabel>Trainingsart</InputLabel>
+              <Select
+                value={workoutType}
+                label="Trainingsart"
+                onChange={(e) => setWorkoutType(e.target.value as WorkoutType)}
+              >
+                {WORKOUT_TYPES.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
-              label="Kategorie"
+              label="Titel"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               variant="outlined"
@@ -107,7 +134,7 @@ export function WorkoutCard({
                 },
               }}
               fullWidth
-              placeholder="z.B. Krafttraining, Cardio..."
+              placeholder="z.B. Legpress, Squats, Benchpress..."
             />
 
             <TextField
@@ -158,6 +185,9 @@ export function WorkoutCard({
     <Card className={styles.listCard}>
       <div className={styles.workoutInfo}>
         <div className={styles.mainInfo}>
+          <Typography variant="body2" className={styles.workoutType}>
+            {initialData?.workoutType}
+          </Typography>
           <Typography variant="h6" className={styles.category}>
             {initialData?.category}
           </Typography>

@@ -23,13 +23,13 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
+// TODO: Implement count button by workout completet on the date time also immmer wenn ein workout als completed gesetzt wird sollte der count erhöht werden in der chart damit wir die frequency der workouts sehen können
 const WorkoutChart: React.FC = () => {
   const workoutData = [
-    { month: "Jan", frequency: 12 },
-    { month: "Feb", frequency: 15 },
-    { month: "Mar", frequency: 10 },
-    { month: "Apr", frequency: 14 },
+    { month: "Jan", frequency: 5 },
+    { month: "Feb", frequency: 3 },
+    { month: "Mar", frequency: 4 },
+    { month: "Apr", frequency: 3 },
     { month: "May", frequency: 8 },
     { month: "Jun", frequency: 16 },
     { month: "Jul", frequency: 13 },

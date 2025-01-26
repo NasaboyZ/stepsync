@@ -63,10 +63,7 @@ class User extends Model
   #[Hidden]
   public string $email_verified;
 
-  public function comments(): HasMany
-  {
-    return $this->hasMany(Comment::class);
-  }
+
 
   public function workouts(): HasMany
   {
@@ -93,15 +90,15 @@ class User extends Model
     return $this->hasMany(Image::class, 'user_id');
   }
 
-  // Beziehung zu Challenges mit Pivot-Informationen
+
   public function challenges(): BelongsToMany
   {
     return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id')
-      ->withPivot('status') // Zusätzliche Pivot-Daten
-      ->withTimestamps();  // Timestamps für die Pivot-Tabelle
+      ->withPivot('status')
+      ->withTimestamps();
   }
 
-  // Abrufen aktiver Challenges
+
   public function activeChallenges(): BelongsToMany
   {
     return $this->challenges()->wherePivot('status', 'pending');
