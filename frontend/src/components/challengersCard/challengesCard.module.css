@@ -166,20 +166,24 @@
 
 .acceptButton,
 .rejectButton {
-  color: white !important;
-  text-transform: none !important;
+  color: white;
+  text-transform: none;
 }
 
 .acceptButton {
-  background-color: var(--brown-dark) !important;
+  background-color: var(--brown-dark);
 }
 
 .rejectButton {
-  background-color: #d32f2f !important;
+  background-color: var(--red);
+}
+
+.completedButton {
+  background-color: var(--green);
 }
 
 .menuButton {
-  color: var(--white) !important;
+  color: var(--white);
 }
 
 @media (max-width: 600px) {

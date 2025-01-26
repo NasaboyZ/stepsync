@@ -35,7 +35,7 @@ const emptyChallenge: CreateChallenge = {
 };
 
 export default function ChallengesItems() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]) ;
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
@@ -248,11 +248,12 @@ export default function ChallengesItems() {
       >
         <Fab
           color="primary"
-          aria-label="add challenge"
+          aria-label="add workout"
           onClick={handleOpenModal}
           component={motion.button}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          className={styles.fabButton}
         >
           <FaPlus />
         </Fab>

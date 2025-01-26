@@ -130,7 +130,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
             <>
               <Button
                 onClick={() => handleStatusUpdate("completed")}
-                className={styles.acceptButton}
+                className={styles.completedButton}
                 variant="contained"
               >
                 Geschafft

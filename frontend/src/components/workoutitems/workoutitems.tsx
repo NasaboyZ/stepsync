@@ -83,9 +83,9 @@ export default function WorkoutItems() {
   };
 
   const filteredWorkouts = savedWorkouts.filter((workout) => {
-    if (selectedTab === 0) return true; // Alle Workouts
-    if (selectedTab === 1) return workout.workoutType === "Krafttraining";
-    if (selectedTab === 2) return workout.workoutType === "Cardio";
+    if (selectedTab === 0) return true;
+    if (selectedTab === 1) return workout.category === "krafttraining";
+    if (selectedTab === 2) return workout.category === "cardio";
     return true;
   });
 
@@ -158,6 +158,7 @@ export default function WorkoutItems() {
           component={motion.button}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          className={styles.fabButton}
         >
           <FaPlus />
         </Fab>
@@ -174,8 +175,8 @@ export default function WorkoutItems() {
             variant="primary"
             initialData={
               editingWorkout || {
-                workoutType: "Krafttraining",
-                category: "",
+                category: "krafttraining",
+                title: "",
                 description: "",
                 weight: 0,
                 repetitions: 0,
