@@ -20,6 +20,8 @@ Route::get('/tags', [TagsController::class, 'index']);
 Route::get('/challenges', [ChallengesController::class, 'index']);
 Route::post('/user', [UserController::class, 'create']);
 Route::post('/auth/verify', [UserController::class, 'verifyEmail']);
+Route::post('/forgot-password', [MailsController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [MailsController::class, 'resetPassword']);
 
 // user endpoints
 Route::middleware(['auth:sanctum'])->group(function () {

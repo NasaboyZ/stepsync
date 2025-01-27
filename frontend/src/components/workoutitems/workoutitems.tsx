@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import useSWR, { mutate } from "swr";
+import React, { useState, useEffect } from "react";
+
 import { Fab, Modal, Box, Grid, Tabs, Tab, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
@@ -19,6 +19,7 @@ import styles from "./workoutitems.module.css";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
+  const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
     null
@@ -26,13 +27,21 @@ export default function WorkoutItems() {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const { data: savedWorkouts = [] } = useSWR<WorkoutData[]>(
-    session?.accessToken ? "/api/workouts" : null,
-    () => fetchWorkouts(session?.accessToken ?? "")
-  );
+  useEffect(() => {
+    const loadWorkouts = async () => {
+      if (session?.accessToken) {
+        const workoutsData = await fetchWorkouts(session.accessToken);
+        setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
+      }
+    };
+    loadWorkouts();
+  }, [session]);
 
   const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingWorkout(null);
+  };
 
   const handleEdit = (workout: WorkoutData) => {
     setEditingWorkout(workout);
@@ -45,10 +54,17 @@ export default function WorkoutItems() {
         workoutId,
         session?.accessToken ?? undefined,
         router,
-        () => handleCloseModal()
+        () => {
+          handleCloseModal();
+          const loadWorkouts = async () => {
+            if (session?.accessToken) {
+              const workoutsData = await fetchWorkouts(session.accessToken);
+              setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
+            }
+          };
+          loadWorkouts();
+        }
       );
-
-      await mutate("/api/workouts");
     } catch (error) {
       console.error("Fehler beim Löschen des Workouts:", error);
     }
@@ -57,22 +73,47 @@ export default function WorkoutItems() {
   const handleSave = async (workoutData: WorkoutData) => {
     try {
       if (editingWorkout?.id) {
+        const updatedWorkoutData = {
+          ...workoutData,
+          id: editingWorkout.id,
+        };
+
         await updateWorkout(
-          workoutData,
+          updatedWorkoutData,
           session?.accessToken ?? undefined,
           router,
-          () => handleCloseModal()
+          () => {
+            setIsModalOpen(false);
+            const loadWorkouts = async () => {
+              if (session?.accessToken) {
+                const workoutsData = await fetchWorkouts(session.accessToken);
+                setSavedWorkouts(
+                  Array.isArray(workoutsData) ? workoutsData : []
+                );
+              }
+            };
+            loadWorkouts();
+          }
         );
       } else {
         await createWorkout(
           workoutData,
           session?.accessToken ?? undefined,
           router,
-          () => handleCloseModal()
+          () => {
+            setIsModalOpen(false);
+            const loadWorkouts = async () => {
+              if (session?.accessToken) {
+                const workoutsData = await fetchWorkouts(session.accessToken);
+                setSavedWorkouts(
+                  Array.isArray(workoutsData) ? workoutsData : []
+                );
+              }
+            };
+            loadWorkouts();
+          }
         );
       }
-
-      await mutate("/api/workouts");
     } catch (error) {
       console.error("Fehler beim Speichern des Workouts:", error);
     }

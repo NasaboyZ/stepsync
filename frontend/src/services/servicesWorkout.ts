@@ -1,5 +1,6 @@
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useSnackbarStore } from "@/store/snackbarStore";
 
 export const createWorkout = async (
   workoutData: WorkoutData,
@@ -8,7 +9,7 @@ export const createWorkout = async (
   onSuccess: () => void
 ) => {
   if (!workoutData || !accessToken) {
-    console.log("Keine Daten Verfügbar");
+    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
     return;
   }
   const payload = { ...workoutData };
@@ -21,18 +22,22 @@ export const createWorkout = async (
       },
       body: JSON.stringify(payload),
     });
-    //TODO: Snackbar einbauen für die fehler meldung für den user
+
     if (!response.ok) {
       throw new Error(`Fehler beim Speichern des Workouts: ${response.status}`);
     }
 
     await response.json().then(() => {
-      console.log("workout wurde erstellt");
+      useSnackbarStore
+        .getState()
+        .openSnackbar("Workout wurde erfolgreich erstellt", "success");
       onSuccess();
       router.push("/workout");
     });
   } catch (error) {
-    //TODO: fehler meldung für den user wenns sicht gespeichert werden kann
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Speichern des Workouts", "error");
     console.log("Fehler beim Speichern des Workouts", error);
   }
 };
@@ -44,7 +49,9 @@ export const updateWorkout = async (
   onSuccess: () => void
 ) => {
   if (!workoutData || !accessToken || !workoutData.id) {
-    console.log("Keine Daten verfügbar oder keine ID vorhanden");
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Keine Daten verfügbar oder keine ID vorhanden", "error");
     return;
   }
 
@@ -65,10 +72,15 @@ export const updateWorkout = async (
     }
 
     await response.json();
-    console.log("Workout wurde aktualisiert");
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Workout wurde erfolgreich aktualisiert", "success");
     onSuccess();
     router.push("/workout");
   } catch (error) {
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Aktualisieren des Workouts", "error");
     console.log("Fehler beim Aktualisieren des Workouts", error);
   }
 };
@@ -80,31 +92,34 @@ export const deleteWorkout = async (
   onSuccess: () => void
 ) => {
   if (!workoutId || !accessToken) {
-    console.log("Keine Daten Verfügbar");
+    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
     return;
   }
 
   try {
     const response = await fetch(`/api/delete-workout/${workoutId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
-    const data = await response.json();
-
-    //TODO: Snackbar einbauen für die fehler meldung für den user beim löschen des workouts
     if (!response.ok) {
+      const data = await response.json();
       throw new Error(
         `Fehler beim Löschen des Workouts: ${response.status}, ${data.message}`
       );
     }
 
-    await response.json().then(() => {
-      console.log("workout wurde gelöscht");
-      onSuccess();
-      // router.push("/workout");
-    });
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Workout wurde erfolgreich gelöscht", "success");
+    onSuccess();
+    router.push("/workout");
   } catch (error) {
-    //TODO: fehler meldung für den user wenns sicht gespeichert werden kann
-    console.log("Fehler beim Speichern des Workouts", error);
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Löschen des Workouts", "error");
+    console.log("Fehler beim Löschen des Workouts", error);
   }
 };
