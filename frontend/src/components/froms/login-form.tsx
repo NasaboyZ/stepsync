@@ -169,9 +169,13 @@ export const LoginForm = () => {
                   </Typography>
                 </motion.div>
               )}
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                Passwort vergessen? <a href="/forgot-password" style={{color: 'black'}}>Zurücksetzen</a>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Noch kein Konto?{" "}
+                <a href="/registration" style={{ color: "black" }}>
+                  Hier registrieren
+                </a>
               </Typography>
+
               <motion.div custom={2} variants={formFieldAnimation}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
