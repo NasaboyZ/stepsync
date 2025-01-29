@@ -82,25 +82,83 @@
 }
 
 .login-button:hover {
-  background-color: #9e8c75;
+  background-color: black;
 }
 
 /* Links */
 .login-links {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 16px;
 }
 
 .login-links p {
   margin: 0;
+  color: var(--black);
+  font-size: 14px;
 }
 
 .login-links a {
-  color: red;
+  color: black;
   text-decoration: none;
+  font-weight: bold;
   font-family: "--font-inter-regular";
 }
 
 .login-links a:hover {
   text-decoration: underline;
+}
+
+.form-container {
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--brown-light);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.form-title {
+  margin-bottom: 32px;
+  font-weight: bold;
+  color: white;
+}
+
+.text-field {
+  width: 100%;
+}
+
+.text-field :global(.MuiOutlinedInput-root) fieldset {
+  border-color: black;
+}
+
+.text-field :global(.MuiOutlinedInput-root:hover) fieldset {
+  border-color: black;
+}
+
+.text-field :global(.MuiOutlinedInput-root.Mui-focused) fieldset {
+  border-color: black;
+}
+
+.text-field :global(.MuiInputLabel-root) {
+  color: black;
+}
+
+.text-field :global(.MuiOutlinedInput-input) {
+  color: black;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--brown-dark);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 5px 2px rgba(0, 0, 0, 0.2);
 }

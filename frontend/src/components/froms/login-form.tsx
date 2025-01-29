@@ -18,6 +18,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import styles from "./login-form.module.css";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -92,18 +93,7 @@ export const LoginForm = () => {
   return (
     <Container maxWidth="xs">
       <motion.div initial="hidden" animate="visible" variants={fadeIn}>
-        <Box
-          sx={{
-            mt: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "var(--brown-light)",
-            borderRadius: 2,
-            p: 4,
-            boxShadow: 3,
-          }}
-        >
+        <Box className={styles["form-container"]}>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -112,11 +102,7 @@ export const LoginForm = () => {
             <Typography
               component="h1"
               variant="h4"
-              sx={{
-                mb: 4,
-                fontWeight: "bold",
-                color: "white",
-              }}
+              className={styles["form-title"]}
             >
               Anmelden
             </Typography>
@@ -140,25 +126,7 @@ export const LoginForm = () => {
                   error={!!form.formState.errors.email}
                   helperText={form.formState.errors.email?.message}
                   {...form.register("email")}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "black",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "black",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "black",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "black",
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      color: "black",
-                    },
-                  }}
+                  className={styles["text-field"]}
                 />
               </motion.div>
 
@@ -174,34 +142,18 @@ export const LoginForm = () => {
                   error={!!form.formState.errors.password}
                   helperText={form.formState.errors.password?.message}
                   {...form.register("password")}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "black",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "black",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "black",
-                      },
+                  className={styles["text-field"]}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      ),
                     },
-                    "& .MuiInputLabel-root": {
-                      color: "black",
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      color: "black",
-                    },
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    ),
                   }}
                 />
               </motion.div>
@@ -217,28 +169,28 @@ export const LoginForm = () => {
                   </Typography>
                 </motion.div>
               )}
-
+              <Typography variant="body2" sx={{ mt: 1 }}>
+                Passwort vergessen? <a href="/forgot-password" style={{color: 'black'}}>Zurücksetzen</a>
+              </Typography>
               <motion.div custom={2} variants={formFieldAnimation}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    marginTop: "24px",
-                    border: "none",
-                    borderRadius: "8px",
-                    background: "var(--brown-dark)",
-                    color: "white",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.2)",
-                  }}
+                  className={styles["submit-button"]}
                   type="submit"
                 >
                   Anmelden
                 </motion.button>
+              </motion.div>
+
+              <motion.div
+                custom={3}
+                variants={formFieldAnimation}
+                className={styles["login-links"]}
+              >
+                <Typography variant="body2">
+                  Noch kein Konto? <a href="/registration">Hier registrieren</a>
+                </Typography>
               </motion.div>
             </Box>
           </FormProvider>
