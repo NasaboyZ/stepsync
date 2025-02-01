@@ -14,6 +14,7 @@ import { useSnackbarStore } from "@/store/snackbarStore";
 import { Step1 } from "./registersteps/step1";
 import { Step2 } from "./registersteps/step2";
 import { Step3 } from "./registersteps/step3";
+import styles from "./register.module.css";
 
 export const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -153,7 +154,6 @@ export const RegisterForm = () => {
         return (
           <Step2
             form={{
-              register: form.register,
               formState: form.formState,
               setValue: form.setValue,
               watch: form.watch,
@@ -176,31 +176,21 @@ export const RegisterForm = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 4, mb: 4 }}>
+      <Box className={styles.container}>
         <LinearProgress
           variant="determinate"
           value={(currentStep / 3) * 100}
-          sx={{
-            mb: 4,
-            "& .MuiLinearProgress-bar": { backgroundColor: "var(--red)" },
-          }}
+          className={styles.progressBar}
         />
 
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {renderStepContent()}
-x
-          <Box
-            sx={{
-              mt: 3,
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 2,
-            }}
-          >
+
+          <Box className={styles.buttonContainer}>
             {currentStep > 1 && (
               <Button
                 variant="outlined"
-                sx={{ color: "white", borderColor: "white" }}
+                className={styles.backButton}
                 onClick={() => setCurrentStep((prev) => prev - 1)}
                 startIcon={<ArrowBack />}
               >
@@ -213,9 +203,7 @@ x
                 variant="contained"
                 onClick={handleNextStep}
                 fullWidth={currentStep === 1}
-                sx={{
-                  backgroundColor: "var(--brown-light)",
-                }}
+                className={styles.nextButton}
                 endIcon={<CheckCircle />}
                 disabled={!isCurrentStepValid()}
               >
@@ -225,11 +213,8 @@ x
               <Button
                 type="submit"
                 variant="contained"
-                fullWidth
+                className={styles.submitButton}
                 disabled={!isCurrentStepValid()}
-                sx={{
-                  backgroundColor: "var(--brown-light)",
-                }}
               >
                 Registrierung abschliessen
               </Button>

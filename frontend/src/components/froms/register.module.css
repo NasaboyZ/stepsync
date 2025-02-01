@@ -1,98 +1,145 @@
-.formWrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-
-  border-radius: 8px;
-
-  padding: 20px;
-  width: 100%;
-
-  margin: 0 auto;
+.container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-.progressbar {
-  color: var(--red);
-}
-.input {
-  width: 100%;
-
-  margin-bottom: 15px;
-
-  border-radius: 4px;
-  background-color: var(--white);
+.progressBar {
+  margin-bottom: 2rem;
 }
 
-.primaryButton {
-  background-color: #0070f3;
+.progressBar :global(.MuiLinearProgress-bar) {
+  background-color: var(--red);
+}
+
+.buttonContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.backButton {
   color: white;
-  border: none;
+  border-color: white;
 }
 
-.alreadyMember {
-  grid-column: span 2;
-  margin: 10px 0;
-  font-size: 14px;
-  text-align: center;
+.nextButton {
+  background-color: var(--brown-light);
 }
 
-/* Media Query für Tablets */
-@media (max-width: 768px) {
-  .formWrapper {
-    grid-template-columns: 1fr;
-    max-width: 500px;
-    padding: 15px;
-  }
-
-  .alreadyMember {
-    grid-column: 1;
-  }
+.submitButton {
+  background-color: var(--brown-light);
+  width: 100%;
 }
 
-/* Media Query für Mobilgeräte */
-@media (max-width: 480px) {
-  .formWrapper {
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .input {
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
+/* Gemeinsame Styles für Steps */
+.stepContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.goalCards {
+/* Step 1 Styles */
+.textField {
+  background-color: var(--brown-light);
+}
+
+.textField :global(.MuiInputLabel-root) {
+  color: white;
+}
+
+/* Step 2 Styles */
+.genderButtonContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.genderButton {
+  border-radius: 20px;
+  text-transform: none;
+  padding: 8px 24px;
+  border-color: var(--brown-light);
+}
+
+.genderButton.selected {
+  background-color: var(--brown-light);
+  color: white;
+}
+
+.genderButton.unselected {
+  background-color: white;
+  color: black;
+}
+
+.dateField {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.dateField :global(.MuiOutlinedInput-root fieldset) {
+  border-color: var(--brown-light);
+}
+
+.dateField :global(.MuiOutlinedInput-root:hover fieldset) {
+  border-color: var(--brown-light);
+}
+
+.dateField :global(.MuiOutlinedInput-root.Mui-focused fieldset) {
+  border-color: var(--brown-light);
+}
+
+/* Step 3 Styles */
+.slider {
+  color: var(--brown-light);
+}
+
+.slider :global(.MuiSlider-rail) {
+  background-color: white;
+}
+
+.sliderContainer {
+  margin-bottom: 1.5rem;
+}
+
+.sliderValueContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goalCardsContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin: 1rem 0;
 }
 
 .goalCard {
-  position: relative;
-  padding: 1.5rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  color: white;
+  position: relative;
 }
 
 .goalCard.selected {
-  border-color: #007bff;
-  background-color: rgba(0, 123, 255, 0.05);
+  background-color: var(--brown-light);
+}
+
+.goalCard.unselected {
+  background-color: #616161;
+}
+
+.goalCard:hover.unselected {
+  background-color: #757575;
+}
+
+.goalCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .checkmark {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  color: #007bff;
-  font-size: 1.2rem;
-}
-
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
+  top: 8px;
+  right: 8px;
+  color: var(--red);
 }

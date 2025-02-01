@@ -8,6 +8,7 @@ import {
   UseFormWatch,
   FormState,
 } from "react-hook-form";
+import styles from "../register.module.css";
 
 interface Step3Props {
   form: {
@@ -30,142 +31,118 @@ export const Step3: React.FC<Step3Props> = ({
   const height = watch("height") || 170;
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+    <Box className={styles.stepContainer}>
       <Box>
         <Typography variant="h5" gutterBottom>
-          Gewicht und Grösse
+          Grösse und Gewicht
         </Typography>
 
-        <Box sx={{ mt: 4 }}>
-          <Box sx={{ mb: 3 }}>
-            <Typography gutterBottom>Gewicht</Typography>
-            <Slider
-              value={weight}
-              onChange={(_, value) => {
-                setValue("weight", value as number, {
-                  shouldValidate: true,
-                });
-              }}
-              min={20}
-              max={200}
-              sx={{
-                color: "var(--brown-light)",
-                "& .MuiSlider-rail": {
-                  backgroundColor: "white",
-                },
-              }}
-            />
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography color="error" variant="caption">
-                {errors.weight?.message}
-              </Typography>
-              <Typography>{weight} kg</Typography>
-            </Box>
+        <Box className={styles.sliderContainer}>
+          <Typography gutterBottom>Grösse</Typography>
+          <Slider
+            value={height}
+            onChange={(_, value) =>
+              setValue("height", value as number, { shouldValidate: true })
+            }
+            min={50}
+            max={300}
+            className={styles.slider}
+          />
+          <Box className={styles.sliderValueContainer}>
+            <Typography color="error" variant="caption">
+              {errors.height?.message}
+            </Typography>
+            <Typography>{height} cm</Typography>
           </Box>
+        </Box>
 
-          <Box sx={{ mb: 3 }}>
-            <Typography gutterBottom>Grösse</Typography>
-            <Slider
-              value={height}
-              onChange={(_, value) => {
-                setValue("height", value as number, {
-                  shouldValidate: true,
-                });
-              }}
-              min={50}
-              max={250}
-              sx={{
-                color: "var(--brown-light)",
-                "& .MuiSlider-rail": {
-                  backgroundColor: "white",
-                },
-              }}
-            />
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography color="error" variant="caption">
-                {errors.height?.message}
-              </Typography>
-              <Typography>{height} cm</Typography>
-            </Box>
+        <Box className={styles.sliderContainer}>
+          <Typography gutterBottom>Gewicht</Typography>
+          <Slider
+            value={weight}
+            onChange={(_, value) =>
+              setValue("weight", value as number, { shouldValidate: true })
+            }
+            min={20}
+            max={500}
+            className={styles.slider}
+          />
+          <Box className={styles.sliderValueContainer}>
+            <Typography color="error" variant="caption">
+              {errors.weight?.message}
+            </Typography>
+            <Typography>{weight} kg</Typography>
           </Box>
         </Box>
       </Box>
 
-      {/* Fitness Goals */}
-      <Box>
-        <Typography variant="h5" gutterBottom>
-          Dein Fitness Ziel
-        </Typography>
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
-          {[
-            {
-              id: "lose_weight",
-              label: "Gewicht verlieren",
-              description:
-                "Starte deine Reise zum Gewichtsverlust mit personalisierten Trainingsplänen und Ernährungsberatung.",
-              icon: "🎯",
-            },
-            {
-              id: "build_muscle",
-              label: "Muskelaufbau",
-              description:
-                "Werde stärker und baue Muskeln auf mit maßgeschneiderten Übungen und Ernährungsplänen.",
-              icon: "💪",
-            },
-          ].map((goal) => (
-            <Card
-              key={goal.id}
-              onClick={() =>
-                setValue("goal", goal.id, { shouldValidate: true })
-              }
-              sx={{
-                cursor: "pointer",
-                backgroundColor:
-                  selectedGoal === goal.id ? "var(--brown-light)" : "grey.700",
-                color: "white",
-                position: "relative",
-                "&:hover": {
-                  backgroundColor:
-                    selectedGoal === goal.id
-                      ? "var(--brown-light)"
-                      : "grey.600",
-                },
-              }}
-            >
-              <CardContent>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-                >
-                  <Typography variant="h6">{goal.icon}</Typography>
-                  <Typography variant="h6">{goal.label}</Typography>
-                </Box>
-                <Typography variant="body2">{goal.description}</Typography>
-                {selectedGoal === goal.id && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 8,
-                      right: 8,
-                      color: "var(--red)",
-                    }}
-                  >
-                    ✓
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
-        {errors.goal && (
-          <Typography
-            color="error"
-            variant="caption"
-            sx={{ mt: 1, display: "block" }}
+      <Typography variant="h5" gutterBottom>
+        Was ist dein Ziel?
+      </Typography>
+      <Box className={styles.goalCardsContainer}>
+        {[
+          {
+            id: "lose_weight",
+            label: "Gewicht verlieren",
+            description:
+              "Starte deine Reise zum Gewichtsverlust mit personalisierten Trainingsplänen und Ernährungsberatung.",
+            icon: "🎯",
+          },
+          {
+            id: "build_muscle",
+            label: "Muskelaufbau",
+            description:
+              "Werde stärker und baue Muskeln auf mit maßgeschneiderten Übungen und Ernährungsplänen.",
+            icon: "💪",
+          },
+        ].map((goal) => (
+          <Card
+            key={goal.id}
+            onClick={() => setValue("goal", goal.id, { shouldValidate: true })}
+            className={`${styles.goalCard} ${
+              selectedGoal === goal.id ? styles.selected : styles.unselected
+            }`}
           >
-            {errors.goal.message}
-          </Typography>
-        )}
+            <CardContent>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <Typography variant="h6">{goal.icon}</Typography>
+                <Typography variant="h6">{goal.label}</Typography>
+              </Box>
+              <Typography variant="body2">{goal.description}</Typography>
+              {selectedGoal === goal.id && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    color: "var(--green, #4CAF50)",
+                    width: "24px",
+                    height: "24px",
+                    borderRadius: "50%",
+                    border: "2px solid currentColor",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  ✓
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        ))}
       </Box>
+      {errors.goal && (
+        <Typography
+          color="error"
+          variant="caption"
+          sx={{ mt: 1, display: "block" }}
+        >
+          {errors.goal.message}
+        </Typography>
+      )}
     </Box>
   );
 };

@@ -1,17 +1,21 @@
 "use client";
 
-import { Box, Typography, TextField, Button } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { RegisterFormSchema } from "@/validations/register-form-schema";
 import {
-  type UseFormRegister,
   type FormState,
   type UseFormSetValue,
   type UseFormWatch,
 } from "react-hook-form";
+import styles from "../register.module.css";
+import { DateField } from "@mui/x-date-pickers/DateField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import "dayjs/locale/de";
 
 interface Step2Props {
   form: {
-    register: UseFormRegister<RegisterFormSchema>;
     formState: FormState<RegisterFormSchema>;
     setValue: UseFormSetValue<RegisterFormSchema>;
     watch: UseFormWatch<RegisterFormSchema>;
@@ -20,7 +24,6 @@ interface Step2Props {
 
 export const Step2 = ({
   form: {
-    register,
     formState: { errors },
     setValue,
     watch,
@@ -29,7 +32,7 @@ export const Step2 = ({
   const selectedGender = watch("gender");
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+    <Box className={styles.stepContainer}>
       <Typography variant="h5" gutterBottom>
         Personalisiere dein Konto
       </Typography>
@@ -38,7 +41,7 @@ export const Step2 = ({
       </Typography>
 
       {/* Gender Selection */}
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box className={styles.genderButtonContainer}>
         {[
           { id: "female", label: "Weiblich" },
           { id: "male", label: "Männlich" },
@@ -50,21 +53,9 @@ export const Step2 = ({
             onClick={() =>
               setValue("gender", option.id, { shouldValidate: true })
             }
-            sx={{
-              borderRadius: "20px",
-              textTransform: "none",
-              px: 3,
-              py: 1,
-              backgroundColor:
-                selectedGender === option.id ? "var(--brown-light)" : "white",
-              borderColor: "var(--brown-light)",
-              color: selectedGender === option.id ? "white" : "black",
-              "&:hover": {
-                backgroundColor:
-                  selectedGender === option.id ? "var(--brown-light)" : "white",
-                borderColor: "var(--brown-light)",
-              },
-            }}
+            className={`${styles.genderButton} ${
+              selectedGender === option.id ? styles.selected : styles.unselected
+            }`}
           >
             {option.label}
           </Button>
@@ -76,34 +67,34 @@ export const Step2 = ({
         </Typography>
       )}
 
-      {/* Birthdate */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Typography variant="body1" sx={{ mb: 1 }}>
           Geburtsdatum
         </Typography>
-        <TextField
-          {...register("date_of_birth")}
-          type="date"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          error={!!errors.date_of_birth}
-          helperText={errors.date_of_birth?.message}
-          sx={{
-            backgroundColor: "white",
-            borderRadius: 1,
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "var(--brown-light)",
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+          <DateField
+            value={
+              watch("date_of_birth") ? dayjs(watch("date_of_birth")) : null
+            }
+            onChange={(newValue) => {
+              if (newValue && newValue.isValid()) {
+                setValue("date_of_birth", newValue.format("YYYY-MM-DD"), {
+                  shouldValidate: true,
+                });
+              } else {
+                setValue("date_of_birth", "", { shouldValidate: true });
+              }
+            }}
+            slotProps={{
+              textField: {
+                error: !!errors.date_of_birth,
+                helperText: errors.date_of_birth?.message,
+                fullWidth: true,
+                className: styles.dateField,
               },
-              "&:hover fieldset": {
-                borderColor: "var(--brown-light)",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "var(--brown-light)",
-              },
-            },
-          }}
-        />
+            }}
+          />
+        </LocalizationProvider>
       </Box>
     </Box>
   );

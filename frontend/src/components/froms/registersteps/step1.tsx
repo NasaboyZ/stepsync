@@ -16,6 +16,21 @@ interface Step1Props {
   setShowPassword: (show: boolean) => void;
 }
 
+const textFieldStyle = {
+  backgroundColor: "var(--brown-light)",
+  "& .MuiInputLabel-root": {
+    color: "white",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "white",
+    },
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "white",
+  },
+};
+
 export const Step1: React.FC<Step1Props> = ({
   form,
   showPassword,
@@ -31,23 +46,13 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("first_name")}
       error={!!form.formState.errors.first_name}
       helperText={form.formState.errors.first_name?.message || ""}
-      sx={{
-        backgroundColor: "var(--brown-light)",
-        "& .MuiInputLabel-root": {
-          color: "white",
-        },
-      }}
+      sx={textFieldStyle}
     />
     <TextField
       fullWidth
       label="Nachname"
       {...form.register("last_name")}
-      sx={{
-        backgroundColor: "var(--brown-light)",
-        "& .MuiInputLabel-root": {
-          color: "white",
-        },
-      }}
+      sx={textFieldStyle}
       error={!!form.formState.errors.last_name}
       helperText={form.formState.errors.last_name?.message || ""}
     />
@@ -58,12 +63,7 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("email")}
       error={!!form.formState.errors.email}
       helperText={form.formState.errors.email?.message || ""}
-      sx={{
-        backgroundColor: "var(--brown-light)",
-        "& .MuiInputLabel-root": {
-          color: "white",
-        },
-      }}
+      sx={textFieldStyle}
     />
     <TextField
       fullWidth
@@ -71,12 +71,7 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("username")}
       error={!!form.formState.errors.username}
       helperText={form.formState.errors.username?.message || ""}
-      sx={{
-        backgroundColor: "var(--brown-light)",
-        "& .MuiInputLabel-root": {
-          color: "white",
-        },
-      }}
+      sx={textFieldStyle}
     />
     <TextField
       fullWidth
@@ -85,12 +80,7 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("password")}
       error={!!form.formState.errors.password}
       helperText={form.formState.errors.password?.message || ""}
-      sx={{
-        backgroundColor: "var(--brown-light)",
-        "& .MuiInputLabel-root": {
-          color: "white",
-        },
-      }}
+      sx={textFieldStyle}
       InputProps={{
         endAdornment: (
           <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
