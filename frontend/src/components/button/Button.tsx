@@ -5,6 +5,7 @@ interface ButtonProps {
   onClick?: () => void;
   style: ButtonStyle;
   type?: "submit" | "button";
+  href?: string;
 }
 
 export enum ButtonStyle {
@@ -17,7 +18,19 @@ export function Button({
   onClick,
   style,
   type = "button",
+  href,
 }: ButtonProps) {
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={`${Style.herosection__mehrerfahrenBTN} ${Style[style]}`}
+      >
+        {label}
+      </a>
+    );
+  }
+
   return (
     <button
       className={`${Style.herosection__mehrerfahrenBTN} ${Style[style]}`}

@@ -82,17 +82,22 @@ export default function WorkoutItems() {
           updatedWorkoutData,
           session?.accessToken ?? undefined,
           router,
-          () => {
+          (updatedWorkout) => {
+            setSavedWorkouts((prevWorkouts) => {
+              const workoutIndex = prevWorkouts.findIndex(
+                (w) => w.id === editingWorkout.id
+              );
+              if (workoutIndex === -1) return prevWorkouts;
+
+              const newWorkouts = [...prevWorkouts];
+              newWorkouts[workoutIndex] = {
+                ...updatedWorkout,
+                created_at: prevWorkouts[workoutIndex].created_at,
+              };
+              return newWorkouts;
+            });
             setIsModalOpen(false);
-            const loadWorkouts = async () => {
-              if (session?.accessToken) {
-                const workoutsData = await fetchWorkouts(session.accessToken);
-                setSavedWorkouts(
-                  Array.isArray(workoutsData) ? workoutsData : []
-                );
-              }
-            };
-            loadWorkouts();
+            setEditingWorkout(null);
           }
         );
       } else {
@@ -100,17 +105,16 @@ export default function WorkoutItems() {
           workoutData,
           session?.accessToken ?? undefined,
           router,
-          () => {
+          (newWorkout) => {
+            setSavedWorkouts((prevWorkouts) => [
+              ...prevWorkouts,
+              {
+                ...newWorkout,
+                created_at: new Date().toISOString(),
+              },
+            ]);
             setIsModalOpen(false);
-            const loadWorkouts = async () => {
-              if (session?.accessToken) {
-                const workoutsData = await fetchWorkouts(session.accessToken);
-                setSavedWorkouts(
-                  Array.isArray(workoutsData) ? workoutsData : []
-                );
-              }
-            };
-            loadWorkouts();
+            setEditingWorkout(null);
           }
         );
       }
@@ -123,12 +127,18 @@ export default function WorkoutItems() {
     setSelectedTab(newValue);
   };
 
-  const filteredWorkouts = savedWorkouts.filter((workout) => {
-    if (selectedTab === 0) return true;
-    if (selectedTab === 1) return workout.category === "krafttraining";
-    if (selectedTab === 2) return workout.category === "cardio";
-    return true;
-  });
+  const memoizedFilteredWorkouts = React.useMemo(() => {
+    return savedWorkouts.filter((workout) => {
+      if (selectedTab === 0) return true;
+      if (selectedTab === 1) return workout.category === "krafttraining";
+      if (selectedTab === 2) return workout.category === "cardio";
+      return true;
+    });
+  }, [savedWorkouts, selectedTab]);
+
+  useEffect(() => {
+    console.log("Workouts wurden aktualisiert:", savedWorkouts);
+  }, [savedWorkouts]);
 
   return (
     <>
@@ -168,9 +178,9 @@ export default function WorkoutItems() {
       </Box>
 
       <Grid container spacing={2}>
-        {filteredWorkouts && filteredWorkouts.length > 0 ? (
-          filteredWorkouts.map((workout, index) => (
-            <Grid item xs={12} key={workout.id || index}>
+        {memoizedFilteredWorkouts && memoizedFilteredWorkouts.length > 0 ? (
+          memoizedFilteredWorkouts.map((workout, index) => (
+            <Grid item xs={12} key={`${workout.id}-${index}`}>
               <WorkoutCard
                 variant="primary"
                 initialData={workout}

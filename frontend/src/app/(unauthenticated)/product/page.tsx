@@ -1,11 +1,10 @@
-import SectionItems from "@/components/ContentSection/contentSectionItems/sectionItems";
+import SectionItems from "@/components/contentSectionItems/sectionItems";
 
 export default function ProductPage() {
   return (
     <>
-      
       <SectionItems pageKey="productTeaser" title="Was wir anbieten" />
-      <SectionItems pageKey="productPage" title="warum wir Stepsync"/>
+      <SectionItems pageKey="productPage" title="warum wir Stepsync" />
     </>
   );
 }

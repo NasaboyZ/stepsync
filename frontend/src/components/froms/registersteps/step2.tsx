@@ -1,14 +1,13 @@
 "use client";
 
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
+import { Box, Typography, TextField, Button } from "@mui/material";
+import { RegisterFormSchema } from "@/validations/register-form-schema";
 import {
   type UseFormRegister,
   type FormState,
   type UseFormSetValue,
   type UseFormWatch,
 } from "react-hook-form";
-import { RegisterFormSchema } from "@/validations/register-form-schema";
 
 interface Step2Props {
   form: {
@@ -19,76 +18,93 @@ interface Step2Props {
   };
 }
 
-const goalOptions = [
-  {
-    id: "muscle",
-    title: "Muskelaufbau",
-    description: "Baue Muskelmasse auf und werde stärker und gesünder",
-    icon: "💪",
-  },
-  {
-    id: "weight_loss",
-    title: "Gewicht verlieren",
-    description:
-      "Fokussiere dich auf kalorienverbrennende Übungen, um Gewicht zu verlieren und definiert zu werden",
-    icon: "🏃",
-  },
-];
-
 export const Step2 = ({
   form: {
+    register,
     formState: { errors },
     setValue,
     watch,
   },
 }: Step2Props) => {
-  const selectedGoal = watch("goal");
+  const selectedGender = watch("gender");
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Wähle dein Ziel
+        Personalisiere dein Konto
       </Typography>
-      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
-        {goalOptions.map((option) => (
-          <Card
+      <Typography variant="body1" color="white">
+        Lass uns deine Erfahrung besser machen. Erzähl uns mehr über dich.
+      </Typography>
+
+      {/* Gender Selection */}
+      <Box sx={{ display: "flex", gap: 2 }}>
+        {[
+          { id: "female", label: "Weiblich" },
+          { id: "male", label: "Männlich" },
+          { id: "other", label: "Non-binary" },
+        ].map((option) => (
+          <Button
             key={option.id}
-            sx={{
-              cursor: "pointer",
-              border: selectedGoal === option.id ? 2 : 1,
-              borderColor:
-                selectedGoal === option.id ? "primary.main" : "grey.300",
-              "&:hover": { borderColor: "primary.main" },
-              position: "relative",
-            }}
+            variant={selectedGender === option.id ? "contained" : "outlined"}
             onClick={() =>
-              setValue("goal", option.id, { shouldValidate: true })
+              setValue("gender", option.id, { shouldValidate: true })
             }
+            sx={{
+              borderRadius: "20px",
+              textTransform: "none",
+              px: 3,
+              py: 1,
+              backgroundColor:
+                selectedGender === option.id ? "var(--brown-light)" : "white",
+              borderColor: "var(--brown-light)",
+              color: selectedGender === option.id ? "white" : "black",
+              "&:hover": {
+                backgroundColor:
+                  selectedGender === option.id ? "var(--brown-light)" : "white",
+                borderColor: "var(--brown-light)",
+              },
+            }}
           >
-            <CardContent>
-              {selectedGoal === option.id && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    color: "primary.main",
-                  }}
-                >
-                  <CheckCircle />
-                </Box>
-              )}
-              <Typography variant="h6">{option.title}</Typography>
-              <Typography variant="body2">{option.description}</Typography>
-            </CardContent>
-          </Card>
+            {option.label}
+          </Button>
         ))}
       </Box>
-      {errors.goal && (
+      {errors.gender && (
         <Typography color="error" variant="caption">
-          {errors.goal.message}
+          {errors.gender.message}
         </Typography>
       )}
+
+      {/* Birthdate */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Typography variant="body1" sx={{ mb: 1 }}>
+          Geburtsdatum
+        </Typography>
+        <TextField
+          {...register("date_of_birth")}
+          type="date"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.date_of_birth}
+          helperText={errors.date_of_birth?.message}
+          sx={{
+            backgroundColor: "white",
+            borderRadius: 1,
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "var(--brown-light)",
+              },
+              "&:hover fieldset": {
+                borderColor: "var(--brown-light)",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "var(--brown-light)",
+              },
+            },
+          }}
+        />
+      </Box>
     </Box>
   );
 };

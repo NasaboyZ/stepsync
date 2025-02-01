@@ -1,20 +1,16 @@
 import React from "react";
 import { Box, Typography, TextField, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { RegisterFormInputs } from "@/types/interfaces/registerForm";
-import { UseFormRegister } from "react-hook-form";
+import { RegisterFormSchema } from "@/validations/register-form-schema";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 interface Step1Props {
   form: {
-    register: UseFormRegister<RegisterFormInputs>;
+    register: UseFormRegister<RegisterFormSchema>;
     formState: {
-      errors: Partial<Record<keyof RegisterFormInputs, { message?: string }>>;
+      errors: Partial<Record<keyof RegisterFormSchema, { message?: string }>>;
     };
-    setValue: (
-      name: keyof RegisterFormInputs,
-      value: string,
-      options: { shouldValidate: boolean; shouldDirty: boolean }
-    ) => void;
+    setValue: UseFormSetValue<RegisterFormSchema>;
   };
   showPassword: boolean;
   setShowPassword: (show: boolean) => void;
@@ -36,40 +32,24 @@ export const Step1: React.FC<Step1Props> = ({
       error={!!form.formState.errors.first_name}
       helperText={form.formState.errors.first_name?.message || ""}
       sx={{
-        backgroundColor: "white",
+        backgroundColor: "var(--brown-light)",
         "& .MuiInputLabel-root": {
-          color: "black",
-        },
-        "& .MuiInputLabel-root.Mui-focused": {
           color: "white",
         },
-        "& .MuiInputLabel-root.MuiFormLabel-filled": {
-          color: "white",
-        },
-        "& .MuiInputBase-root": {
-          height: "56px",
-        },
-      }}
-      onChange={(e) => {
-        form.setValue("first_name", e.target.value, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
       }}
     />
     <TextField
       fullWidth
       label="Nachname"
       {...form.register("last_name")}
+      sx={{
+        backgroundColor: "var(--brown-light)",
+        "& .MuiInputLabel-root": {
+          color: "white",
+        },
+      }}
       error={!!form.formState.errors.last_name}
       helperText={form.formState.errors.last_name?.message || ""}
-      sx={{ backgroundColor: "white" }}
-      onChange={(e) => {
-        form.setValue("last_name", e.target.value, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-      }}
     />
     <TextField
       fullWidth
@@ -78,12 +58,24 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("email")}
       error={!!form.formState.errors.email}
       helperText={form.formState.errors.email?.message || ""}
-      sx={{ backgroundColor: "white" }}
-      onChange={(e) => {
-        form.setValue("email", e.target.value, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
+      sx={{
+        backgroundColor: "var(--brown-light)",
+        "& .MuiInputLabel-root": {
+          color: "white",
+        },
+      }}
+    />
+    <TextField
+      fullWidth
+      label="Benutzername"
+      {...form.register("username")}
+      error={!!form.formState.errors.username}
+      helperText={form.formState.errors.username?.message || ""}
+      sx={{
+        backgroundColor: "var(--brown-light)",
+        "& .MuiInputLabel-root": {
+          color: "white",
+        },
       }}
     />
     <TextField
@@ -93,24 +85,18 @@ export const Step1: React.FC<Step1Props> = ({
       {...form.register("password")}
       error={!!form.formState.errors.password}
       helperText={form.formState.errors.password?.message || ""}
-      sx={{ backgroundColor: "white" }}
-      slotProps={{
-        input: {
-          endAdornment: (
-            <IconButton
-              onClick={() => setShowPassword(!showPassword)}
-              edge="end"
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          ),
+      sx={{
+        backgroundColor: "var(--brown-light)",
+        "& .MuiInputLabel-root": {
+          color: "white",
         },
       }}
-      onChange={(e) => {
-        form.setValue("password", e.target.value, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
+      InputProps={{
+        endAdornment: (
+          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        ),
       }}
     />
   </Box>

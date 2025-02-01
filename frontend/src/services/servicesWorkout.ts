@@ -6,7 +6,7 @@ export const createWorkout = async (
   workoutData: WorkoutData,
   accessToken: string | undefined,
   router: AppRouterInstance,
-  onSuccess: () => void
+  onSuccess: (newWorkout: WorkoutData) => void
 ) => {
   if (!workoutData || !accessToken) {
     useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
@@ -27,13 +27,12 @@ export const createWorkout = async (
       throw new Error(`Fehler beim Speichern des Workouts: ${response.status}`);
     }
 
-    await response.json().then(() => {
-      useSnackbarStore
-        .getState()
-        .openSnackbar("Workout wurde erfolgreich erstellt", "success");
-      onSuccess();
-      router.push("/workout");
-    });
+    const newWorkout = await response.json();
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Workout wurde erfolgreich erstellt", "success");
+    onSuccess(newWorkout);
+    router.push("/workout");
   } catch (error) {
     useSnackbarStore
       .getState()
@@ -46,7 +45,7 @@ export const updateWorkout = async (
   workoutData: WorkoutData,
   accessToken: string | undefined,
   router: AppRouterInstance,
-  onSuccess: () => void
+  onSuccess: (updatedWorkout: WorkoutData) => void
 ) => {
   if (!workoutData || !accessToken || !workoutData.id) {
     useSnackbarStore
@@ -71,11 +70,11 @@ export const updateWorkout = async (
       );
     }
 
-    await response.json();
+    const updatedWorkout = await response.json();
     useSnackbarStore
       .getState()
       .openSnackbar("Workout wurde erfolgreich aktualisiert", "success");
-    onSuccess();
+    onSuccess(updatedWorkout);
     router.push("/workout");
   } catch (error) {
     useSnackbarStore

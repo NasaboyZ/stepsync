@@ -20,7 +20,11 @@ export default function HeroItems() {
           whileHover={{ scale: [null, 1.5, 1.4] }}
           transition={{ duration: 0.3 }}
         >
-          <Button label="Registrieren" style={ButtonStyle.SECONDARY}></Button>
+          <Button
+            label="Registrieren"
+            style={ButtonStyle.SECONDARY}
+            href="/registration"
+          ></Button>
         </motion.div>
 
         <motion.div
