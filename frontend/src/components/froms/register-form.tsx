@@ -34,8 +34,8 @@ export const RegisterForm = () => {
       goal: "",
       gender: "",
       date_of_birth: "",
-      height: 170,
-      weight: 70,
+      height: 50,
+      weight: 20,
     },
   });
 

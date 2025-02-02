@@ -12,6 +12,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Box,
 } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
@@ -36,6 +37,7 @@ export function WorkoutCard({
   const [repetitions, setRepetitions] = useState(
     initialData?.repetitions?.toString() || ""
   );
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -65,6 +67,10 @@ export function WorkoutCard({
         repetitions: Number(repetitions),
       });
     }
+  };
+
+  const handleToggleComplete = () => {
+    setIsCompleted(!isCompleted);
   };
 
   // Formular für das Modal
@@ -177,6 +183,29 @@ export function WorkoutCard({
               {new Date(initialData.created_at).toLocaleDateString()}
             </Typography>
           )}
+        </div>
+
+        <div
+          className={styles.checkboxContainer}
+          onClick={handleToggleComplete}
+        >
+          <Box
+            sx={{
+              width: "24px",
+              height: "24px",
+              borderRadius: "50%",
+              border: "2px solid #fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: isCompleted ? "var(--green, #4CAF50)" : "#fff",
+              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#fff",
+              marginRight: "12px",
+            }}
+          >
+            ✓
+          </Box>
         </div>
 
         <div className={styles.actions}>
