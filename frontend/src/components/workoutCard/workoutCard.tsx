@@ -9,9 +9,6 @@ import {
   MenuItem,
   TextField,
   Button,
-  Select,
-  FormControl,
-  InputLabel,
   Box,
 } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
@@ -26,9 +23,7 @@ export function WorkoutCard({
   onSave,
 }: WorkoutCardProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [category, setCategory] = useState<WorkoutData["category"]>(
-    initialData?.category || "krafttraining"
-  );
+
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -49,23 +44,30 @@ export function WorkoutCard({
 
   const handleEdit = () => {
     handleClose();
-    if (onEdit) onEdit();
+    if (typeof onEdit === "function") {
+      onEdit();
+    }
   };
 
   const handleDelete = () => {
     handleClose();
-    if (onDelete) onDelete();
+    if (typeof onDelete === "function") {
+      onDelete();
+    }
   };
 
   const handleSave = () => {
-    if (onSave) {
-      onSave({
-        category,
+    if (typeof onSave === "function" && initialData) {
+      const workoutData: WorkoutData = {
+        category: initialData.category,
         title,
         description,
         weight: Number(weight),
         repetitions: Number(repetitions),
-      });
+        distance: initialData.distance,
+        distanceUnit: initialData.distanceUnit,
+      };
+      onSave(workoutData);
     }
   };
 
@@ -73,7 +75,6 @@ export function WorkoutCard({
     setIsCompleted(!isCompleted);
   };
 
-  // Formular für das Modal
   if (isEditing) {
     return (
       <Card className={styles.listCard}>
@@ -83,20 +84,6 @@ export function WorkoutCard({
           </Typography>
 
           <div className={styles.editForm}>
-            <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-              <InputLabel>Trainingsart</InputLabel>
-              <Select
-                value={category}
-                label="Trainingsart"
-                onChange={(e) =>
-                  setCategory(e.target.value as WorkoutData["category"])
-                }
-              >
-                <MenuItem value="krafttraining">Krafttraining</MenuItem>
-                <MenuItem value="cardio">Cardio</MenuItem>
-              </Select>
-            </FormControl>
-
             <TextField
               label="Titel"
               value={title}
@@ -107,11 +94,19 @@ export function WorkoutCard({
                 "& fieldset": {
                   borderColor: "white",
                 },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
+                "&:hover fieldset": {
+                  borderColor: "white ",
+                },
+                "& .Mui-focused fieldset": {
+                  borderColor: "white ",
                 },
                 "& .MuiInputLabel-root": {
                   color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
                 },
               }}
               fullWidth
@@ -124,6 +119,25 @@ export function WorkoutCard({
               onChange={(e) => setDescription(e.target.value)}
               variant="outlined"
               size="small"
+              sx={{
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white ",
+                },
+                "& .Mui-focused fieldset": {
+                  borderColor: "white ",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
               fullWidth
               placeholder="Beschreibe dein Workout..."
             />
@@ -136,6 +150,25 @@ export function WorkoutCard({
                 type="number"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldsset": {
+                    borderColor: "white ",
+                  },
+                  "& .Mui-focused fieldset": {
+                    borderColor: "white ",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                }}
               />
               <TextField
                 label="Wiederholungen"
@@ -144,6 +177,25 @@ export function WorkoutCard({
                 type="number"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white ",
+                  },
+                  "& .Mui-focused fieldset": {
+                    borderColor: "white ",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                }}
               />
             </div>
 
@@ -167,7 +219,9 @@ export function WorkoutCard({
       <div className={styles.workoutInfo}>
         <div className={styles.mainInfo}>
           <Typography variant="body2" className={styles.workoutType}>
-            {category === "krafttraining" ? "Krafttraining" : "Cardio"}
+            {initialData?.category === "krafttraining"
+              ? "Krafttraining"
+              : "Cardio"}
           </Typography>
           <Typography variant="h6" className={styles.category}>
             {title}

@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 
-import { Fab, Modal, Box, Grid, Tabs, Tab, Typography } from "@mui/material";
-import { motion } from "framer-motion";
-import { FaPlus } from "react-icons/fa";
+import { Box, Grid, Tabs, Tab, Typography, Button } from "@mui/material";
+
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
@@ -16,6 +15,7 @@ import {
 } from "@/services/servicesWorkout";
 import { useRouter } from "next/navigation";
 import styles from "./workoutitems.module.css";
+import { WorkoutModal } from "../workoutModal/workoutModal";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
@@ -23,6 +23,9 @@ export default function WorkoutItems() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
     null
+  );
+  const [modalType, setModalType] = useState<"krafttraining" | "cardio">(
+    "krafttraining"
   );
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -37,14 +40,15 @@ export default function WorkoutItems() {
     loadWorkouts();
   }, [session]);
 
-  const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingWorkout(null);
+    setModalType("krafttraining");
   };
 
   const handleEdit = (workout: WorkoutData) => {
     setEditingWorkout(workout);
+    setModalType(workout.category);
     setIsModalOpen(true);
   };
 
@@ -146,35 +150,70 @@ export default function WorkoutItems() {
         Workouts
       </Typography>
 
-      <Box className={styles.tabsContainer}>
+      <Box
+        className={styles.tabsContainer}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
           aria-label="workout periods"
           className={styles.tabs}
           TabIndicatorProps={{
-            className: styles.tabIndicator,
+            style: {
+              backgroundColor: "#E31E24",
+              height: "2px",
+            },
           }}
         >
           <Tab
             label="Alle"
-            className={`${styles.tab} ${
-              selectedTab === 0 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 0 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 0 ? 600 : 400,
+              "&:hover": {
+                color: "#E31E24",
+              },
+            }}
           />
           <Tab
             label="Krafttraining"
-            className={`${styles.tab} ${
-              selectedTab === 1 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 1 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 1 ? 600 : 400,
+              "&:hover": {
+                color: "#E31E24",
+              },
+            }}
           />
           <Tab
             label="Cardio"
-            className={`${styles.tab} ${
-              selectedTab === 2 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 2 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 2 ? 600 : 400,
+              "&:hover": {
+                color: "#E31E24",
+              },
+            }}
           />
         </Tabs>
+
+        <Box>
+          <Button
+            variant="contained"
+            onClick={() => setIsModalOpen(true)}
+            className={styles.newWorkoutButton}
+          >
+            Neues Workout
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={2}>
@@ -196,48 +235,13 @@ export default function WorkoutItems() {
         )}
       </Grid>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        style={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}
-      >
-        <Fab
-          color="primary"
-          aria-label="add workout"
-          onClick={handleOpenModal}
-          component={motion.button}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className={styles.fabButton}
-        >
-          <FaPlus />
-        </Fab>
-      </motion.div>
-
-      <Modal
-        open={isModalOpen}
+      <WorkoutModal
+        isOpen={isModalOpen}
         onClose={handleCloseModal}
-        aria-labelledby="workout-modal"
-        className={styles.modal}
-      >
-        <Box className={styles.modalContent}>
-          <WorkoutCard
-            variant="primary"
-            initialData={
-              editingWorkout || {
-                category: "krafttraining",
-                title: "",
-                description: "",
-                weight: 0,
-                repetitions: 0,
-              }
-            }
-            isEditing={true}
-            onSave={handleSave}
-          />
-        </Box>
-      </Modal>
+        onSave={handleSave}
+        editingWorkout={editingWorkout}
+        modalType={modalType}
+      />
     </>
   );
 }

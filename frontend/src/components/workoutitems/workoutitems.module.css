@@ -6,10 +6,11 @@
 
 .tabsContainer {
   margin-bottom: 1rem;
+  padding: 0 2rem;
 }
 
 .tabs {
-  border-bottom: 3px solid var(--red);
+  border-bottom: 2px solid var(--red);
   margin-top: 1rem;
   padding-bottom: 8px;
 }
@@ -55,3 +56,14 @@
 .fabButton:hover {
   background: var(--green);
 }
+
+.newWorkoutButton {
+  background-color: var(--brown-light);
+  color: white;
+  border-radius: 8px;
+  padding: 12px 24px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+
