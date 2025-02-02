@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('goal');
             $table->enum('status', ['done', 'pending', 'pass'])->default('pending');
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();

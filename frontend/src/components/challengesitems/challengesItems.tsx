@@ -31,7 +31,6 @@ import { useSnackbarStore } from "@/store/snackbarStore";
 const emptyChallenge: CreateChallenge = {
   title: "",
   description: "",
-  goal: "",
 };
 
 export default function ChallengesItems() {
@@ -99,7 +98,6 @@ export default function ChallengesItems() {
             id: newChallenge.id.toString(),
             title: newChallenge.title,
             description: newChallenge.description,
-            goal: newChallenge.goal,
             status: newChallenge.status || "pending",
           },
           session.accessToken,
@@ -135,7 +133,6 @@ export default function ChallengesItems() {
           {
             title: newChallenge.title,
             description: newChallenge.description,
-            goal: newChallenge.goal,
             status: "pending",
           },
           session.accessToken,
@@ -301,19 +298,6 @@ export default function ChallengesItems() {
                 {validationErrors.description && (
                   <div className={styles.errorMessage}>
                     {validationErrors.description}
-                  </div>
-                )}
-                <TextField
-                  label="Ziel"
-                  fullWidth
-                  value={newChallenge.goal}
-                  onChange={(e) => handleInputChange("goal", e.target.value)}
-                  margin="normal"
-                  error={!!validationErrors.goal}
-                />
-                {validationErrors.goal && (
-                  <div className={styles.errorMessage}>
-                    {validationErrors.goal}
                   </div>
                 )}
                 <Button

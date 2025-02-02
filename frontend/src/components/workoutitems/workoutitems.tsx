@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
 import { Box, Grid, Tabs, Tab, Typography, Button } from "@mui/material";
-
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
@@ -19,6 +17,8 @@ import { WorkoutModal } from "../workoutModal/workoutModal";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
+  const router = useRouter();
+
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
@@ -27,17 +27,26 @@ export default function WorkoutItems() {
   const [modalType, setModalType] = useState<"krafttraining" | "cardio">(
     "krafttraining"
   );
-  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(0);
 
+  // Funktion zum Laden der Workouts
+  const loadWorkouts = async () => {
+    if (session?.accessToken) {
+      const workoutsData = await fetchWorkouts(session.accessToken);
+      setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
+    }
+  };
+
+  // Workouts bei Session-Änderung laden
   useEffect(() => {
-    const loadWorkouts = async () => {
-      if (session?.accessToken) {
-        const workoutsData = await fetchWorkouts(session.accessToken);
-        setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-      }
+    const fetchData = async () => {
+      const workoutsData = await fetchWorkouts(session?.accessToken ?? "");
+      setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
     };
-    loadWorkouts();
+
+    if (session?.accessToken) {
+      fetchData();
+    }
   }, [session]);
 
   const handleCloseModal = () => {
@@ -58,16 +67,7 @@ export default function WorkoutItems() {
         workoutId,
         session?.accessToken ?? undefined,
         router,
-        () => {
-          handleCloseModal();
-          const loadWorkouts = async () => {
-            if (session?.accessToken) {
-              const workoutsData = await fetchWorkouts(session.accessToken);
-              setSavedWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-            }
-          };
-          loadWorkouts();
-        }
+        () => loadWorkouts() // onSuccess callback hinzugefügt
       );
     } catch (error) {
       console.error("Fehler beim Löschen des Workouts:", error);
@@ -77,51 +77,24 @@ export default function WorkoutItems() {
   const handleSave = async (workoutData: WorkoutData) => {
     try {
       if (editingWorkout?.id) {
-        const updatedWorkoutData = {
-          ...workoutData,
-          id: editingWorkout.id,
-        };
-
+        const updatedWorkoutData = { ...workoutData, id: editingWorkout.id };
         await updateWorkout(
           updatedWorkoutData,
           session?.accessToken ?? undefined,
           router,
-          (updatedWorkout) => {
-            setSavedWorkouts((prevWorkouts) => {
-              const workoutIndex = prevWorkouts.findIndex(
-                (w) => w.id === editingWorkout.id
-              );
-              if (workoutIndex === -1) return prevWorkouts;
-
-              const newWorkouts = [...prevWorkouts];
-              newWorkouts[workoutIndex] = {
-                ...updatedWorkout,
-                created_at: prevWorkouts[workoutIndex].created_at,
-              };
-              return newWorkouts;
-            });
-            setIsModalOpen(false);
-            setEditingWorkout(null);
-          }
+          () => loadWorkouts() // onSuccess callback hinzugefügt
         );
       } else {
         await createWorkout(
           workoutData,
           session?.accessToken ?? undefined,
           router,
-          (newWorkout) => {
-            setSavedWorkouts((prevWorkouts) => [
-              ...prevWorkouts,
-              {
-                ...newWorkout,
-                created_at: new Date().toISOString(),
-              },
-            ]);
-            setIsModalOpen(false);
-            setEditingWorkout(null);
-          }
+          () => loadWorkouts() // onSuccess callback auch hier hinzugefügt
         );
       }
+
+      setIsModalOpen(false);
+      setEditingWorkout(null);
     } catch (error) {
       console.error("Fehler beim Speichern des Workouts:", error);
     }
@@ -140,10 +113,6 @@ export default function WorkoutItems() {
     });
   }, [savedWorkouts, selectedTab]);
 
-  useEffect(() => {
-    console.log("Workouts wurden aktualisiert:", savedWorkouts);
-  }, [savedWorkouts]);
-
   return (
     <>
       <Typography variant="h4" component="h1" className={styles.workoutHeader}>
@@ -161,13 +130,10 @@ export default function WorkoutItems() {
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
-          aria-label="workout periods"
+          aria-label="workout categories"
           className={styles.tabs}
           TabIndicatorProps={{
-            style: {
-              backgroundColor: "#E31E24",
-              height: "2px",
-            },
+            style: { backgroundColor: "#E31E24", height: "2px" },
           }}
         >
           <Tab
@@ -176,9 +142,6 @@ export default function WorkoutItems() {
               color: selectedTab === 0 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 0 ? 600 : 400,
-              "&:hover": {
-                color: "#E31E24",
-              },
             }}
           />
           <Tab
@@ -187,9 +150,6 @@ export default function WorkoutItems() {
               color: selectedTab === 1 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 1 ? 600 : 400,
-              "&:hover": {
-                color: "#E31E24",
-              },
             }}
           />
           <Tab
@@ -198,9 +158,6 @@ export default function WorkoutItems() {
               color: selectedTab === 2 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 2 ? 600 : 400,
-              "&:hover": {
-                color: "#E31E24",
-              },
             }}
           />
         </Tabs>

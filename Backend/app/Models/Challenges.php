@@ -10,7 +10,7 @@ class Challenges extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'goal', 'status', 'start_date', 'end_date'];
+    protected $fillable = ['title', 'description', 'status', 'start_date', 'end_date'];
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -35,7 +35,6 @@ class Challenges extends Model
         return $request->validate([
             'title' => [$isPost ? 'required' : 'sometimes', 'string', 'max:255'],
             'description' => [$isPost ? 'required' : 'sometimes', 'string'],
-            'goal' => [$isPost ? 'required' : 'sometimes', 'string'],
             'status' => [$isPost ? 'required' : 'sometimes', 'string', 'in:done,pending,pass'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],

@@ -50,7 +50,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
           id: challenge.id.toString(),
           title: challenge.title,
           description: challenge.description,
-          goal: challenge.goal,
+
           status: newStatus,
         },
         session.accessToken,
@@ -98,10 +98,6 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
               <span className={styles.description}>
                 {challenge.description}
               </span>
-            </div>
-            <div className={styles.infoGroup}>
-              <span className={styles.label}>Ziel:</span>
-              <span className={styles.goal}>{challenge.goal}</span>
             </div>
           </div>
         </div>
