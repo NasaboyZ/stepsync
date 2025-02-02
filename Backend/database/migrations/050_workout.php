@@ -14,6 +14,8 @@ return new class extends Migration {
       $table->text('description');
       $table->unsignedInteger('weight')->nullable();
       $table->unsignedInteger('repetitions')->nullable();
+      $table->decimal('distance', 10, 2)->nullable();
+      $table->enum('distance_unit', ['meter', 'kilometer'])->nullable();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
       $table->timestamps();
     });

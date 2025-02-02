@@ -1,0 +1,57 @@
+.cardioForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: black;
+}
+
+.inputField {
+  background-color: var(--gray-light);
+  border-radius: 8px;
+}
+
+.distanceContainer {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.distanceInput,
+.unitSelect {
+  background-color: var(--gray-light);
+  border-radius: 8px;
+}
+
+.saveButton {
+  background-color: var(--brown-light);
+  color: white;
+  text-transform: none;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Für mobile Geräte */
+@media (max-width: 600px) {
+  .distanceContainer {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .distanceInput,
+  .unitSelect {
+    width: 100%;
+  }
+}
+
+/* Für Tablets und Desktop */
+@media (min-width: 601px) {
+  .distanceInput {
+    flex: 2;
+  }
+
+  .unitSelect {
+    flex: 1;
+    min-width: 120px;
+  }
+}

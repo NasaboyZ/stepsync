@@ -3,10 +3,10 @@ export interface WorkoutData {
   category: "krafttraining" | "cardio";
   title: string;
   description: string;
-  weight: number;
+  weight: number | null;
   repetitions: number;
-  distance?: number;
-  distanceUnit?: "meter" | "kilometer" | "runden";
+  distance?: number | null;
+  distance_unit?: "meter" | "kilometer" | null;
   created_at?: string;
 }
 

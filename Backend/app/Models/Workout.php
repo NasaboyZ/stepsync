@@ -26,6 +26,12 @@ class Workout extends Model
     public ?int $repetitions;
 
     #[Column]
+    public ?float $distance;
+
+    #[Column]
+    public ?string $distance_unit;
+
+    #[Column]
     public int $user_id;
 
     public function user(): BelongsTo
@@ -36,24 +42,14 @@ class Workout extends Model
     static function validate(Request $request)
     {
         $rules = [
-            'category' => 'string|in:cardio,krafttraining',
-            'title' => 'string|max:255',
-            'description' => 'string',
+            'category' => 'required|string|in:cardio,krafttraining',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
             'weight' => 'nullable|integer|min:0',
-            'repetitions' => 'nullable|integer|min:0',
+            'repetitions' => 'required|integer|min:0',
+            'distance' => 'nullable|numeric|min:0',
+            'distance_unit' => 'nullable|string|in:meter,kilometer',
         ];
-
-
-        if ($request->isMethod('POST')) {
-            $rules['category'] = 'required|' . $rules['category'];
-            $rules['title'] = 'required|' . $rules['title'];
-            $rules['description'] = 'required|' . $rules['description'];
-        }
-
-        // Bei PATCH muss die ID vorhanden sein
-        if ($request->isMethod('PATCH')) {
-            $rules['id'] = 'required|exists:workouts,id';
-        }
 
         return $request->validate($rules);
     }

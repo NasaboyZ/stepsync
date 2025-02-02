@@ -10,6 +10,11 @@ export const workoutSchema = z.object({
       "Die Kategorie darf nur Buchstaben und Leerzeichen enthalten"
     ),
 
+  title: z
+    .string()
+    .min(1, "Ein Titel muss angegeben werden")
+    .max(255, "Der Titel darf maximal 255 Zeichen lang sein"),
+
   description: z
     .string()
     .min(1, "Eine Beschreibung muss angegeben werden")
@@ -24,7 +29,8 @@ export const workoutSchema = z.object({
     .refine((val) => !isNaN(Number(val)), "Nur Zahlen sind erlaubt")
     .refine((val) => val !== "", "Gewicht muss angegeben werden")
     .transform(Number)
-    .refine((val) => val >= 0, "Gewicht darf nicht negativ sein"),
+    .refine((val) => val >= 0, "Gewicht darf nicht negativ sein")
+    .nullable(),
 
   repetitions: z
     .string()
@@ -32,6 +38,15 @@ export const workoutSchema = z.object({
     .refine((val) => val !== "", "Wiederholungen müssen angegeben werden")
     .transform(Number)
     .refine((val) => val >= 0, "Wiederholungen dürfen nicht negativ sein"),
+
+  distance: z
+    .string()
+    .refine((val) => !isNaN(Number(val)), "Nur Zahlen sind erlaubt")
+    .transform(Number)
+    .refine((val) => val >= 0, "Distanz darf nicht negativ sein")
+    .nullable(),
+
+  distance_unit: z.enum(["meter", "kilometer"]).nullable(),
 });
 
 export type WorkoutSchema = z.infer<typeof workoutSchema>;

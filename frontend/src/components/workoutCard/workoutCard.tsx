@@ -15,6 +15,20 @@ import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
 import { WorkoutCardProps, WorkoutData } from "@/types/interfaces/workoutData";
 
+const formatDistanceUnit = (unit: string | null | undefined): string => {
+  if (!unit) return "";
+  switch (unit) {
+    case "kilometer":
+      return "km";
+    case "meter":
+      return "m";
+    case "Runde":
+      return "Runde(n)";
+    default:
+      return "";
+  }
+};
+
 export function WorkoutCard({
   initialData,
   isEditing = false,
@@ -65,7 +79,7 @@ export function WorkoutCard({
         weight: Number(weight),
         repetitions: Number(repetitions),
         distance: initialData.distance,
-        distanceUnit: initialData.distanceUnit,
+        distance_unit: initialData.distance_unit,
       };
       onSave(workoutData);
     }
@@ -73,6 +87,15 @@ export function WorkoutCard({
 
   const handleToggleComplete = () => {
     setIsCompleted(!isCompleted);
+  };
+
+  // Formatierte Details für die Anzeige
+  const getWorkoutDetails = () => {
+    if (initialData.category === "cardio") {
+      const distanceUnit = formatDistanceUnit(initialData.distance_unit);
+      return `${initialData.description} - ${initialData.distance} ${distanceUnit} × ${initialData.repetitions} Wdh.`;
+    }
+    return `${initialData.description} - ${initialData.weight}kg × ${initialData.repetitions} Wdh.`;
   };
 
   if (isEditing) {
@@ -227,7 +250,7 @@ export function WorkoutCard({
             {title}
           </Typography>
           <Typography variant="body2" className={styles.details}>
-            {description} - {weight}kg × {repetitions} Wdh.
+            {getWorkoutDetails()}
           </Typography>
         </div>
 
