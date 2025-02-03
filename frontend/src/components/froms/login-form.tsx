@@ -10,15 +10,10 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  TextField,
-  Box,
-  Typography,
-  Container,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Container, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "./login-form.module.css";
+import { CustomTextField } from "@/components/ui/customTextField";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -115,10 +110,9 @@ export const LoginForm = () => {
               sx={{ width: "100%" }}
             >
               <motion.div custom={0} variants={formFieldAnimation}>
-                <TextField
+                <CustomTextField
                   margin="normal"
                   required
-                  fullWidth
                   id="email"
                   label="E-Mail-Adresse"
                   autoComplete="email"
@@ -131,10 +125,9 @@ export const LoginForm = () => {
               </motion.div>
 
               <motion.div custom={1} variants={formFieldAnimation}>
-                <TextField
+                <CustomTextField
                   margin="normal"
                   required
-                  fullWidth
                   id="password"
                   label="Passwort"
                   type={showPassword ? "text" : "password"}
@@ -149,6 +142,7 @@ export const LoginForm = () => {
                         <IconButton
                           onClick={() => setShowPassword(!showPassword)}
                           edge="end"
+                          sx={{ color: "#fff" }}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>

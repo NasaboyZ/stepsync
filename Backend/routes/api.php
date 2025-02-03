@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
   Route::post('/challenges', [ChallengesController::class, 'create']);
+  Route::get('/challenges/statistics', [ChallengesController::class, 'getStatistics']);
   Route::patch('/challenges/{id}', [ChallengesController::class, 'updateChallenge']);
   Route::delete('/challenges/{id}', [ChallengesController::class, 'destroy']);
 

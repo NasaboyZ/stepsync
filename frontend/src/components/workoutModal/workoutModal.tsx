@@ -1,7 +1,6 @@
 import {
   Modal,
   Box,
-  TextField,
   Button,
   Select,
   MenuItem,
@@ -12,6 +11,7 @@ import { WorkoutCard } from "../workoutCard/workoutCard";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import styles from "./workoutModal.module.css";
 import { useState } from "react";
+import { CustomTextField } from "../ui/customTextField";
 
 type DistanceUnit = "meter" | "kilometer";
 
@@ -150,7 +150,7 @@ export const WorkoutModal = ({
           />
         ) : (
           <div className={styles.cardioForm}>
-            <TextField
+            <CustomTextField
               fullWidth
               label="Titel"
               value={cardioData.title}
@@ -158,29 +158,9 @@ export const WorkoutModal = ({
                 setCardioData((prev) => ({ ...prev, title: e.target.value }))
               }
               className={styles.inputField}
-              sx={{
-                mb: 2,
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white ",
-                },
-                "& .Mui-focused fieldset": {
-                  borderColor: "white ",
-                },
-
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
+              sx={{ mb: 2 }}
             />
-            <TextField
+            <CustomTextField
               fullWidth
               label="Beschreibung"
               value={cardioData.description}
@@ -193,29 +173,10 @@ export const WorkoutModal = ({
               multiline
               rows={3}
               className={styles.inputField}
-              sx={{
-                mb: 2,
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white",
-                },
-                "& .Mui-focused fieldset": {
-                  borderColor: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
+              sx={{ mb: 2 }}
             />
             <div className={styles.distanceContainer}>
-              <TextField
+              <CustomTextField
                 label="Distanz"
                 type="number"
                 value={cardioData.distance}
@@ -226,26 +187,6 @@ export const WorkoutModal = ({
                   }))
                 }
                 className={styles.distanceInput}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white ",
-                  },
-                  "& .Mui-focused fieldset": {
-                    borderColor: "white ",
-                  },
-
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                }}
               />
               <FormControl className={styles.unitSelect}>
                 <InputLabel id="distance-unit-label" sx={{ color: "white" }}>
@@ -287,7 +228,7 @@ export const WorkoutModal = ({
                 </Select>
               </FormControl>
             </div>
-            <TextField
+            <CustomTextField
               fullWidth
               label="Wiederholungen"
               type="number"
@@ -299,28 +240,7 @@ export const WorkoutModal = ({
                 }))
               }
               className={styles.inputField}
-              sx={{
-                mt: 2,
-                mb: 2,
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white ",
-                },
-                "& .Mui-focused fieldset": {
-                  borderColor: "white ",
-                },
-
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
+              sx={{ mt: 2, mb: 2 }}
             />
             <Button
               variant="contained"

@@ -91,4 +91,32 @@ class ChallengesController
 
         return response()->json(['message' => 'Challenge deleted']);
     }
+
+    public function getStatistics()
+    {
+        $user = Auth::user();
+
+        $statistics = [
+            'completed' => $user->challenges()
+                ->wherePivot('status', 'done')
+                ->count(),
+
+            'open' => $user->challenges()
+                ->wherePivot('status', 'pending')
+                ->count(),
+
+            'passed' => $user->challenges()
+                ->wherePivot('status', 'pass')
+                ->count(),
+
+            'total' => $user->challenges()->count(),
+
+            // Hier spezifizieren wir die Tabelle für created_at
+            'new_challenges' => $user->challenges()
+                ->where('challenges.created_at', '>=', now()->subDays(7))
+                ->count()
+        ];
+
+        return response()->json($statistics);
+    }
 }

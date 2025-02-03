@@ -143,11 +143,13 @@ export default function AuthenticatedHeader() {
                   },
                 }}
               >
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem
+                  onClick={handleMenuClose}
+                  component="a"
+                  href="/profileinstellungen"
+                >
                   Profileinstellungen
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>Passwort ändern</MenuItem>
-                <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
               </Menu>
             </Box>
           </ClickAwayListener>
