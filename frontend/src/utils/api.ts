@@ -34,10 +34,10 @@ export interface BmiHistoryData {
   bmi_value: number;
   created_at: string;
 }
-export interface AvatarResponse {
-  upload: {
-    pathname: string;
-  };
+
+export interface AvatarData {
+  id: number;
+  url: string;
 }
 
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
@@ -64,10 +64,14 @@ export const fetchUserData = async (token: string): Promise<UserProfile> => {
 export const fetchUserUploads = async (
   token: string
 ): Promise<ImageResponse> => {
-  return await dataFetchWithToken(
+  const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
     token
   );
+  if (!data) {
+    throw new Error("Keine Daten empfangen");
+  }
+  return data;
 };
 
 export const fetchChallenges = async (token: string) => {
@@ -107,10 +111,10 @@ export const fetchBmiHistory = async (
 
 export const fetchUserAvatar = async (
   token: string
-): Promise<ImageResponse> => {
+): Promise<AvatarData | null> => {
   const data = await dataFetchWithToken(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/uploads`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
     token
   );
-  return data.upload;
+  return data.avatar;
 };

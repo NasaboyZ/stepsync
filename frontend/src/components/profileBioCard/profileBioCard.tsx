@@ -15,12 +15,10 @@ import { useSession } from "next-auth/react";
 import styles from "./profileBioCard.module.css";
 import { UserProfile } from "@/types/interfaces/userProfile";
 import { fetchUserData } from "@/utils/api";
-import { useAvatarStore } from "@/store/avatarStore";
 
 export default function ProfileBioCard() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { data: session } = useSession();
-  const { avatarUrl } = useAvatarStore();
 
   useEffect(() => {
     async function fetchUserProfile() {
@@ -81,7 +79,14 @@ export default function ProfileBioCard() {
             <div className={styles.headerSection}>
               <div className={styles.leftSection}>
                 <div className={styles.avatarSection}>
-                  <Avatar className={styles.avatar} src={avatarUrl} />
+                  <Avatar
+                    className={styles.avatar}
+                    src={userProfile?.avatar?.url}
+                  >
+                    {userProfile?.username
+                      ? userProfile.username[0].toUpperCase()
+                      : "?"}
+                  </Avatar>
                 </div>
                 <div className={styles.headerInfo}>
                   <Typography variant="h5" className={styles.username}>

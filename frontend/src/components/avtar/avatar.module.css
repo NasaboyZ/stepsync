@@ -1,0 +1,15 @@
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+}
+
+.uploadButton {
+  margin-top: 1rem;
+}
