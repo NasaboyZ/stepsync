@@ -34,6 +34,11 @@ export interface BmiHistoryData {
   bmi_value: number;
   created_at: string;
 }
+export interface AvatarResponse {
+  upload: {
+    pathname: string;
+  };
+}
 
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
   const data = await dataFetchWithToken(
@@ -100,27 +105,12 @@ export const fetchBmiHistory = async (
   return data.history;
 };
 
-// export const uploadAvatar = async (
-//   file: File,
-//   token: string
-// ): Promise<UploadResponse> => {
-//   const formData = new FormData();
-//   formData.append("file", file);
-
-//   const response = await fetch(
-//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
-//     {
-//       method: "POST",
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       body: formData,
-//     }
-//   );
-
-//   if (!response.ok) {
-//     throw new Error("Fehler beim Hochladen des Avatars");
-//   }
-
-//   return response.json();
-// };
+export const fetchUserAvatar = async (
+  token: string
+): Promise<ImageResponse> => {
+  const data = await dataFetchWithToken(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/uploads`,
+    token
+  );
+  return data.upload;
+};

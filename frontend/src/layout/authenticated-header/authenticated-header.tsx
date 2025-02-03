@@ -22,6 +22,7 @@ import { fetchUserData } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/interfaces/userProfile";
+import { useAvatarStore } from "@/store/avatarStore";
 
 export default function AuthenticatedHeader() {
   const [username, setUsername] = useState("");
@@ -31,6 +32,7 @@ export default function AuthenticatedHeader() {
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
+  const { avatarUrl } = useAvatarStore();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -117,7 +119,7 @@ export default function AuthenticatedHeader() {
             <Box display="flex" alignItems="center">
               <Avatar
                 className={styles.avatar}
-                src={user?.avatar?.url}
+                src={avatarUrl}
                 style={{ cursor: "pointer" }}
                 onClick={handleMenuOpen}
               >
