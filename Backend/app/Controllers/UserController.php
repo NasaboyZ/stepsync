@@ -22,6 +22,9 @@ class UserController
     $age = \Carbon\Carbon::parse($user->date_of_birth)->age;
 
     return response()->json([
+      'firstName' => $user->first_name,
+      'lastName' => $user->last_name,
+      'email' => $user->email,
       'username' => $user->username,
       'weight' => (float) $user->weight,
       'height' => (float) $user->height,

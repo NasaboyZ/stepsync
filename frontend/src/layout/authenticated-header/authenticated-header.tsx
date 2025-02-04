@@ -19,7 +19,7 @@ import { GoBell } from "react-icons/go";
 import { RxGear } from "react-icons/rx";
 import styles from "./authenticated-header.module.css";
 import { fetchUserData } from "@/utils/api";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/interfaces/userProfile";
 
@@ -88,6 +88,11 @@ export default function AuthenticatedHeader() {
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const handleLogout = async () => {
+    handleMenuClose();
+    await signOut({ callbackUrl: "/login" });
+  };
+
   return (
     <AppBar position="static" className={styles.appBar}>
       <Toolbar>
@@ -150,6 +155,7 @@ export default function AuthenticatedHeader() {
                 >
                   Profileinstellungen
                 </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
           </ClickAwayListener>

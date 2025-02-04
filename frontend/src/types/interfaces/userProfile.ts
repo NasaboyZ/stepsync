@@ -1,16 +1,19 @@
 export interface UserProfile {
-  username: string;
-  age: number;
-  sex: string;
-  height: number;
-  weight: number;
-  goal: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  username?: string;
+  age?: number;
+  sex?: string;
+  height?: number;
+  weight?: number;
+  goal?: string;
   avatar?: {
-    id: number;
-    url: string;
+    id?: number;
+    url?: string;
   };
-  level: number;
-  xp: number;
-  workouts: number;
-  memberSince: string;
+  level?: number;
+  xp?: number;
+  workouts?: number;
+  memberSince?: string;
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Typography,
+
   Drawer,
   List,
   ListItem,
@@ -16,7 +16,7 @@ import {
   MdOutlineSpaceDashboard as DashboardIcon,
   MdFitnessCenter as WorkoutIcon,
   MdEmojiEvents as ChallengesIcon,
-  MdLogout as LogoutIcon,
+
 } from "react-icons/md";
 
 import styles from "./authenticated.module.css";
@@ -31,9 +31,7 @@ export default function AuthenticatedNav() {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/login" });
-  };
+
 
   return (
     <div className={styles.container}>
@@ -68,12 +66,7 @@ export default function AuthenticatedNav() {
               </Link>
             </ListItem>
 
-            <ListItem onClick={handleSignOut} className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <LogoutIcon />
-              </ListItemIcon>
-              <Typography className={styles.listItemText}>Logout</Typography>
-            </ListItem>
+            
           </List>
         </aside>
       ) : (

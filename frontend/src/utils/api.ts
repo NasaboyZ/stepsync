@@ -47,6 +47,9 @@ export const fetchUserData = async (token: string): Promise<UserProfile> => {
   );
 
   return {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
     username: data.username,
     age: data.age,
     sex: data.gender,
