@@ -54,10 +54,18 @@ export function Avatar() {
       try {
         const validatedFile = avatarSchema.parse({ file });
         await uploadAvatar(validatedFile.file, session.accessToken, router);
-        const avatarData = await fetchUserAvatar(session.accessToken);
-        if (avatarData?.url) {
-          setAvatarUrl(avatarData.url);
-          setAvatarId(avatarData.id);
+
+        try {
+          const avatarData = await fetchUserAvatar(session.accessToken);
+          if (avatarData?.url) {
+            setAvatarUrl(avatarData.url);
+            setAvatarId(avatarData.id);
+          }
+        } catch (fetchError) {
+          console.error(
+            "Fehler beim Abrufen des aktualisierten Avatars:",
+            fetchError
+          );
         }
       } catch (error) {
         if (error instanceof z.ZodError) {

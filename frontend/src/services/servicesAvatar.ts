@@ -1,4 +1,3 @@
-
 import { useSnackbarStore } from "@/store/snackbarStore";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
@@ -11,16 +10,22 @@ export const uploadAvatar = async (
   formData.append("file", file);
 
   try {
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
-      throw new Error(`Upload fehlgeschlagen: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || `Upload fehlgeschlagen: ${response.status}`
+      );
     }
 
     useSnackbarStore
