@@ -147,3 +147,46 @@ export const deleteWorkout = async (
     console.log("Fehler beim Löschen des Workouts", error);
   }
 };
+
+export const updateWorkoutStatus = async (
+  workoutId: number,
+  isCompleted: boolean,
+  accessToken: string | undefined,
+  onSuccess?: () => void
+) => {
+  if (!workoutId || !accessToken) {
+    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/update-workout", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        id: workoutId,
+        is_completed: isCompleted,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Fehler beim Aktualisieren des Workout-Status: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+    if (onSuccess) {
+      onSuccess();
+    }
+    return data;
+  } catch (error) {
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Aktualisieren des Workout-Status", "error");
+    console.error("Fehler beim Aktualisieren des Status:", error);
+  }
+};

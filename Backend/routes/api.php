@@ -60,4 +60,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::patch('/bmi', [BmiController::class, 'update']);
   Route::delete('/bmi', [BmiController::class, 'destroy']);
   Route::get('/bmi/history', [BmiController::class, 'history']);
+
+  // Workout-Statistiken
+  Route::get('/workouts/statistics', [WorkoutsController::class, 'getStatistics']);
+
+
 });

@@ -10,6 +10,7 @@ import {
   createWorkout,
   deleteWorkout,
   updateWorkout,
+  updateWorkoutStatus,
 } from "@/services/servicesWorkout";
 import { useRouter } from "next/navigation";
 import styles from "./workoutitems.module.css";
@@ -104,6 +105,22 @@ export default function WorkoutItems() {
     setSelectedTab(newValue);
   };
 
+  const handleStatusChange = async (
+    workoutId: number,
+    isCompleted: boolean
+  ) => {
+    try {
+      await updateWorkoutStatus(
+        workoutId,
+        isCompleted,
+        session?.accessToken,
+        () => loadWorkouts() // Aktualisiert die Liste nach Status-Änderung
+      );
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren des Status:", error);
+    }
+  };
+
   const memoizedFilteredWorkouts = React.useMemo(() => {
     return savedWorkouts.filter((workout) => {
       if (selectedTab === 0) return true;
@@ -182,6 +199,9 @@ export default function WorkoutItems() {
                 initialData={workout}
                 onEdit={() => handleEdit(workout)}
                 onDelete={() => workout.id && handleDelete(workout.id)}
+                onStatusChange={(isCompleted) =>
+                  workout.id && handleStatusChange(workout.id, isCompleted)
+                }
               />
             </Grid>
           ))

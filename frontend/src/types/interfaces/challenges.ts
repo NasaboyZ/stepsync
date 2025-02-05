@@ -15,6 +15,7 @@ export interface ChallengeData {
   title: string;
   description: string;
   status?: "pending" | "accepted" | "completed" | "failed";
+  goal?: string;
 }
 
 export interface CreateChallenge {

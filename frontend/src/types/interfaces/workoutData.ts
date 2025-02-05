@@ -1,20 +1,23 @@
 export interface WorkoutData {
   id?: number;
-  category: "krafttraining" | "cardio";
+  category: string;
   title: string;
   description: string;
-  weight: number | null;
+  weight?: number | null;
   repetitions: number;
   distance?: number | null;
-  distance_unit?: "meter" | "kilometer" | null;
+  distance_unit?: string | null;
   created_at?: string;
+  is_completed?: boolean;
+  completed_at?: string | null;
 }
 
 export interface WorkoutCardProps {
-  variant: "primary" | "secondary";
   initialData: WorkoutData;
   isEditing?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
   onSave?: (data: WorkoutData) => void;
+  onStatusChange?: (isCompleted: boolean) => void;
+  variant?: "primary" | "secondary";
 }

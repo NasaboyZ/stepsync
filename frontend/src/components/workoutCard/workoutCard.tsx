@@ -35,6 +35,7 @@ export function WorkoutCard({
   onEdit,
   onDelete,
   onSave,
+  onStatusChange,
 }: WorkoutCardProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -85,8 +86,15 @@ export function WorkoutCard({
     }
   };
 
-  const handleToggleComplete = () => {
-    setIsCompleted(!isCompleted);
+  const handleToggleComplete = async () => {
+    try {
+      if (onStatusChange) {
+        onStatusChange(!isCompleted);
+      }
+      setIsCompleted(!isCompleted);
+    } catch (error) {
+      console.error("Fehler:", error);
+    }
   };
 
   // Formatierte Details für die Anzeige
@@ -271,14 +279,18 @@ export function WorkoutCard({
               width: "24px",
               height: "24px",
               borderRadius: "50%",
-              border: "2px solid #fff",
+              border: "2px solid",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              color: isCompleted ? "var(--green, #4CAF50)" : "#433b3b",
-              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#433b3b",
-              marginRight: "12px",
+              color: isCompleted ? "var(--green, #4CAF50)" : "#fff",
+              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#fff",
+              backgroundColor: "transparent",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                borderColor: isCompleted ? "var(--green, #4CAF50)" : "#e0e0e0",
+              },
             }}
           >
             ✓
