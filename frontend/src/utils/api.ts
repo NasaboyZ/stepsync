@@ -121,16 +121,3 @@ export const fetchUserAvatar = async (
   );
   return data.avatar;
 };
-
-export async function deleteAvatar(accessToken: string): Promise<void> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/avatar`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Fehler beim Löschen des Avatars");
-  }
-}

@@ -276,8 +276,8 @@ export function WorkoutCard({
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              color: isCompleted ? "var(--green, #4CAF50)" : "#fff",
-              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#fff",
+              color: isCompleted ? "var(--green, #4CAF50)" : "#433b3b",
+              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#433b3b",
               marginRight: "12px",
             }}
           >

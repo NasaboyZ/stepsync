@@ -1,56 +1,65 @@
-import { UploadResponse } from "@/utils/api";
+
+import { useSnackbarStore } from "@/store/snackbarStore";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const uploadAvatar = async (
   file: File,
-  token: string
-): Promise<UploadResponse> => {
+  token: string,
+  router: AppRouterInstance
+): Promise<void> => {
   const formData = new FormData();
   formData.append("file", file);
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }
-    );
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
     if (!response.ok) {
       throw new Error(`Upload fehlgeschlagen: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Avatar wurde erfolgreich hochgeladen", "success");
+    router.refresh();
   } catch (error) {
-    console.error("Fehler beim Avatar-Upload:", error);
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Hochladen des Avatars", "error");
     throw error;
   }
 };
 
 export const deleteAvatar = async (
-  imageId: number,
-  token: string
+  id: number,
+  token: string,
+  router: AppRouterInstance
 ): Promise<void> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/${imageId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`/api/delete-upload/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Löschen fehlgeschlagen: ${response.status}`);
     }
+
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Avatar wurde erfolgreich gelöscht", "success");
+    router.refresh();
   } catch (error) {
-    console.error("Fehler beim Löschen des Avatars:", error);
+    useSnackbarStore
+      .getState()
+      .openSnackbar("Fehler beim Löschen des Avatars", "error");
     throw error;
   }
 };

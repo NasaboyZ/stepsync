@@ -14,6 +14,17 @@ export function ProfileSettings() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { data: session } = useSession();
 
+  const handleInputChange =
+    (field: keyof UserProfile) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (userProfile) {
+        setUserProfile({
+          ...userProfile,
+          [field]: event.target.value,
+        });
+      }
+    };
+
   useEffect(() => {
     async function fetchUserProfile() {
       if (session?.accessToken) {
@@ -44,6 +55,7 @@ export function ProfileSettings() {
                   fullWidth
                   label="First Name"
                   value={userProfile?.firstName || ""}
+                  onChange={handleInputChange("firstName")}
                 />
               </div>
               <div className={styles.inputGroup}>
@@ -51,6 +63,7 @@ export function ProfileSettings() {
                   fullWidth
                   label="Last Name"
                   value={userProfile?.lastName || ""}
+                  onChange={handleInputChange("lastName")}
                 />
               </div>
               <div className={styles.inputGroup}>
@@ -59,6 +72,7 @@ export function ProfileSettings() {
                   label="Height (cm)"
                   type="number"
                   value={userProfile?.height || ""}
+                  onChange={handleInputChange("height")}
                 />
               </div>
               <div className={styles.inputGroup}>
@@ -67,6 +81,7 @@ export function ProfileSettings() {
                   label="Weight (kg)"
                   type="number"
                   value={userProfile?.weight || ""}
+                  onChange={handleInputChange("weight")}
                 />
               </div>
               <div className={styles.fullWidth}>
@@ -75,6 +90,7 @@ export function ProfileSettings() {
                   label="Email"
                   type="email"
                   value={userProfile?.email || ""}
+                  onChange={handleInputChange("email")}
                 />
               </div>
               <div className={styles.fullWidth}>

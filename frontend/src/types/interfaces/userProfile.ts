@@ -4,10 +4,11 @@ export interface UserProfile {
   email?: string;
   username?: string;
   age?: number;
-  sex?: string;
+  gender?: "male" | "female" | "other";
   height?: number;
   weight?: number;
   goal?: string;
+  date_of_birth?: string;
   avatar?: {
     id?: number;
     url?: string;
@@ -16,4 +17,16 @@ export interface UserProfile {
   xp?: number;
   workouts?: number;
   memberSince?: string;
+}
+
+export interface UpdateUserProfileData {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  username?: string;
+  height?: number;
+  weight?: number;
+  goal?: string;
+  gender?: "male" | "female" | "other";
+  date_of_birth?: string;
 }

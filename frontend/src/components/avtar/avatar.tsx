@@ -3,9 +3,9 @@ import { Avatar as MuiAvatar, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import styles from "./avatar.module.css";
 import { useEffect, useState } from "react";
-import { fetchUserAvatar, deleteAvatar } from "@/utils/api";
+import { fetchUserAvatar } from "@/utils/api";
 import { useSession } from "next-auth/react";
-import { uploadAvatar } from "@/services/servicesAvatar";
+import { uploadAvatar, deleteAvatar } from "@/services/servicesAvatar";
 import { useRouter } from "next/navigation";
 import { avatarSchema } from "@/validations/avatarShema";
 import { z } from "zod";
@@ -23,7 +23,7 @@ const VisuallyHiddenInput = styled("input")`
 `;
 
 export function Avatar() {
-  const [avatarUrl, setAvatarUrl] = useState<string>("/placeholder-avatar.jpg");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [avatarId, setAvatarId] = useState<number | null>(null);
   const { data: session } = useSession();
   const router = useRouter();
@@ -53,13 +53,11 @@ export function Avatar() {
     if (file && session?.accessToken) {
       try {
         const validatedFile = avatarSchema.parse({ file });
-        const uploadResponse = await uploadAvatar(
-          validatedFile.file,
-          session.accessToken
-        );
-        if (uploadResponse.url) {
-          setAvatarUrl(uploadResponse.url);
-          router.refresh();
+        await uploadAvatar(validatedFile.file, session.accessToken, router);
+        const avatarData = await fetchUserAvatar(session.accessToken);
+        if (avatarData?.url) {
+          setAvatarUrl(avatarData.url);
+          setAvatarId(avatarData.id);
         }
       } catch (error) {
         if (error instanceof z.ZodError) {
@@ -72,12 +70,11 @@ export function Avatar() {
   };
 
   const handleDeleteAvatar = async () => {
-    if (session?.accessToken) {
+    if (session?.accessToken && avatarId !== null) {
       try {
-        await deleteAvatar(session.accessToken);
-        setAvatarUrl("/placeholder-avatar.jpg");
+        await deleteAvatar(avatarId, session.accessToken, router);
+        setAvatarUrl(null);
         setAvatarId(null);
-        router.refresh();
       } catch (error) {
         console.error("Fehler beim Löschen des Avatars:", error);
       }
@@ -89,7 +86,7 @@ export function Avatar() {
       <MuiAvatar
         className={styles.avatar}
         alt="Profile Picture"
-        src={avatarUrl}
+        src={avatarUrl || undefined} // Fallback auf undefined, wenn avatarUrl null ist
       />
       <div className={styles.buttonGroup}>
         <Button
@@ -104,7 +101,7 @@ export function Avatar() {
             accept="image/png,image/jpeg,image/webp"
           />
         </Button>
-        {avatarUrl !== "/placeholder-avatar.jpg" && (
+        {avatarUrl && (
           <Button
             variant="outlined"
             color="error"
