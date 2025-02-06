@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
 import { useRouter } from "next/navigation";
@@ -26,6 +26,10 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
   >(challenge.status);
   const { openSnackbar } = useSnackbarStore();
 
+  useEffect(() => {
+    setStatus(challenge.status);
+  }, [challenge.status]);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,15 +54,15 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
           id: challenge.id.toString(),
           title: challenge.title,
           description: challenge.description,
-
           status: newStatus,
         },
         session.accessToken,
         router,
         () => {
           setStatus(newStatus);
+          handleClose();
 
-          // Snackbar Nachrichten für die verschiedenen Status
+      
           switch (newStatus) {
             case "completed":
               openSnackbar(

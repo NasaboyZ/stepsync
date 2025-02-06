@@ -16,7 +16,6 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { MdMenu as MenuIcon } from "react-icons/md";
 import { GoBell } from "react-icons/go";
-import { RxGear } from "react-icons/rx";
 import styles from "./authenticated-header.module.css";
 import { fetchUserData } from "@/utils/api";
 import { useSession, signOut } from "next-auth/react";
@@ -114,9 +113,6 @@ export default function AuthenticatedHeader() {
             <GoBell />
           </IconButton>
 
-          <IconButton className={styles.iconButton} color="inherit">
-            <RxGear />
-          </IconButton>
           <span className={styles.separator}></span>
           <ClickAwayListener onClickAway={handleClickAway}>
             <Box display="flex" alignItems="center">
