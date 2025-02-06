@@ -7,46 +7,38 @@
   flex-direction: column;
   padding: 2rem;
   margin: 2rem auto;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   height: auto;
+  position: relative;
 }
 
-.hero_image_bg_left {
-  z-index: -1;
-  height: auto;
-  width: 11%;
-  height: auto;
-  position: absolute;
-  left: 20rem;
-
-  .image {
-    filter: blur(1px);
-    width: 100%;
-    height: auto;
-  }
+.phones_container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  align-items: center;
+  justify-items: center;
 }
 
+.hero_image_bg_left,
 .hero_image_bg_right {
-  z-index: -1;
-  height: auto;
-  width: 11%;
-  height: auto;
-  position: absolute;
-  right: 20rem;
+  width: 100%;
+  max-width: 200px;
 
   .image {
     width: 100%;
     height: auto;
-    filter: blur(2px);
+    filter: blur(1px);
   }
 }
 
 .hero_image_front {
+  width: 100%;
+  max-width: 250px;
   z-index: 2;
-  height: auto;
-  width: 15%;
-  height: auto;
 
   .image {
     width: 100%;
@@ -55,80 +47,49 @@
 }
 
 @media (max-width: 1250px) {
-  .hero_image_front {
-    width: 20%;
-  }
-
-  .hero_image_bg_left {
-    left: 15rem;
-    width: 13%;
-  }
-
-  .hero_image_bg_right {
-    right: 15rem;
-    width: 13%;
+  .phones_container {
+    max-width: 1000px;
   }
 }
 
 @media (max-width: 1020px) {
-  .hero_image_front {
-    width: 25%;
-  }
-
-  .hero_image_bg_left {
-    left: 10rem;
-    width: 15%;
-  }
-
-  .hero_image_bg_right {
-    right: 10rem;
-    width: 15%;
+  .phones_container {
+    max-width: 800px;
   }
 }
 
 @media (max-width: 768px) {
-  .hero_image_bg_left,
-  .hero_image_bg_right {
-    width: calc(20vw + 100px);
-    max-width: 180px;
-    min-width: 120px;
-  }
-
-  .hero_image_front {
-    width: 30%;
-  }
-
-  .hero_image_bg_left {
-    left: 3rem;
-    width: 18%;
-  }
-  .hero_image_bg_right {
-    right: 3rem;
-    width: 18%;
+  .phones_container {
+    max-width: 600px;
   }
 }
 
 @media (max-width: 640px) {
-  .hero_image_front {
-    width: 40%;
+  .phones_container {
+    grid-template-columns: 1fr;
+    max-width: 300px;
   }
 
   .hero_image_bg_left,
   .hero_image_bg_right {
-    .image {
-      opacity: 0;
-    }
+    display: none;
+  }
+
+  .hero_image_front {
+    max-width: 200px;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 320px) {
   .hero_image_front {
-    width: 60%;
+    max-width: 180px;
   }
-}
-
-@media (max-width: 390px) {
-  .hero_image_front {
-    width: 70%;
+  .hero_wrapper {
+    margin: 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
 }

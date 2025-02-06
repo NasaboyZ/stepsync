@@ -1,5 +1,5 @@
 import FooterNav from "@/layout/footer/footerNav";
-import Header from "@/layout/header/header";
+import Header from "@/layout/header/Header";
 import styles from "./layout.module.css";
 
 import { ReactNode } from "react";

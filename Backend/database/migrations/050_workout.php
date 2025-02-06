@@ -17,8 +17,6 @@ return new class extends Migration {
       $table->decimal('distance', 10, 2)->nullable();
       $table->enum('distance_unit', ['meter', 'kilometer'])->nullable();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
-      $table->boolean('is_completed')->default(false);
-      $table->timestamp('completed_at')->nullable();
       $table->timestamps();
     });
   }

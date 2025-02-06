@@ -34,12 +34,6 @@ class Workout extends Model
     #[Column]
     public int $user_id;
 
-    #[Column]
-    public bool $is_completed = false;
-
-    #[Column]
-    public ?Carbon $completed_at = null;
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -55,14 +49,8 @@ class Workout extends Model
             'repetitions' => 'required|integer|min:0',
             'distance' => 'nullable|numeric|min:0',
             'distance_unit' => 'nullable|string|in:meter,kilometer',
-            'is_completed' => 'boolean',
         ];
 
         return $request->validate($rules);
     }
-
-    protected $casts = [
-        'is_completed' => 'boolean',
-        'completed_at' => 'datetime',
-    ];
 }

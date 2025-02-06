@@ -37,17 +37,11 @@ class WorkoutsController
       'repetitions' => 'sometimes|nullable|integer|min:0',
       'distance' => 'sometimes|nullable|numeric|min:0',
       'distance_unit' => 'sometimes|nullable|string|in:meter,kilometer',
-      'is_completed' => 'sometimes|boolean',
     ];
 
     $payload = $request->validate($rules);
 
     $workout = \Auth::user()->workouts()->findOrFail($request->input('id'));
-
-    // Wenn sich der is_completed Status ändert
-    if (isset($payload['is_completed']) && $payload['is_completed'] !== $workout->is_completed) {
-      $payload['completed_at'] = $payload['is_completed'] ? now() : null;
-    }
 
     $workout->update($payload);
     return $workout;

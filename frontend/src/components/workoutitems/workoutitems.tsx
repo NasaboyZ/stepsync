@@ -21,6 +21,7 @@ export default function WorkoutItems() {
   const router = useRouter();
 
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
     null
@@ -58,7 +59,7 @@ export default function WorkoutItems() {
 
   const handleEdit = (workout: WorkoutData) => {
     setEditingWorkout(workout);
-    setModalType(workout.category);
+    setModalType(workout.category as "krafttraining" | "cardio");
     setIsModalOpen(true);
   };
 
@@ -114,7 +115,7 @@ export default function WorkoutItems() {
         workoutId,
         isCompleted,
         session?.accessToken,
-        () => loadWorkouts() // Aktualisiert die Liste nach Status-Änderung
+        () => loadWorkouts()
       );
     } catch (error) {
       console.error("Fehler beim Aktualisieren des Status:", error);

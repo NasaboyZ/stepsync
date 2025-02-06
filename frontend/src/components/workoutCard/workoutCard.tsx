@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Typography,
@@ -48,6 +48,10 @@ export function WorkoutCard({
     initialData?.repetitions?.toString() || ""
   );
   const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    setTitle(initialData?.title || "");
+  }, [initialData?.title]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
