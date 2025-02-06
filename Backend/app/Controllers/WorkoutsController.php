@@ -43,6 +43,16 @@ class WorkoutsController
 
     $workout = \Auth::user()->workouts()->findOrFail($request->input('id'));
 
+    // Wenn sich die Kategorie ändert, setze die nicht mehr relevanten Felder auf NULL
+    if (isset($payload['category']) && $payload['category'] !== $workout->category) {
+      if ($payload['category'] === 'cardio') {
+        $payload['weight'] = null;
+      } else if ($payload['category'] === 'krafttraining') {
+        $payload['distance'] = null;
+        $payload['distance_unit'] = null;
+      }
+    }
+
     $workout->update($payload);
     return $workout;
   }
