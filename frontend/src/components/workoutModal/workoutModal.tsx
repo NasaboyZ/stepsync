@@ -10,7 +10,7 @@ import {
 import { WorkoutCard } from "../workoutCard/workoutCard";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import styles from "./workoutModal.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CustomTextField } from "../ui/customTextField";
 
 type DistanceUnit = "meter" | "kilometer";
@@ -39,6 +39,8 @@ export const WorkoutModal = ({
   modalType = "krafttraining",
 }: WorkoutModalProps) => {
   const [selectedType, setSelectedType] = useState(modalType);
+  const [localEditingWorkout, setLocalEditingWorkout] =
+    useState<WorkoutData | null>(editingWorkout);
   const [cardioData, setCardioData] = useState<CardioFormData>({
     title: editingWorkout?.title || "",
     description: editingWorkout?.description || "",
@@ -46,6 +48,46 @@ export const WorkoutModal = ({
     distanceUnit: "kilometer",
     repetitions: editingWorkout?.repetitions || 0,
   });
+
+  useEffect(() => {
+    setLocalEditingWorkout(editingWorkout);
+    if (editingWorkout) {
+      setSelectedType(editingWorkout.category as "krafttraining" | "cardio");
+      if (editingWorkout.category === "cardio") {
+        setCardioData({
+          title: editingWorkout.title || "",
+          description: editingWorkout.description || "",
+          distance: editingWorkout.distance || 0,
+          distanceUnit:
+            (editingWorkout.distance_unit as DistanceUnit) || "kilometer",
+          repetitions: editingWorkout.repetitions || 0,
+        });
+      }
+    }
+  }, [editingWorkout]);
+
+  const handleTypeChange = (newType: "krafttraining" | "cardio") => {
+    setSelectedType(newType);
+    setLocalEditingWorkout({
+      category: newType,
+      title: "",
+      description: "",
+      weight: newType === "krafttraining" ? 0 : null,
+      repetitions: 0,
+      distance: newType === "cardio" ? 0 : null,
+      distance_unit: newType === "cardio" ? "kilometer" : null,
+    });
+
+    if (newType === "krafttraining") {
+      setCardioData({
+        title: "",
+        description: "",
+        distance: 0,
+        distanceUnit: "kilometer",
+        repetitions: 0,
+      });
+    }
+  };
 
   const handleCardioSave = () => {
     onSave({
@@ -85,7 +127,7 @@ export const WorkoutModal = ({
             value={selectedType}
             label="Trainingsart"
             onChange={(e) =>
-              setSelectedType(e.target.value as "krafttraining" | "cardio")
+              handleTypeChange(e.target.value as "krafttraining" | "cardio")
             }
             MenuProps={{
               PaperProps: {
@@ -135,7 +177,7 @@ export const WorkoutModal = ({
           <WorkoutCard
             variant="primary"
             initialData={
-              editingWorkout || {
+              localEditingWorkout || {
                 category: "krafttraining",
                 title: "",
                 description: "",
