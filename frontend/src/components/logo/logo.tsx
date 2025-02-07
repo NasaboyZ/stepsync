@@ -21,7 +21,7 @@ const ImageLogo = ({
       height={height}
       alt={alt}
       className={className}
-      priority={true}
+      priority={false}
     />
   );
 };
@@ -33,9 +33,10 @@ export default function Logo({ className }: { className?: string }) {
         <ImageLogo
           src={asset}
           width={100}
-          height={50}
+          height={100}
           alt="Logo stepsync"
           className={className}
+          style={{ height: "auto" }}
         />
       </Link>
     </div>

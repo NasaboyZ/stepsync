@@ -20,16 +20,22 @@ class WorkoutsController
   function create(Request $request)
   {
     $payload = Workout::validate($request);
+
+    // Füge automatisch is_completed = false hinzu
+    $payload['is_completed'] = false;
+    $payload['completed_at'] = null;
+
+    // Erstelle das Workout und verknüpfe es automatisch mit dem User
     $workout = \Auth::user()->workouts()->create($payload);
+
     return $workout;
   }
 
 
   function update(Request $request)
   {
-    // Nur die geänderten Felder validieren
     $rules = [
-      'id' => 'required|exists:workouts,id',  // ID muss existieren
+      'id' => 'required|exists:workouts,id',
       'category' => 'sometimes|string|in:cardio,krafttraining',
       'title' => 'sometimes|string|max:255',
       'description' => 'sometimes|string',
@@ -37,10 +43,10 @@ class WorkoutsController
       'repetitions' => 'sometimes|nullable|integer|min:0',
       'distance' => 'sometimes|nullable|numeric|min:0',
       'distance_unit' => 'sometimes|nullable|string|in:meter,kilometer',
+      'is_completed' => 'sometimes|boolean',
     ];
 
     $payload = $request->validate($rules);
-
     $workout = \Auth::user()->workouts()->findOrFail($request->input('id'));
 
     // Wenn sich die Kategorie ändert, setze die nicht mehr relevanten Felder auf NULL
@@ -51,6 +57,11 @@ class WorkoutsController
         $payload['distance'] = null;
         $payload['distance_unit'] = null;
       }
+    }
+
+    // Setze completed_at basierend auf is_completed
+    if (isset($payload['is_completed'])) {
+      $payload['completed_at'] = $payload['is_completed'] ? now() : null;
     }
 
     $workout->update($payload);

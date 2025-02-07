@@ -3,8 +3,9 @@ import { StaticImageData } from "next/image";
 import manInRollstuhl from "@/assets/man-Rollstuhl.jpg";
 import aboutImage from "@/assets/jogger.jpg";
 import productImage from "@/assets/man-nimmt-gewicht-auf.jpg";
-import drinkflasche from "@/assets/drink-flasche.png";
-import pinkehantel from "@/assets/pinkehantel.png";
+
+import runner from "@/assets/runner.jpg";
+import bauchmuskel from "@/assets/frau-machtbauchtraining.jpg";
 export interface ContentData {
   title?: string;
   text: string;
@@ -27,7 +28,7 @@ const useContentStore = create<ContentStore>((set, get) => ({
     },
     aboutTeaser: {
       text: "Die Geschichte von StepSync begann mit der Leidenschaft, Menschen dabei zu helfen, im Einklang mit ihren Zielen zu bleiben. Wir haben eine Plattform geschaffen, die Nutzer dabei unterstützt, ihre Fortschritte zu verfolgen und motiviert zu bleiben. Jede Funktion wurde entwickelt, um jeden Schritt bedeutungsvoll zu machen und eine nahtlose Reise zum Erfolg zu gewährleisten.",
-      imageSrc: drinkflasche,
+      imageSrc: runner,
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
     aboutPage: {
@@ -37,7 +38,7 @@ const useContentStore = create<ContentStore>((set, get) => ({
     },
     productTeaser: {
       text: "Werde Teil unserer Community und verwandle jeden Schritt in Motivation! Verfolge deine Fortschritte, setze neue Ziele und bleib immer auf Kurs egal, wo du bist. Starte jetzt und erlebe Fitness neu.",
-      imageSrc: pinkehantel,
+      imageSrc: bauchmuskel,
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
     productPage: {

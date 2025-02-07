@@ -16,6 +16,8 @@ return new class extends Migration {
       $table->unsignedInteger('repetitions')->nullable();
       $table->decimal('distance', 10, 2)->nullable();
       $table->enum('distance_unit', ['meter', 'kilometer'])->nullable();
+      $table->boolean('is_completed')->default(false);
+      $table->timestamp('completed_at')->nullable();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
       $table->timestamps();
     });
