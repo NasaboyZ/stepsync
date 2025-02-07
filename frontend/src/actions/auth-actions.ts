@@ -23,7 +23,7 @@ interface SignUpResponse extends ResponseReturn {
   updated_at?: string;
   created_at?: string;
   id?: number;
-  user?: User; // Spezifischer Typ für Benutzer-Daten
+  user?: User;
   errors?: SignUpError[];
 }
 
@@ -78,6 +78,7 @@ export async function handleSignup(
     // Unerwartete oder fehlerhafte Response
     // console.error("Unexpected response format or error:", data);
     return {
+      ...data,
       status: response.status,
       message: data.message || "Unexpected error occurred",
       errors: data.errors || [],

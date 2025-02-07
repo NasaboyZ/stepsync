@@ -25,16 +25,14 @@ export const step2Schema = z.object({
     .refine((val) => ["male", "female", "other"].includes(val.toLowerCase()), {
       message: "Bitte wählen Sie ein Geschlecht aus",
     }),
-  date_of_birth: z
-    .string()
-    .min(1, "Bitte geben Sie Ihr Geburtsdatum ein")
-    .refine((val) => {
-      const date = new Date(val);
-      const today = new Date();
-      const minDate = new Date();
-      minDate.setFullYear(today.getFullYear() - 100);
-      return date <= today && date >= minDate;
-    }, "Das Geburtsdatum darf nicht in der Zukunft liegen und muss realistisch sein"),
+  date_of_birth: z.string().min(1, "Bitte geben Sie Ihr Geburtsdatum ein"),
+  // .refine((val) => {
+  //   const date = new Date(val);
+  //   const today = new Date();
+  //   const minDate = new Date();
+  //   minDate.setFullYear(today.getFullYear() - 100);
+  //   return date <= today && date >= minDate;
+  // }, "Das Geburtsdatum darf nicht in der Zukunft liegen und muss realistisch sein"),
 });
 
 export const step3Schema = z.object({

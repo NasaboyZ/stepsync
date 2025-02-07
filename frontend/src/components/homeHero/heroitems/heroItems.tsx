@@ -15,17 +15,11 @@ export default function HeroItems() {
       <div className={Style["hero_wrapper"]}>
         <Typography variant="h1">Tracke deinen Erfolg</Typography>
 
-        <motion.div
-          className="box"
-          whileHover={{ scale: [null, 1.5, 1.4] }}
-          transition={{ duration: 0.3 }}
-        >
-          <Button
-            label="Registrieren"
-            style={ButtonStyle.SECONDARY}
-            href="/registration"
-          ></Button>
-        </motion.div>
+        <Button
+          label="Registrieren"
+          style={ButtonStyle.SECONDARY}
+          href="/registration"
+        ></Button>
 
         <div className={Style["phones_container"]}>
           <motion.div
@@ -38,7 +32,7 @@ export default function HeroItems() {
             <Image
               className={Style["image"]}
               src={images.backLeft}
-              alt="Hinten Links Bild"
+              alt="Man macht Deadlifting"
             />
           </motion.div>
 
@@ -52,7 +46,7 @@ export default function HeroItems() {
             <Image
               src={images.front}
               className={Style["image"]}
-              alt="Vorderseite des Handys"
+              alt="Hendy zeigt einen Futuristischen Man der in einer Laufban steht und sich Bereit mach loss zu rennen um die Olympischen Spiele zu gewinnen"
             />
           </motion.div>
 
@@ -66,7 +60,7 @@ export default function HeroItems() {
             <Image
               className={Style["image"]}
               src={images.backRight}
-              alt="Hinten Rechts Bild"
+              alt="Alter dicker man mit Rosa Legins joggt"
             />
           </motion.div>
         </div>

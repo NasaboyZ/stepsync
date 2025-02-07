@@ -26,6 +26,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  //TODO: Addd workout page and challenge page
+
   // 5. continue with the request, if no other condition is met
   return NextResponse.next();
 }
