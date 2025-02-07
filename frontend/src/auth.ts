@@ -5,10 +5,10 @@ import { JWT } from "next-auth/jwt";
 export const authConfig: AuthOptions = {
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt" as SessionStrategy, 
+    strategy: "jwt" as SessionStrategy, // using JWT as session strategy / management
   },
   pages: {
-    signIn: "/auth/sign-in",
+    signIn: "/auth/sign-in", // custom sign-in page
   },
   providers: [
     CredentialsProvider({
@@ -21,7 +21,6 @@ export const authConfig: AuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
 
-       
         const response = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: "POST",
           headers: {
@@ -35,7 +34,6 @@ export const authConfig: AuthOptions = {
 
         const user = await response.json();
 
-  
         if (response.ok && user) {
           return {
             email: user.email,
@@ -43,7 +41,6 @@ export const authConfig: AuthOptions = {
           } as User;
         }
 
-    
         return null;
       },
     }),
@@ -52,10 +49,6 @@ export const authConfig: AuthOptions = {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         token.accessToken = user.accessToken;
-   
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('authToken', user.accessToken as string);
-        }
       }
       return token;
     },

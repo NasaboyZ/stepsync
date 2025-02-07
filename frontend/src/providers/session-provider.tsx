@@ -7,8 +7,10 @@ interface SessionProviderProps {
   children: ReactNode;
 }
 
-const SessionProvider = ({ children }: SessionProviderProps) => {
-  return <NextAuthSessionProvider>{children}</NextAuthSessionProvider>;
-};
-
-export default SessionProvider;
+export default function SessionProvider({ children }: SessionProviderProps) {
+  return (
+    <NextAuthSessionProvider session={undefined}>
+      {children}
+    </NextAuthSessionProvider>
+  );
+}
