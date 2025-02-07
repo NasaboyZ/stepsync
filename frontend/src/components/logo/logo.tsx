@@ -7,12 +7,14 @@ const ImageLogo = ({
   height,
   alt,
   className,
+  style,
 }: {
   src: string;
   width: number;
   height: number;
   alt: string;
   className?: string;
+  style?: React.CSSProperties;
 }) => {
   return (
     <Image
@@ -22,6 +24,7 @@ const ImageLogo = ({
       alt={alt}
       className={className}
       priority={false}
+      style={style}
     />
   );
 };
