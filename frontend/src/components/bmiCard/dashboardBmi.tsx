@@ -103,6 +103,13 @@ export default function DashboardBmi() {
         },
         ticks: {
           color: "rgba(0, 0, 0, 0.6)",
+          maxRotation: 45,
+          minRotation: 45,
+          font: {
+            size: 10,
+          },
+          autoSkip: true,
+          maxTicksLimit: window.innerWidth < 640 ? 6 : 12,
         },
       },
       y: {
@@ -112,6 +119,9 @@ export default function DashboardBmi() {
         },
         ticks: {
           color: "rgba(0, 0, 0, 0.6)",
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12,
+          },
         },
       },
     },
@@ -136,7 +146,7 @@ export default function DashboardBmi() {
 
   return (
     <Card className={styles.card} style={{ backgroundColor: "#8B8878" }}>
-      <CardContent>
+      <CardContent className={styles.cardContent}>
         <Typography
           variant="h6"
           className={styles.title}
@@ -144,7 +154,7 @@ export default function DashboardBmi() {
         >
           BMI Progress
         </Typography>
-        <div className={styles.chartContainer} style={{ height: "300px" }}>
+        <div className={styles.chartContainer}>
           <Line data={chartData} options={options} />
         </div>
       </CardContent>

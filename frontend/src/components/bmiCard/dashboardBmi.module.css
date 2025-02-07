@@ -2,8 +2,12 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   background-color: var(--brown-light);
-
   margin: 1rem;
+  width: 100%;
+}
+
+.cardContent {
+  padding: 1rem !important;
 }
 
 .title {
@@ -15,6 +19,35 @@
 
 .chartContainer {
   width: 100%;
-  height: auto;
-  display: flex;
+  height: 300px;
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .card {
+    margin: 0.5rem;
+  }
+
+  .cardContent {
+    padding: 0.5rem !important;
+  }
+
+  .title {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .chartContainer {
+    height: 250px;
+  }
+}
+
+@media (max-width: 320px) {
+  .card {
+    margin: 0.25rem;
+  }
+
+  .chartContainer {
+    height: 200px;
+  }
 }
