@@ -88,6 +88,7 @@ export function WorkoutCard({
         repetitions: Number(repetitions),
         distance: initialData.distance,
         distance_unit: initialData.distance_unit,
+        is_completed: isCompleted,
       };
       onSave(workoutData);
     }
@@ -96,9 +97,10 @@ export function WorkoutCard({
   const handleToggleComplete = async () => {
     try {
       if (initialData.id && onStatusChange) {
-        onStatusChange(!isCompleted);
+        const newStatus = !isCompleted;
+        await onStatusChange(newStatus);
+        setIsCompleted(newStatus);
       }
-      setIsCompleted(!isCompleted);
     } catch (error) {
       console.error("Fehler:", error);
     }

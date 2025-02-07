@@ -10,6 +10,7 @@ export interface WorkoutData {
   created_at?: string;
   is_completed: boolean;
   completed_at?: string | null;
+  
 }
 
 export interface WorkoutCardProps {

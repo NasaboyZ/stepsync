@@ -124,9 +124,12 @@ export default function WorkoutItems() {
 
   const memoizedFilteredWorkouts = React.useMemo(() => {
     return savedWorkouts.filter((workout) => {
-      if (selectedTab === 0) return true;
-      if (selectedTab === 1) return workout.category === "krafttraining";
-      if (selectedTab === 2) return workout.category === "cardio";
+      if (selectedTab === 0) return !workout.is_completed;
+      if (selectedTab === 1)
+        return workout.category === "krafttraining" && !workout.is_completed;
+      if (selectedTab === 2)
+        return workout.category === "cardio" && !workout.is_completed;
+      if (selectedTab === 3) return workout.is_completed;
       return true;
     });
   }, [savedWorkouts, selectedTab]);
@@ -176,6 +179,14 @@ export default function WorkoutItems() {
               color: selectedTab === 2 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 2 ? 600 : 400,
+            }}
+          />
+          <Tab
+            label="Erledigt"
+            sx={{
+              color: selectedTab === 3 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 3 ? 600 : 400,
             }}
           />
         </Tabs>
