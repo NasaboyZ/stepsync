@@ -28,8 +28,8 @@ const NavigationItem = () => {
 
 export default function FooterNav() {
   const legalItems = [
-    { href: "/privacy-policy", label: "Datenschutzerklärung" },
-    { href: "/terms-and-conditions", label: "AGB" },
+    { href: "/datenschutz", label: "Datenschutzerklärung" },
+    { href: "/impressum", label: "Impressum" },
   ];
 
   return (
