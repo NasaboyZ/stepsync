@@ -47,11 +47,14 @@ export function WorkoutCard({
   const [repetitions, setRepetitions] = useState(
     initialData?.repetitions?.toString() || ""
   );
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(
+    initialData?.is_completed || false
+  );
 
   useEffect(() => {
     setTitle(initialData?.title || "");
-  }, [initialData?.title]);
+    setIsCompleted(initialData?.is_completed || false);
+  }, [initialData?.title, initialData?.is_completed]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -92,7 +95,7 @@ export function WorkoutCard({
 
   const handleToggleComplete = async () => {
     try {
-      if (onStatusChange) {
+      if (initialData.id && onStatusChange) {
         onStatusChange(!isCompleted);
       }
       setIsCompleted(!isCompleted);

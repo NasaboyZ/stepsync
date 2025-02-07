@@ -8,7 +8,7 @@ export interface WorkoutData {
   distance?: number | null;
   distance_unit?: string | null;
   created_at?: string;
-  is_completed?: boolean;
+  is_completed: boolean;
   completed_at?: string | null;
 }
 
