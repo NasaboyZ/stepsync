@@ -80,3 +80,12 @@
   color: white;
   margin-left: 8px;
 }
+
+.mobileDrawer {
+  z-index: 1200;
+}
+
+.mobileDrawer :global(.MuiDrawer-paper) {
+  width: 250px;
+  background-color: var(--brown-light);
+}

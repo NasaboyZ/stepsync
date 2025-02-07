@@ -4,12 +4,14 @@
   border-radius: 8px;
   background: var(--brown-light);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .workoutInfo {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 12px 16px;
 }
 
 .mainInfo {
@@ -70,6 +72,7 @@
   background: var(--brown-light);
 
   max-width: 100%;
+  position: relative;
 }
 
 .editCard {
@@ -115,4 +118,61 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+@media (max-width: 320px) {
+  .workoutListItem,
+  .listCard {
+    margin: 0.2rem 0.5rem;
+    padding: 8px 12px;
+    position: relative;
+  }
+
+  .workoutInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .mainInfo {
+    width: 100%;
+  }
+
+  .category {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .details {
+    font-size: 0.875rem;
+  }
+
+  .dateInfo {
+    margin: 2px 0;
+    font-size: 0.75rem;
+  }
+
+  .actions {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 1;
+  }
+
+  .checkboxContainer {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+  }
+
+  .workoutType {
+    font-size: 0.75rem;
+  }
+
+  .numberInputs {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

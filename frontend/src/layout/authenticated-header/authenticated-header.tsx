@@ -15,12 +15,13 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { MdMenu as MenuIcon } from "react-icons/md";
-import { GoBell } from "react-icons/go";
+
 import styles from "./authenticated-header.module.css";
 import { fetchUserData } from "@/utils/api";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/interfaces/userProfile";
+import AuthenticatedNav from "../authenticatedNav/authenticatedNav";
 
 export default function AuthenticatedHeader() {
   const [username, setUsername] = useState("");
@@ -30,6 +31,7 @@ export default function AuthenticatedHeader() {
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -92,71 +94,80 @@ export default function AuthenticatedHeader() {
     await signOut({ callbackUrl: "/login" });
   };
 
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
   return (
-    <AppBar position="static" className={styles.appBar}>
-      <Toolbar>
-        {!isLargeScreen && (
-          <IconButton
-            edge="start"
-            color="inherit"
-            className={styles.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
+    <>
+      <AppBar position="static" className={styles.appBar}>
+        <Toolbar>
+          {!isLargeScreen && (
+            <IconButton
+              edge="start"
+              color="inherit"
+              className={styles.menuButton}
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
-        <Typography variant="h6" className={styles.title}>
-          {getTitle()}
-        </Typography>
-        <Box className={styles.userSection}>
-          <IconButton className={styles.iconButton} color="inherit">
-            <GoBell />
-          </IconButton>
-
-          <span className={styles.separator}></span>
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <Box display="flex" alignItems="center">
-              <Avatar
-                className={styles.avatar}
-                src={user?.avatar?.url}
-                style={{ cursor: "pointer" }}
-                onClick={handleMenuOpen}
-              >
-                {user?.username ? user.username[0].toUpperCase() : "?"}
-              </Avatar>
-              <Typography
-                variant="body1"
-                className={styles.userName}
-                onClick={handleMenuOpen}
-                style={{ cursor: "pointer", marginLeft: "8px" }}
-              >
-                {username}
-              </Typography>
-              <Menu
-                anchorEl={anchorEl}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-                slotProps={{
-                  paper: {
-                    style: {
-                      marginTop: "22px",
-                    },
-                  },
-                }}
-              >
-                <MenuItem
-                  onClick={handleMenuClose}
-                  component="a"
-                  href="/profileinstellungen"
+          <Typography variant="h6" className={styles.title}>
+            {getTitle()}
+          </Typography>
+          <Box className={styles.userSection}>
+            <span className={styles.separator}></span>
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Box display="flex" alignItems="center">
+                <Avatar
+                  className={styles.avatar}
+                  src={user?.avatar?.url}
+                  style={{ cursor: "pointer" }}
+                  onClick={handleMenuOpen}
                 >
-                  Profileinstellungen
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
-            </Box>
-          </ClickAwayListener>
-        </Box>
-      </Toolbar>
-    </AppBar>
+                  {user?.username ? user.username[0].toUpperCase() : "?"}
+                </Avatar>
+                <Typography
+                  variant="body1"
+                  className={styles.userName}
+                  onClick={handleMenuOpen}
+                  style={{ cursor: "pointer", marginLeft: "8px" }}
+                >
+                  {username}
+                </Typography>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={isMenuOpen}
+                  onClose={handleMenuClose}
+                  slotProps={{
+                    paper: {
+                      style: {
+                        marginTop: "22px",
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem
+                    onClick={handleMenuClose}
+                    component="a"
+                    href="/profileinstellungen"
+                  >
+                    Profileinstellungen
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </Box>
+            </ClickAwayListener>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {!isLargeScreen && (
+        <AuthenticatedNav
+          isOpen={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        />
+      )}
+    </>
   );
 }
