@@ -7,10 +7,44 @@
 
 .chartTitle {
   color: var(--white);
+  font-size: 1.25rem;
 }
 
 .chartContainer {
   width: 100%;
   height: 320px;
   display: flex;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Media Queries für verschiedene Bildschirmgrößen */
+@media (max-width: 640px) {
+  .chartContainer {
+    height: 280px;
+  }
+
+  .chartCard {
+    margin: 0.5rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .chartContainer {
+    height: 240px;
+  }
+
+  .chartTitle {
+    font-size: 1rem;
+  }
 }

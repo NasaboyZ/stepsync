@@ -90,7 +90,11 @@ const WorkoutChart: React.FC = () => {
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: "rgba(0, 0, 0, 0.6)" },
+        ticks: {
+          color: "rgba(0, 0, 0, 0.6)",
+          maxRotation: 45,
+          minRotation: 45,
+        },
       },
       y: {
         grid: { color: "rgba(0, 0, 0, 0.1)" },
