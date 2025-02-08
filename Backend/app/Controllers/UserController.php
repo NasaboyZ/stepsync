@@ -33,8 +33,8 @@ class UserController
       'date_of_birth' => $user->date_of_birth,
       'age' => $age,
       'id' => $user->id,
-      'avatar' => $user->avatar ? [
-        'id' => $user->avatar->id,
+      'avatar' => $user->avatar()->exists() ? [
+        'id' => $user->avatar_image_id,
         'url' => Storage::url($user->avatar->pathname)
       ] : null,
     ]);
@@ -119,7 +119,7 @@ class UserController
 
     if ($user->verification_token === $request->input('token')) {
       $user->email_verified_at = now();
-      $user->verification_token = null;
+      $user->verification_token = '';
       $user->save();
 
       return response()->json(['message' => 'Email successfully verified'], 200);

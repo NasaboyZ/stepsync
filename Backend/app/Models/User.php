@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Model
 {
@@ -61,9 +62,10 @@ class User extends Model
 
   #[Column]
   #[Hidden]
-  public string $email_verified;
+  public ?string $email_verified_at = null;
 
-
+  #[Column]
+  public ?int $avatar_image_id = null;
 
   public function workouts(): HasMany
   {
@@ -90,7 +92,6 @@ class User extends Model
     return $this->hasMany(Image::class, 'user_id');
   }
 
-
   public function challenges(): BelongsToMany
   {
     return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id')
@@ -98,13 +99,12 @@ class User extends Model
       ->withTimestamps();
   }
 
-
   public function activeChallenges(): BelongsToMany
   {
     return $this->challenges()->wherePivot('status', 'pending');
   }
 
-  public function avatar()
+  public function avatar(): BelongsTo
   {
     return $this->belongsTo(Image::class, 'avatar_image_id');
   }
@@ -112,7 +112,6 @@ class User extends Model
   public static function validate(Request $request)
   {
     $post = $request->method() === 'POST';
-
 
     return $request->validate([
       'first_name' => [$post ? 'required' : 'sometimes', 'string', 'max:255'],
