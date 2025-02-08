@@ -40,6 +40,11 @@ export interface AvatarData {
   url: string;
 }
 
+export interface WorkoutStatistics {
+  date: string;
+  frequency: number;
+}
+
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
   const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
@@ -120,4 +125,21 @@ export const fetchUserAvatar = async (
     token
   );
   return data.avatar;
+};
+
+export const fetchWorkoutStatistics = async (
+  token: string,
+  timeframe: string = "12_months",
+  category: string = "all"
+): Promise<WorkoutStatistics[]> => {
+  const data = await dataFetchWithToken(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts/statistics?timeframe=${timeframe}&category=${category}`,
+    token
+  );
+
+  if (!data) {
+    throw new Error("Keine Statistikdaten empfangen");
+  }
+
+  return data;
 };

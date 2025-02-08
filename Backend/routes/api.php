@@ -55,14 +55,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/workouts', [WorkoutsController::class, 'create']);
   Route::patch('/workouts', [WorkoutsController::class, 'update']);
   Route::delete('/workouts', [WorkoutsController::class, 'destroy']);
+  Route::get('/workouts/statistics', [WorkoutsController::class, 'getStatistics']);
 
   Route::get('/bmi', [BmiController::class, 'index']);
   Route::patch('/bmi', [BmiController::class, 'update']);
   Route::delete('/bmi', [BmiController::class, 'destroy']);
   Route::get('/bmi/history', [BmiController::class, 'history']);
-
-  // Workout-Statistiken
-  Route::get('/workouts/statistics', [WorkoutsController::class, 'getStatistics']);
-
-
 });

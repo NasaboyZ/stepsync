@@ -1,0 +1,21 @@
+meta {
+  name: statistics Workout
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/workouts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+      "user_id": 1
+  }
+}

@@ -13,8 +13,7 @@ export interface UserProfile {
     id?: number;
     url?: string;
   };
-  level?: number;
-  xp?: number;
+
   workouts?: number;
   memberSince?: string;
 }

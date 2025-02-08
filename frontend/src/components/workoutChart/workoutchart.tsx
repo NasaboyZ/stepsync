@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
-import { Card, CardContent, Typography, MenuItem, Select } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  MenuItem,
+  Select,
+  CircularProgress,
+} from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +21,8 @@ import {
   ChartOptions,
 } from "chart.js";
 import styles from "./workoutchart.module.css";
+import { fetchWorkoutStatistics } from "@/utils/api";
+import { getSession } from "next-auth/react";
 
 ChartJS.register(
   CategoryScale,
@@ -24,53 +33,74 @@ ChartJS.register(
   Legend
 );
 
+interface ChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+  borderColor: string;
+  borderWidth: number;
+  borderRadius: number;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
 const WorkoutChart: React.FC = () => {
   const [timeframe, setTimeframe] = useState("12_months");
   const [category, setCategory] = useState("all");
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const workoutData = {
-    "7_days": [
-      { day: "Mo", frequency: 2 },
-      { day: "Di", frequency: 3 },
-      { day: "Mi", frequency: 1 },
-      { day: "Do", frequency: 2 },
-      { day: "Fr", frequency: 4 },
-      { day: "Sa", frequency: 1 },
-      { day: "So", frequency: 3 },
-    ],
-    "12_months": [
-      { month: "Jan", frequency: 5 },
-      { month: "Feb", frequency: 3 },
-      { month: "Mär", frequency: 4 },
-      { month: "Apr", frequency: 3 },
-      { month: "Mai", frequency: 8 },
-      { month: "Jun", frequency: 16 },
-      { month: "Jul", frequency: 13 },
-    ],
-    "5_years": [
-      { year: "2021", frequency: 120 },
-      { year: "2022", frequency: 135 },
-      { year: "2023", frequency: 150 },
-      { year: "2024", frequency: 140 },
-      { year: "2025", frequency: 160 },
-    ],
-  };
+  useEffect(() => {
+    const loadStatistics = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const selectedData = workoutData[timeframe];
+        const session = await getSession();
+        const token = session?.accessToken as string;
 
-  const chartData = {
-    labels: selectedData.map((data) => Object.values(data)[0]),
-    datasets: [
-      {
-        label: "Workout Häufigkeit",
-        data: selectedData.map((data) => data.frequency),
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
-        borderColor: "rgba(0, 0, 0, 1)",
-        borderWidth: 1,
-        borderRadius: 5,
-      },
-    ],
-  };
+        if (!token) {
+          setError("Bitte melden Sie sich an");
+          return;
+        }
+
+        const statistics = await fetchWorkoutStatistics(
+          token,
+          timeframe,
+          category
+        );
+
+        setChartData({
+          labels: statistics.map((item) => item.date),
+          datasets: [
+            {
+              label: "Workout Häufigkeit",
+              data: statistics.map((item) => item.frequency),
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              borderColor: "rgba(0, 0, 0, 1)",
+              borderWidth: 1,
+              borderRadius: 5,
+            },
+          ],
+        });
+      } catch (err) {
+        console.error("Fehler beim Laden der Statistiken:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Ein unerwarteter Fehler ist aufgetreten"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStatistics();
+  }, [timeframe, category]);
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
@@ -128,7 +158,13 @@ const WorkoutChart: React.FC = () => {
           </Select>
         </div>
         <div className={styles.chartContainer}>
-          <Bar data={chartData} options={options} />
+          {loading ? (
+            <CircularProgress />
+          ) : error ? (
+            <Typography color="error">{error}</Typography>
+          ) : chartData ? (
+            <Bar data={chartData} options={options} />
+          ) : null}
         </div>
       </CardContent>
     </Card>

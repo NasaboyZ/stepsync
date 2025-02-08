@@ -93,11 +93,7 @@ export default function ProfileBioCard() {
                     {userProfile.username}
                   </Typography>
                   <Typography variant="body2" className={styles.statsInfo}>
-                    Level {userProfile.level}{" "}
-                    <span className={styles.divider}>|</span>
                     {userProfile.age} Jahre{" "}
-                    <span className={styles.divider}>|</span>
-                    {userProfile.xp} XP{" "}
                     <span className={styles.divider}>|</span>
                     {userProfile.workouts} Workouts diesen Monat
                   </Typography>

@@ -84,10 +84,10 @@ class WorkoutsController
     $category = $request->query('category', 'all');
 
     $query = $user->workouts()
-      ->where('is_completed', true)  // Nur abgeschlossene Workouts zählen
+      ->where('is_completed', true)
       ->where('completed_at', '!=', null);
 
-    // Kategorie-Filter
+    // Kategorie-Filter anpassen
     if ($category !== 'all') {
       $query->where('category', $category);
     }
@@ -95,54 +95,100 @@ class WorkoutsController
     // Zeitraum-Filter und Gruppierung
     switch ($timeframe) {
       case '7_days':
-        $query->where('completed_at', '>=', now()->subDays(7))
+        $query->where('completed_at', '>=', now()->subDays(6))
           ->select(
-            DB::raw('DATE(completed_at) as date'),
+            DB::raw("strftime('%w', completed_at) as day_num"),
             DB::raw('COUNT(*) as frequency')
           )
-          ->groupBy(DB::raw('DATE(completed_at)'))
-          ->orderBy('date', 'ASC');
+          ->groupBy(DB::raw("strftime('%w', completed_at)"))
+          ->orderBy('day_num', 'ASC');
         break;
 
       case '12_months':
-        $query->where('completed_at', '>=', now()->subMonths(12))
+        $query->where('completed_at', '>=', now()->subMonths(11))
           ->select(
-            DB::raw('DATE_FORMAT(completed_at, "%Y-%m") as date'),
+            DB::raw("strftime('%m', completed_at) as month_num"),
             DB::raw('COUNT(*) as frequency')
           )
-          ->groupBy(DB::raw('DATE_FORMAT(completed_at, "%Y-%m")'))
-          ->orderBy('date', 'ASC');
+          ->groupBy(DB::raw("strftime('%m', completed_at)"))
+          ->orderBy('month_num', 'ASC');
         break;
 
       case '5_years':
-        $query->where('completed_at', '>=', now()->subYears(5))
+        $query->where('completed_at', '>=', now()->subYears(4))
           ->select(
-            DB::raw('YEAR(completed_at) as date'),
+            DB::raw("strftime('%Y', completed_at) as date"),
             DB::raw('COUNT(*) as frequency')
           )
-          ->groupBy(DB::raw('YEAR(completed_at)'))
+          ->groupBy(DB::raw("strftime('%Y', completed_at)"))
           ->orderBy('date', 'ASC');
         break;
     }
 
     $statistics = $query->get();
 
-    // Formatierung der Daten für das Frontend
-    $formattedData = $statistics->map(function ($item) use ($timeframe) {
-      $date = $item->date;
-      if ($timeframe === '7_days') {
-        $date = date('D', strtotime($item->date)); // Wochentag (Mo, Di, etc.)
-      } else if ($timeframe === '12_months') {
-        $date = date('M', strtotime($item->date . '-01')); // Monatsname
-      }
+    // Fehlende Datenpunkte mit 0 auffüllen
+    $filledData = $this->fillMissingDataPoints($statistics, $timeframe);
 
-      return [
-        'date' => $date,
-        'frequency' => $item->frequency,
-      ];
-    });
+    return response()->json($filledData);
+  }
 
-    return response()->json($formattedData);
+  // Neue Hilfsmethode zum Auffüllen fehlender Datenpunkte
+  private function fillMissingDataPoints($statistics, $timeframe)
+  {
+    $filledData = [];
+
+    switch ($timeframe) {
+      case '7_days':
+        $dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        for ($i = 0; $i < 7; $i++) {
+          $found = $statistics->firstWhere('day_num', $i);
+          $filledData[] = [
+            'date' => $dayNames[$i],
+            'frequency' => $found ? $found->frequency : 0
+          ];
+        }
+        break;
+
+      case '12_months':
+        $monthNames = [
+          'Jan',
+          'Feb',
+          'Mär',
+          'Apr',
+          'Mai',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Okt',
+          'Nov',
+          'Dez'
+        ];
+        for ($i = 1; $i <= 12; $i++) {
+          $monthNum = str_pad($i, 2, '0', STR_PAD_LEFT);
+          $found = $statistics->firstWhere('month_num', $monthNum);
+          $filledData[] = [
+            'date' => $monthNames[$i - 1],
+            'frequency' => $found ? $found->frequency : 0
+          ];
+        }
+        break;
+
+      case '5_years':
+        $currentYear = now()->year;
+        for ($i = 4; $i >= 0; $i--) {
+          $year = $currentYear - $i;
+          $found = $statistics->firstWhere('date', (string)$year);
+          $filledData[] = [
+            'date' => (string)$year,
+            'frequency' => $found ? $found->frequency : 0
+          ];
+        }
+        break;
+    }
+
+    return $filledData;
   }
 
   // Neue Methode für Workout-Status-Update
