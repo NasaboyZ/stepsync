@@ -49,19 +49,59 @@
   min-width: 120px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .workoutInfo {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
+  }
+
+  .mainInfo {
+    width: 100%;
   }
 
   .dateInfo {
     margin: 4px 0;
+    font-size: 0.9rem;
   }
 
   .actions {
     align-self: flex-end;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .checkboxContainer {
+    position: absolute;
+    top: 70%;
+    right: 18px;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 320px) {
+  .listCard {
+    margin: 0.2rem 0.5rem;
+    padding: 8px 12px;
+  }
+
+  .mainInfo .category {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .mainInfo .details {
+    font-size: 0.8rem;
+  }
+
+  .numberInputs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .editForm {
+    gap: 8px;
   }
 }
 
@@ -106,73 +146,4 @@
 .saveButton {
   margin-top: 16px;
   padding: 12px;
-}
-
-@media (max-width: 600px) {
-  .numberInputs {
-    flex-direction: row;
-  }
-}
-
-.editContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-@media (max-width: 320px) {
-  .workoutListItem,
-  .listCard {
-    margin: 0.2rem 0.5rem;
-    padding: 8px 12px;
-    position: relative;
-  }
-
-  .workoutInfo {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    padding: 8px;
-  }
-
-  .mainInfo {
-    width: 100%;
-  }
-
-  .category {
-    font-size: 1rem;
-    margin-bottom: 2px;
-  }
-
-  .details {
-    font-size: 0.875rem;
-  }
-
-  .dateInfo {
-    margin: 2px 0;
-    font-size: 0.75rem;
-  }
-
-  .actions {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    z-index: 1;
-  }
-
-  .checkboxContainer {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-  }
-
-  .workoutType {
-    font-size: 0.75rem;
-  }
-
-  .numberInputs {
-    flex-direction: column;
-    gap: 8px;
-  }
 }

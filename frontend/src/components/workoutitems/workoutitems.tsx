@@ -145,7 +145,8 @@ export default function WorkoutItems() {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: { xs: "stretch", sm: "center" },
+          width: "100%",
         }}
       >
         <Tabs
@@ -153,8 +154,18 @@ export default function WorkoutItems() {
           onChange={handleTabChange}
           aria-label="workout categories"
           className={styles.tabs}
+          variant="scrollable"
+          scrollButtons="auto"
           TabIndicatorProps={{
             style: { backgroundColor: "#E31E24", height: "2px" },
+          }}
+          sx={{
+            minHeight: "35px",
+            "& .MuiTab-root": {
+              minHeight: "35px",
+              padding: "6px 16px",
+              fontSize: "14px",
+            },
           }}
         >
           <Tab
@@ -163,6 +174,7 @@ export default function WorkoutItems() {
               color: selectedTab === 0 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 0 ? 600 : 400,
+              minHeight: "35px",
             }}
           />
           <Tab
@@ -171,6 +183,7 @@ export default function WorkoutItems() {
               color: selectedTab === 1 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 1 ? 600 : 400,
+              minHeight: "35px",
             }}
           />
           <Tab
@@ -179,6 +192,7 @@ export default function WorkoutItems() {
               color: selectedTab === 2 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 2 ? 600 : 400,
+              minHeight: "35px",
             }}
           />
           <Tab
@@ -187,15 +201,17 @@ export default function WorkoutItems() {
               color: selectedTab === 3 ? "#E31E24" : "#000",
               textTransform: "none",
               fontWeight: selectedTab === 3 ? 600 : 400,
+              minHeight: "35px",
             }}
           />
         </Tabs>
 
-        <Box>
+        <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
           <Button
             variant="contained"
             onClick={() => setIsModalOpen(true)}
             className={styles.newWorkoutButton}
+            fullWidth={true}
           >
             Neues Workout
           </Button>

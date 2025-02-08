@@ -7,12 +7,24 @@
 .tabsContainer {
   margin-bottom: 1rem;
   padding: 0 2rem;
+  flex-direction: row;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
 }
 
 .tabs {
   border-bottom: 2px solid var(--red);
   margin-top: 1rem;
   padding-bottom: 8px;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 
 .tab {
@@ -64,6 +76,9 @@
   padding: 12px 24px;
   text-transform: none;
   font-weight: 500;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
-
-
