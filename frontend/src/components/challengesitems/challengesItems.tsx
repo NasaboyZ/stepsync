@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/interfaces/challenges";
 import {
-  Fab,
   Modal,
   TextField,
   Button,
@@ -17,7 +16,6 @@ import {
   Tab,
 } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaPlus } from "react-icons/fa";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
 import { ChallengesCard } from "../challengersCard/challengesCard";
@@ -192,35 +190,73 @@ export default function ChallengesItems() {
         Challenges
       </Typography>
 
-      <Box className={styles.tabsContainer}>
+      <Box
+        className={styles.tabsContainer}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: { xs: "stretch", sm: "center" },
+          width: "100%",
+        }}
+      >
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
           aria-label="challenge periods"
           className={styles.tabs}
+          variant="scrollable"
+          scrollButtons="auto"
           TabIndicatorProps={{
-            className: styles.tabIndicator,
+            style: { backgroundColor: "#E31E24", height: "2px" },
+          }}
+          sx={{
+            minHeight: "35px",
+            "& .MuiTab-root": {
+              minHeight: "35px",
+              padding: "6px 16px",
+              fontSize: "14px",
+            },
           }}
         >
           <Tab
             label="Heute"
-            className={`${styles.tab} ${
-              selectedTab === 0 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 0 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 0 ? 600 : 400,
+              minHeight: "35px",
+            }}
           />
           <Tab
             label="Last 7 Days"
-            className={`${styles.tab} ${
-              selectedTab === 1 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 1 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 1 ? 600 : 400,
+              minHeight: "35px",
+            }}
           />
           <Tab
             label="Month"
-            className={`${styles.tab} ${
-              selectedTab === 2 ? styles.selected : ""
-            }`}
+            sx={{
+              color: selectedTab === 2 ? "#E31E24" : "#000",
+              textTransform: "none",
+              fontWeight: selectedTab === 2 ? 600 : 400,
+              minHeight: "35px",
+            }}
           />
         </Tabs>
+
+        <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+          <Button
+            variant="contained"
+            onClick={handleOpenModal}
+            className={styles.newChallengeButton}
+            fullWidth={true}
+          >
+            Neue Challenge
+          </Button>
+        </Box>
       </Box>
 
       <Grid container spacing={2}>
@@ -236,25 +272,6 @@ export default function ChallengesItems() {
             </Grid>
           ))}
       </Grid>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        style={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}
-      >
-        <Fab
-          color="primary"
-          aria-label="add workout"
-          onClick={handleOpenModal}
-          component={motion.button}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className={styles.fabButton}
-        >
-          <FaPlus />
-        </Fab>
-      </motion.div>
 
       <AnimatePresence>
         {isModalOpen && (
