@@ -10,7 +10,7 @@ export default function DashboardItems() {
     <Container maxWidth="lg">
       <Grid container spacing={2} sx={{ my: 2 }}>
         <Grid item xs={12}>
-          <ChallengeCounter />
+          <ProfileBioCard />
         </Grid>
         <Grid item xs={12} md={6}>
           <DashboardBmi />
@@ -20,7 +20,7 @@ export default function DashboardItems() {
         </Grid>
 
         <Grid item xs={12}>
-          <ProfileBioCard />
+          <ChallengeCounter />
         </Grid>
       </Grid>
     </Container>

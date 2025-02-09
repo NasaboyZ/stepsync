@@ -13,7 +13,7 @@ class BmiController
     public function index()
     {
         $user = Auth::user();
-        $bmi = BMI::where('user_id', $user->id)->first(); 
+        $bmi = BMI::where('user_id', $user->id)->first();
 
         if (!$bmi) {
             return response()->json(['message' => 'No BMI data found'], 404);
@@ -36,11 +36,16 @@ class BmiController
         ]);
 
         $user = Auth::user();
-        $bmi = BMI::where('user_id', $user->id)->first() ?? new BMI();  // Expliziter Zugriff
+        $bmi = BMI::where('user_id', $user->id)->first() ?? new BMI();
 
         $bmi->height = $request->input('height');
         $bmi->weight = $request->input('weight');
         $bmi->user_id = $user->id;
+
+        // Aktualisiere auch die Benutzerdaten
+        $user->height = $request->input('height');
+        $user->weight = $request->input('weight');
+        $user->save();
 
         $bmi->save();
 

@@ -92,6 +92,16 @@ class UserController
     $user = Auth::user();
     $payload = User::validate($request);
     $user->update($payload);
+
+    // Aktualisiere BMI-Daten, wenn Gewicht oder Größe geändert wurden
+    if (isset($payload['weight']) || isset($payload['height'])) {
+      $bmi = BMI::where('user_id', $user->id)->first() ?? new BMI();
+      $bmi->weight = $payload['weight'] ?? $bmi->weight;
+      $bmi->height = $payload['height'] ?? $bmi->height;
+      $bmi->user_id = $user->id;
+      $bmi->save();
+    }
+
     return $user;
   }
 
