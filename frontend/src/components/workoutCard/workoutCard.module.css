@@ -1,17 +1,19 @@
-.workoutListItem {
+/* .workoutListItem {
   margin: 1rem 0;
-
   border-radius: 8px;
   background: var(--brown-light);
   transition: all 0.3s ease;
   position: relative;
-}
+} */
 
 .workoutInfo {
+  background: var(--brown-light);
+  border-radius: 8px;
+  margin: 8px 16px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
 }
 
 .mainInfo {
