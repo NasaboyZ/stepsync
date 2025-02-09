@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BmiController
 {
-    // Zeigt die BMI-Daten des authentifizierten Benutzers an
+
     public function index()
     {
         $user = Auth::user();
@@ -23,11 +23,11 @@ class BmiController
             'user_id' => $user->id,
             'height' => $bmi->height,
             'weight' => $bmi->weight,
-            'bmi' => $bmi->calculateBMI(),  // Berechne den BMI
+            'bmi' => $bmi->calculateBMI(),
         ]);
     }
 
-    // Aktualisiert die BMI-Daten des Benutzers
+
     public function update(Request $request)
     {
         $request->validate([
@@ -42,7 +42,7 @@ class BmiController
         $bmi->weight = $request->input('weight');
         $bmi->user_id = $user->id;
 
-        // Aktualisiere auch die Benutzerdaten
+
         $user->height = $request->input('height');
         $user->weight = $request->input('weight');
         $user->save();
@@ -55,11 +55,11 @@ class BmiController
         ]);
     }
 
-    // Löscht die BMI-Daten des Benutzers
+
     public function destroy()
     {
         $user = Auth::user();
-        $bmi = BMI::where('user_id', $user->id)->first();  // Expliziter Zugriff
+        $bmi = BMI::where('user_id', $user->id)->first();
 
         if (!$bmi) {
             return response()->json(['message' => 'No BMI data found to delete'], 404);
@@ -70,7 +70,7 @@ class BmiController
         return response()->json(['message' => 'BMI data deleted successfully']);
     }
 
-    // Zeigt die BMI-Historie des Benutzers an
+
     public function history()
     {
         $user = Auth::user();

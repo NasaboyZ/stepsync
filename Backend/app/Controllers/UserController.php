@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController
 {
-  // Zeigt die Details eines Benutzers an
+
   function show(Request $request)
   {
     $user = Auth::user();
@@ -40,7 +40,7 @@ class UserController
     ]);
   }
 
-  // Listet alle Challenges des Benutzers auf
+
   function showChallenges()
   {
     $user = Auth::user();
@@ -52,29 +52,27 @@ class UserController
     ]);
   }
 
-  // Benutzer erstellen
+
   function create(Request $request)
   {
     $payload = User::validate($request);
     $user = User::create($payload);
 
-    // BMI speichern
+
     $bmi = new BMI();
     $bmi->height = $payload['height'];
     $bmi->weight = $payload['weight'];
     $bmi->user_id = $user->id;
     $bmi->save();
 
-    // Zufällige Challenges dem Benutzer zuweisen
-    $challengesController = new ChallengesController();
-    // $challengesController->assignRandomChallengesToUser($user);
 
-    // Verifizierungs-Token generieren
+    $challengesController = new ChallengesController();
+
+
     $token = Str::random(64);
     $user->verification_token = $token;
     $user->save();
 
-    // E-Mail mit Verifizierungstoken senden
     Mail::raw(
       'Please verify your email using this token: ' . $token,
       fn($mail) => $mail->to($user->email)->subject('Email Verification')
@@ -86,14 +84,13 @@ class UserController
     ], 201);
   }
 
-  // Benutzerinformationen aktualisieren
+
   function update(Request $request)
   {
     $user = Auth::user();
     $payload = User::validate($request);
     $user->update($payload);
 
-    // Aktualisiere BMI-Daten, wenn Gewicht oder Größe geändert wurden
     if (isset($payload['weight']) || isset($payload['height'])) {
       $bmi = BMI::where('user_id', $user->id)->first() ?? new BMI();
       $bmi->weight = $payload['weight'] ?? $bmi->weight;
@@ -105,7 +102,7 @@ class UserController
     return $user;
   }
 
-  // Benutzer löschen
+
   function destroy(Request $request)
   {
     $user = Auth::user();
@@ -113,7 +110,7 @@ class UserController
     return $user;
   }
 
-  // E-Mail-Verifizierung
+
   public function verifyEmail(Request $request)
   {
     $request->validate([
@@ -138,7 +135,7 @@ class UserController
     return response()->json(['message' => 'Invalid token'], 400);
   }
 
-  // Benutzer-Login
+
   public function login(Request $request)
   {
     $credentials = $request->only('email', 'password');
@@ -167,7 +164,7 @@ class UserController
     ], 200);
   }
 
-  // Prüfen, ob ein Benutzername verfügbar ist
+
   public function checkUsername(Request $request)
   {
     $request->validate(['username' => 'required|string']);
@@ -189,7 +186,6 @@ class UserController
     $user = User::where('email', $request->email)->first();
     $token = Str::random(64);
 
-    // Altes Token löschen und neues erstellen
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
     DB::table('password_reset_tokens')->insert([
       'email' => $request->email,
@@ -232,7 +228,6 @@ class UserController
       return response()->json(['message' => 'Invalid token'], 400);
     }
 
-    // Prüfen ob Token abgelaufen ist (Standard: 60 Minuten)
     if (now()->diffInMinutes($resetRecord->created_at) > config('auth.passwords.timeout', 60)) {
       return response()->json(['message' => 'Token expired'], 400);
     }
