@@ -8,7 +8,7 @@ export const createWorkout = async (
   router: AppRouterInstance,
   onSuccess: (data: WorkoutData) => void
 ) => {
-  console.log("Sending workout data:", workoutData); // Debug-Log
+  console.log("Sending workout data:", workoutData);
 
   if (!workoutData || !accessToken) {
     useSnackbarStore.getState().showSnackbar("Keine Daten verfügbar", "error");
@@ -25,7 +25,7 @@ export const createWorkout = async (
     distance_unit: workoutData.distance_unit || null,
   };
 
-  console.log("Formatted payload:", payload); // Debug-Log
+  console.log("Formatted payload:", payload);
 
   try {
     const response = await fetch("/api/create-workout", {
@@ -41,12 +41,12 @@ export const createWorkout = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Error response:", errorData); // Debug-Log
+      console.error("Error response:", errorData);
       throw new Error(`Fehler beim Speichern des Workouts: ${response.status}`);
     }
 
     const responseData = await response.json();
-    console.log("Success response:", responseData); // Debug-Log
+    console.log("Success response:", responseData);
     useSnackbarStore
       .getState()
       .showSnackbar("Workout wurde erfolgreich erstellt", "success");
