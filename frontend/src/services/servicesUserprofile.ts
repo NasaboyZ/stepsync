@@ -1,4 +1,8 @@
 import { dataFetch } from "@/utils/data-fetch";
+import {
+  UpdateUserProfileData,
+  UserProfile,
+} from "@/types/interfaces/userProfile";
 
 export const uploadAvatar = async (
   file: File,
@@ -38,4 +42,35 @@ export const deleteAvatar = async (
   if (!response.ok) {
     throw new Error("Fehler beim Löschen des Avatars");
   }
+};
+
+export const updateUserProfile = async (
+  userData: UpdateUserProfileData,
+  accessToken: string
+): Promise<UserProfile> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      first_name: userData.first_name,
+      last_name: userData.last_name,
+      email: userData.email,
+      height: userData.height ? Number(userData.height) : undefined,
+      weight: userData.weight ? Number(userData.weight) : undefined,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      `Fehler beim Aktualisieren des Benutzerprofils: ${
+        errorData.message || response.statusText
+      }`
+    );
+  }
+
+  return response.json();
 };

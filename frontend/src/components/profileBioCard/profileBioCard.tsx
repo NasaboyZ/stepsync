@@ -15,11 +15,12 @@ import { useSession } from "next-auth/react";
 import styles from "./profileBioCard.module.css";
 import { UserProfile } from "@/types/interfaces/userProfile";
 import { fetchUserData } from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 export default function ProfileBioCard() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { data: session } = useSession();
-
+  const router = useRouter();
   useEffect(() => {
     async function fetchUserProfile() {
       if (session?.accessToken) {
@@ -114,7 +115,7 @@ export default function ProfileBioCard() {
                 color="primary"
                 className={styles.editButton}
                 onClick={() => {
-                  /* TODO: Implement edit functionality */
+                  router.push("/profileinstellungen");
                 }}
               >
                 Edit

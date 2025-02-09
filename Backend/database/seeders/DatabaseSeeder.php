@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-
+// TODO: User erstellen damit lehrer auch sieht wie alles geht Password umbedingt denn in read.me schreiben
 use App\Models\Blogpost;
 use App\Models\Challenges;
 use App\Models\Tag;

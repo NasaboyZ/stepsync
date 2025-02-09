@@ -129,7 +129,7 @@ class User extends Model
       ],
       'weight' => [$post ? 'required' : 'sometimes', 'numeric'],
       'height' => [$post ? 'required' : 'sometimes', 'numeric'],
-      'goal' => [$post ? 'required' : 'required', 'string'],
+      'goal' => [$post ? 'required' : 'sometimes', 'string'],
       'gender' => [$post ? 'required' : 'sometimes', 'in:male,female,other'],
       'date_of_birth' => [$post ? 'required' : 'sometimes', 'date'],
     ]);

@@ -6,16 +6,16 @@ import Alert from "@mui/material/Alert";
 import { useSnackbarStore } from "@/store/snackbarStore";
 
 const SnackbarComponent: React.FC = () => {
-  const { isOpen, message, type, closeSnackbar } = useSnackbarStore();
+  const { open, message, type, hideSnackbar } = useSnackbarStore();
 
   return (
     <Snackbar
-      open={isOpen}
+      open={open}
       autoHideDuration={6000}
-      onClose={closeSnackbar}
+      onClose={hideSnackbar}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
     >
-      <Alert onClose={closeSnackbar} severity={type} sx={{ width: "100%" }}>
+      <Alert onClose={hideSnackbar} severity={type} sx={{ width: "100%" }}>
         {message}
       </Alert>
     </Snackbar>
