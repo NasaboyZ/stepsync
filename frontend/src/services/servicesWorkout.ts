@@ -11,7 +11,7 @@ export const createWorkout = async (
   console.log("Sending workout data:", workoutData); // Debug-Log
 
   if (!workoutData || !accessToken) {
-    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
+    useSnackbarStore.getState().showSnackbar("Keine Daten verfügbar", "error");
     return;
   }
 
@@ -49,7 +49,7 @@ export const createWorkout = async (
     console.log("Success response:", responseData); // Debug-Log
     useSnackbarStore
       .getState()
-      .openSnackbar("Workout wurde erfolgreich erstellt", "success");
+      .showSnackbar("Workout wurde erfolgreich erstellt", "success");
     if (onSuccess) {
       onSuccess(responseData);
     }
@@ -57,7 +57,7 @@ export const createWorkout = async (
   } catch (error) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Fehler beim Speichern des Workouts", "error");
+      .showSnackbar("Fehler beim Speichern des Workouts", "error");
     console.log("Fehler beim Speichern des Workouts", error);
   }
 };
@@ -71,7 +71,7 @@ export const updateWorkout = async (
   if (!workoutData || !accessToken || !workoutData.id) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Keine Daten verfügbar oder keine ID vorhanden", "error");
+      .showSnackbar("Keine Daten verfügbar oder keine ID vorhanden", "error");
     return;
   }
 
@@ -94,7 +94,7 @@ export const updateWorkout = async (
     const data = await response.json();
     useSnackbarStore
       .getState()
-      .openSnackbar("Workout wurde erfolgreich aktualisiert", "success");
+      .showSnackbar("Workout wurde erfolgreich aktualisiert", "success");
     if (onSuccess) {
       onSuccess(data);
     }
@@ -102,7 +102,7 @@ export const updateWorkout = async (
   } catch (error) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Fehler beim Aktualisieren des Workouts", "error");
+      .showSnackbar("Fehler beim Aktualisieren des Workouts", "error");
     console.log("Fehler beim Aktualisieren des Workouts", error);
   }
 };
@@ -114,7 +114,7 @@ export const deleteWorkout = async (
   onSuccess: () => void
 ) => {
   if (!workoutId || !accessToken) {
-    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
+    useSnackbarStore.getState().showSnackbar("Keine Daten verfügbar", "error");
     return;
   }
 
@@ -135,7 +135,7 @@ export const deleteWorkout = async (
 
     useSnackbarStore
       .getState()
-      .openSnackbar("Workout wurde erfolgreich gelöscht", "success");
+      .showSnackbar("Workout wurde erfolgreich gelöscht", "success");
     if (onSuccess) {
       onSuccess();
     }
@@ -143,7 +143,7 @@ export const deleteWorkout = async (
   } catch (error) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Fehler beim Löschen des Workouts", "error");
+      .showSnackbar("Fehler beim Löschen des Workouts", "error");
     console.log("Fehler beim Löschen des Workouts", error);
   }
 };
@@ -155,7 +155,7 @@ export const updateWorkoutStatus = async (
   onSuccess?: () => void
 ) => {
   if (!workoutId || !accessToken) {
-    useSnackbarStore.getState().openSnackbar("Keine Daten verfügbar", "error");
+    useSnackbarStore.getState().showSnackbar("Keine Daten verfügbar", "error");
     return;
   }
 
@@ -186,7 +186,7 @@ export const updateWorkoutStatus = async (
   } catch (error) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Fehler beim Aktualisieren des Workout-Status", "error");
+      .showSnackbar("Fehler beim Aktualisieren des Workout-Status", "error");
     console.error("Fehler beim Aktualisieren des Status:", error);
   }
 };

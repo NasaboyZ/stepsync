@@ -24,7 +24,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
   const [status, setStatus] = useState<
     "pending" | "accepted" | "completed" | "failed"
   >(challenge.status);
-  const { openSnackbar } = useSnackbarStore();
+  const { showSnackbar } = useSnackbarStore();
 
   useEffect(() => {
     setStatus(challenge.status);
@@ -62,29 +62,28 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
           setStatus(newStatus);
           handleClose();
 
-      
           switch (newStatus) {
             case "completed":
-              openSnackbar(
+              showSnackbar(
                 "Challenge erfolgreich abgeschlossen! 🎉",
                 "success"
               );
               break;
             case "failed":
-              openSnackbar(
+              showSnackbar(
                 "Challenge nicht geschafft. Beim nächsten Mal klappt es bestimmt! 💪",
                 "info"
               );
               break;
             case "accepted":
-              openSnackbar("Challenge angenommen! Viel Erfolg! 💪", "success");
+              showSnackbar("Challenge angenommen! Viel Erfolg! 💪", "success");
               break;
           }
         }
       );
     } catch (error) {
       console.error("Fehler beim Status-Update:", error);
-      openSnackbar("Fehler beim Aktualisieren der Challenge", "error");
+      showSnackbar("Fehler beim Aktualisieren der Challenge", "error");
     }
   };
 
