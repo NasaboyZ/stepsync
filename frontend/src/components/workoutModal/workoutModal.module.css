@@ -45,7 +45,7 @@
 }
 
 /* Für Tablets und Desktop */
-@media (min-width: 601px) {
+@media (max-width: 600px) {
   .distanceInput {
     flex: 2;
   }

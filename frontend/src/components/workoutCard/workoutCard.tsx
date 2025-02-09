@@ -7,13 +7,13 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  TextField,
   Button,
   Box,
 } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
 import { WorkoutCardProps, WorkoutData } from "@/types/interfaces/workoutData";
+import { CustomTextField } from "../ui/customTextField";
 
 const formatDistanceUnit = (unit: string | null | undefined): string => {
   if (!unit) return "";
@@ -124,118 +124,42 @@ export function WorkoutCard({
           </Typography>
 
           <div className={styles.editForm}>
-            <TextField
+            <CustomTextField
               label="Titel"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              variant="outlined"
-              size="small"
-              sx={{
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white ",
-                },
-                "& .Mui-focused fieldset": {
-                  borderColor: "white ",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
               fullWidth
+              className={styles.inputField}
+              sx={{ mb: 2 }}
               placeholder="z.B. Legpress, Squats, Benchpress..."
             />
 
-            <TextField
+            <CustomTextField
               label="Beschreibung"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              variant="outlined"
-              size="small"
-              sx={{
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white ",
-                },
-                "& .Mui-focused fieldset": {
-                  borderColor: "white ",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-              }}
               fullWidth
+              multiline
+              rows={3}
+              className={styles.inputField}
+              sx={{ mb: 2 }}
               placeholder="Beschreibe dein Workout..."
             />
 
             <div className={styles.numberInputs}>
-              <TextField
+              <CustomTextField
                 label="Gewicht (kg)"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 type="number"
-                variant="outlined"
-                size="small"
-                sx={{
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldsset": {
-                    borderColor: "white ",
-                  },
-                  "& .Mui-focused fieldset": {
-                    borderColor: "white ",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                }}
+                className={styles.weightInput}
               />
-              <TextField
+              <CustomTextField
                 label="Wiederholungen"
                 value={repetitions}
                 onChange={(e) => setRepetitions(e.target.value)}
                 type="number"
-                variant="outlined"
-                size="small"
-                sx={{
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white ",
-                  },
-                  "& .Mui-focused fieldset": {
-                    borderColor: "white ",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                }}
+                className={styles.repsInput}
               />
             </div>
 
@@ -244,7 +168,8 @@ export function WorkoutCard({
               color="primary"
               onClick={handleSave}
               fullWidth
-              size="small"
+              className={styles.saveButton}
+              sx={{ mt: 2 }}
             >
               Speichern
             </Button>
