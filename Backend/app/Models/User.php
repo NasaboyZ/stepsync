@@ -64,8 +64,6 @@ class User extends Model
   #[Hidden]
   public ?string $email_verified_at = null;
 
-  #[Column]
-  public ?int $avatar_image_id = null;
 
   public function workouts(): HasMany
   {
@@ -87,11 +85,6 @@ class User extends Model
     return $this->hasMany(BmiHistory::class, 'user_id');
   }
 
-  public function image(): HasMany
-  {
-    return $this->hasMany(Image::class, 'user_id');
-  }
-
   public function challenges(): BelongsToMany
   {
     return $this->belongsToMany(Challenges::class, 'challenge_user', 'user_id', 'challenge_id')
@@ -104,10 +97,11 @@ class User extends Model
     return $this->challenges()->wherePivot('status', 'pending');
   }
 
-  public function avatar(): BelongsTo
+  public function avatar(): HasOne
   {
-    return $this->belongsTo(Image::class, 'avatar_image_id');
+    return $this->hasOne(Image::class);
   }
+
 
   public static function validate(Request $request)
   {

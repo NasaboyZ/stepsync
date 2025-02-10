@@ -33,10 +33,7 @@ class UserController
       'date_of_birth' => $user->date_of_birth,
       'age' => $age,
       'id' => $user->id,
-      'avatar' => $user->avatar()->exists() ? [
-        'id' => $user->avatar_image_id,
-        'url' => Storage::url($user->avatar->pathname)
-      ] : null,
+
     ]);
   }
 

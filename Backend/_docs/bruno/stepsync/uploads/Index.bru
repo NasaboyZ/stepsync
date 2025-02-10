@@ -1,11 +1,11 @@
 meta {
-  name: Index
+  name: index
   type: http
   seq: 3
 }
 
-get {
-  url: {{baseUrl}}/uploads
+post {
+  url: {{baseUrl}}/avatar
   body: multipartForm
   auth: none
 }
@@ -14,16 +14,6 @@ headers {
   Authorization: Bearer {{token}}
 }
 
-body:json {
-  {
-    "images": [
-      {
-        "id": 2
-      }
-    ]
-  }
-}
-
 body:multipart-form {
-  user_id: 3
+  file: @file(/Users/josef/Downloads/Urban Style Anonymity.jpeg)
 }

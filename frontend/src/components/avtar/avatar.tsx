@@ -24,7 +24,6 @@ const VisuallyHiddenInput = styled("input")`
 
 export function Avatar() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [avatarId, setAvatarId] = useState<number | null>(null);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -33,10 +32,7 @@ export function Avatar() {
       try {
         if (session?.accessToken) {
           const avatarData = await fetchUserAvatar(session.accessToken);
-          if (avatarData?.url) {
-            setAvatarUrl(avatarData.url);
-            setAvatarId(avatarData.id);
-          }
+          setAvatarUrl(avatarData.path);
         }
       } catch (error) {
         console.error("Fehler beim Laden des Avatars:", error);
@@ -53,20 +49,17 @@ export function Avatar() {
     if (file && session?.accessToken) {
       try {
         const validatedFile = avatarSchema.parse({ file });
-        await uploadAvatar(validatedFile.file, session.accessToken, router);
-
-        try {
-          const avatarData = await fetchUserAvatar(session.accessToken);
-          if (avatarData?.url) {
-            setAvatarUrl(avatarData.url);
-            setAvatarId(avatarData.id);
-          }
-        } catch (fetchError) {
-          console.error(
-            "Fehler beim Abrufen des aktualisierten Avatars:",
-            fetchError
-          );
+        const response = await uploadAvatar(
+          validatedFile.file,
+          session.accessToken,
+          router
+        );
+        if (response?.path) {
+          setAvatarUrl(response.path);
         }
+        // Lade den Avatar neu nach dem Upload
+        const avatarData = await fetchUserAvatar(session.accessToken);
+        setAvatarUrl(avatarData.path);
       } catch (error) {
         if (error instanceof z.ZodError) {
           console.error("Validierungsfehler:", error.errors[0].message);
@@ -78,11 +71,10 @@ export function Avatar() {
   };
 
   const handleDeleteAvatar = async () => {
-    if (session?.accessToken && avatarId !== null) {
+    if (session?.accessToken) {
       try {
-        await deleteAvatar(avatarId, session.accessToken, router);
+        await deleteAvatar(session.accessToken, router);
         setAvatarUrl(null);
-        setAvatarId(null);
       } catch (error) {
         console.error("Fehler beim Löschen des Avatars:", error);
       }
@@ -94,7 +86,7 @@ export function Avatar() {
       <MuiAvatar
         className={styles.avatar}
         alt="Profile Picture"
-        src={avatarUrl || undefined} // Fallback auf undefined, wenn avatarUrl null ist
+        src={avatarUrl || undefined}
       />
       <div className={styles.buttonGroup}>
         <Button
@@ -106,7 +98,7 @@ export function Avatar() {
           <VisuallyHiddenInput
             type="file"
             onChange={handleFileChange}
-            accept="image/png,image/jpeg,image/webp"
+            accept="image/png,image/jpeg,image/jpg"
           />
         </Button>
         {avatarUrl && (
@@ -121,7 +113,7 @@ export function Avatar() {
         )}
       </div>
       <Typography variant="caption" color="white" style={{ marginTop: "4px" }}>
-        Erlaubte Formate: PNG, JPEG, WebP
+        Erlaubte Formate: PNG, JPEG
       </Typography>
     </div>
   );

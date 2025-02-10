@@ -6,11 +6,12 @@ use App\Controllers\ChallengesController;
 
 use App\Controllers\MailsController;
 use App\Controllers\TagsController;
-use App\Controllers\UploadsController;
+
 use App\Controllers\UserController;
 use App\Controllers\WorkoutsController;
 use Illuminate\Support\Facades\Route;
 use App\Controllers\BmiController;
+use App\Controllers\ImageController;
 
 // guest endpoints
 Route::get('/blogpost', [BlogpostsController::class, 'index']);
@@ -44,9 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-  Route::get('/uploads', [UploadsController::class, 'index']);
-  Route::post('/uploads', [UploadsController::class, 'create']);
-  Route::delete('/uploads/{id}', [UploadsController::class, 'destroy']);
+
 
   Route::post('/mails/send', [MailsController::class, 'send']);
 
@@ -61,4 +60,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::patch('/bmi', [BmiController::class, 'update']);
   Route::delete('/bmi', [BmiController::class, 'destroy']);
   Route::get('/bmi/history', [BmiController::class, 'history']);
+
+  Route::get('/avatar', [ImageController::class, 'show']);
+  Route::post('/avatar', [ImageController::class, 'store']);
+  Route::delete('/avatar', [ImageController::class, 'destroy']);
 });

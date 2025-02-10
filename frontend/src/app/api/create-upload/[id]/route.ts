@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/avatar`,
       {
         method: "POST",
         headers: {
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const error = await response.json();
       return NextResponse.json(
-        { message: "Upload failed", error },
+        { message: "Avatar upload failed", error },
         { status: response.status }
       );
     }
@@ -33,6 +33,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Upload failed" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Avatar upload failed" },
+      { status: 500 }
+    );
   }
 }

@@ -5,18 +5,17 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
-        // Create the images table
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('pathname');  // Hier ist der korrekte Spaltenname
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
+            $table->string('path');
             $table->timestamps();
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('images');
     }

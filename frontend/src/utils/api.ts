@@ -119,12 +119,12 @@ export const fetchBmiHistory = async (
 
 export const fetchUserAvatar = async (
   token: string
-): Promise<AvatarData | null> => {
+): Promise<{ path: string | null }> => {
   const data = await dataFetchWithToken(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/avatar`,
     token
   );
-  return data.avatar;
+  return data;
 };
 
 export const fetchWorkoutStatistics = async (
