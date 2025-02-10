@@ -21,7 +21,7 @@ const StyledTextField = styled(TextField)({
     },
   },
   "& .MuiFormHelperText-root": {
-    color: "#ff3333", // Fehlertext in Rot
+    color: "#ff3333", 
   },
 });
 

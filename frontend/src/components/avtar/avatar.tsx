@@ -57,7 +57,7 @@ export function Avatar() {
         if (response?.path) {
           setAvatarUrl(response.path);
         }
-        // Lade den Avatar neu nach dem Upload
+
         const avatarData = await fetchUserAvatar(session.accessToken);
         setAvatarUrl(avatarData.path);
       } catch (error) {

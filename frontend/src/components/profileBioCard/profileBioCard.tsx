@@ -14,19 +14,25 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import styles from "./profileBioCard.module.css";
 import { UserProfile } from "@/types/interfaces/userProfile";
-import { fetchUserData } from "@/utils/api";
+import { fetchUserData, fetchUserAvatar } from "@/utils/api";
 import { useRouter } from "next/navigation";
 
 export default function ProfileBioCard() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { data: session } = useSession();
   const router = useRouter();
+
   useEffect(() => {
     async function fetchUserProfile() {
       if (session?.accessToken) {
         try {
           const profileData = await fetchUserData(session.accessToken);
           setUserProfile(profileData);
+
+          // Lade das Avatar-Bild separat
+          const avatarData = await fetchUserAvatar(session.accessToken);
+          setAvatarUrl(avatarData.path);
         } catch (error) {
           console.error("Error fetching user profile:", error);
         }
@@ -82,7 +88,9 @@ export default function ProfileBioCard() {
                 <div className={styles.avatarSection}>
                   <Avatar
                     className={styles.avatar}
-                    src={userProfile?.avatar?.url}
+                    src={avatarUrl || undefined}
+                    alt={userProfile?.username || "User"}
+                    sx={{ width: 80, height: 80 }}
                   >
                     {userProfile?.username
                       ? userProfile.username[0].toUpperCase()

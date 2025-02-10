@@ -17,7 +17,7 @@ import { useTheme } from "@mui/material/styles";
 import { MdMenu as MenuIcon } from "react-icons/md";
 
 import styles from "./authenticated-header.module.css";
-import { fetchUserData } from "@/utils/api";
+import { fetchUserData, fetchUserAvatar } from "@/utils/api";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/interfaces/userProfile";
@@ -25,6 +25,7 @@ import AuthenticatedNav from "../authenticatedNav/authenticatedNav";
 
 export default function AuthenticatedHeader() {
   const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
@@ -50,9 +51,14 @@ export default function AuthenticatedHeader() {
 
       try {
         const userData = await fetchUserData(session.accessToken);
+        setUser(userData);
         if (userData && userData.username) {
           setUsername(userData.username);
         }
+
+        // Lade das Avatar-Bild separat
+        const avatarData = await fetchUserAvatar(session.accessToken);
+        setAvatarUrl(avatarData.path);
       } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
         setUsername("");
@@ -122,7 +128,7 @@ export default function AuthenticatedHeader() {
               <Box display="flex" alignItems="center">
                 <Avatar
                   className={styles.avatar}
-                  src={user?.avatar?.url}
+                  src={avatarUrl || undefined}
                   style={{ cursor: "pointer" }}
                   onClick={handleMenuOpen}
                 >
