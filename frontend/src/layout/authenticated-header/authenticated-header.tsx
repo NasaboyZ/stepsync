@@ -60,8 +60,9 @@ export default function AuthenticatedHeader() {
         const avatarData = await fetchUserAvatar(session.accessToken);
         setAvatarUrl(avatarData.path);
       } catch (error) {
-        console.error("Fehler beim Laden der Daten:", error);
-        setUsername("");
+        console.log(error);
+
+        return null;
       }
     }
 

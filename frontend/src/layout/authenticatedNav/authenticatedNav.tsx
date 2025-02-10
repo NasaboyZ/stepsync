@@ -35,6 +35,24 @@ export default function AuthenticatedNav({
     }
   };
 
+  const navigationItems = [
+    {
+      icon: <DashboardIcon />,
+      text: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      icon: <WorkoutIcon />,
+      text: "Workout",
+      href: "/workout",
+    },
+    {
+      icon: <ChallengesIcon />,
+      text: "Challenges",
+      href: "/challenges",
+    },
+  ];
+
   return (
     <div className={styles.container}>
       {isLargeScreen ? (
@@ -43,42 +61,20 @@ export default function AuthenticatedNav({
             <Logo />
           </div>
           <List>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <DashboardIcon />
-              </ListItemIcon>
-              <Link
-                href="/dashboard"
-                className={styles.listItemText}
+            {navigationItems.map((item) => (
+              <ListItem
+                key={item.href}
+                className={styles.listItem}
+                component={Link}
+                href={item.href}
                 onClick={handleLinkClick}
               >
-                Dashboard
-              </Link>
-            </ListItem>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <WorkoutIcon />
-              </ListItemIcon>
-              <Link
-                href="/workout"
-                className={styles.listItemText}
-                onClick={handleLinkClick}
-              >
-                Workout
-              </Link>
-            </ListItem>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <ChallengesIcon />
-              </ListItemIcon>
-              <Link
-                href="/challenges"
-                className={styles.listItemText}
-                onClick={handleLinkClick}
-              >
-                Challenges
-              </Link>
-            </ListItem>
+                <ListItemIcon className={styles.listItemIcon}>
+                  {item.icon}
+                </ListItemIcon>
+                <span className={styles.listItemText}>{item.text}</span>
+              </ListItem>
+            ))}
           </List>
         </aside>
       ) : (
@@ -87,42 +83,20 @@ export default function AuthenticatedNav({
             <Logo />
           </div>
           <List>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <DashboardIcon />
-              </ListItemIcon>
-              <Link
-                href="/dashboard"
-                className={styles.listItemText}
+            {navigationItems.map((item) => (
+              <ListItem
+                key={item.href}
+                className={styles.listItem}
+                component={Link}
+                href={item.href}
                 onClick={handleLinkClick}
               >
-                Dashboard
-              </Link>
-            </ListItem>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <WorkoutIcon />
-              </ListItemIcon>
-              <Link
-                href="/workout"
-                className={styles.listItemText}
-                onClick={handleLinkClick}
-              >
-                Workout
-              </Link>
-            </ListItem>
-            <ListItem className={styles.listItem}>
-              <ListItemIcon className={styles.listItemIcon}>
-                <ChallengesIcon />
-              </ListItemIcon>
-              <Link
-                href="/challenges"
-                className={styles.listItemText}
-                onClick={handleLinkClick}
-              >
-                Challenges
-              </Link>
-            </ListItem>
+                <ListItemIcon className={styles.listItemIcon}>
+                  {item.icon}
+                </ListItemIcon>
+                <span className={styles.listItemText}>{item.text}</span>
+              </ListItem>
+            ))}
           </List>
         </Drawer>
       )}

@@ -35,7 +35,8 @@ export function Avatar() {
           setAvatarUrl(avatarData.path);
         }
       } catch (error) {
-        console.error("Fehler beim Laden des Avatars:", error);
+        console.log(error);
+        return null;
       }
     };
 

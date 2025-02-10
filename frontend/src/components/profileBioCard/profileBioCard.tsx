@@ -34,7 +34,8 @@ export default function ProfileBioCard() {
           const avatarData = await fetchUserAvatar(session.accessToken);
           setAvatarUrl(avatarData.path);
         } catch (error) {
-          console.error("Error fetching user profile:", error);
+          console.log(error);
+          return null;
         }
       }
     }

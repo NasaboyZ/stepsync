@@ -57,13 +57,10 @@ export const fetchUserData = async (token: string): Promise<UserProfile> => {
     email: data.email,
     username: data.username,
     age: data.age,
-
     height: data.height,
     weight: data.weight,
     goal: data.goal,
     avatar: data.avatar,
-    level: data.level,
-    xp: data.xp,
     workouts: data.workouts,
     memberSince: data.memberSince,
   };
