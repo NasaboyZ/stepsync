@@ -25,7 +25,7 @@ class ImageController
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'file' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $user = Auth::user();
