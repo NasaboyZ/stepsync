@@ -49,7 +49,7 @@ export default function ChallengesItems() {
 
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const { openSnackbar } = useSnackbarStore();
+  const { showSnackbar } = useSnackbarStore();
 
   useEffect(() => {
     const loadChallenges = async () => {
@@ -104,12 +104,12 @@ export default function ChallengesItems() {
             setIsModalOpen(false);
 
             if (newChallenge.status === "completed") {
-              openSnackbar(
+              showSnackbar(
                 "Challenge erfolgreich abgeschlossen! 🎉",
                 "success"
               );
             } else if (newChallenge.status === "failed") {
-              openSnackbar(
+              showSnackbar(
                 "Challenge nicht geschafft. Beim nächsten Mal klappt es bestimmt! 💪",
                 "info"
               );
@@ -137,7 +137,7 @@ export default function ChallengesItems() {
           router,
           () => {
             setIsModalOpen(false);
-            openSnackbar("Neue Challenge erstellt! 🎯", "success");
+            showSnackbar("Neue Challenge erstellt! 🎯", "success");
 
             const loadChallenges = async () => {
               const challengesData = await fetchChallenges(
@@ -160,10 +160,10 @@ export default function ChallengesItems() {
           }
         });
         setValidationErrors(errors);
-        openSnackbar("Bitte überprüfen Sie Ihre Eingaben", "error");
+        showSnackbar("Bitte überprüfen Sie Ihre Eingaben", "error");
       } else {
         console.error("Fehler beim Speichern der Challenge:", error);
-        openSnackbar("Fehler beim Speichern der Challenge", "error");
+        showSnackbar("Fehler beim Speichern der Challenge", "error");
       }
     }
   };

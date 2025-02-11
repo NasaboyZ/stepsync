@@ -20,7 +20,7 @@ export const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { openSnackbar } = useSnackbarStore();
+  const { showSnackbar } = useSnackbarStore();
 
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
@@ -55,13 +55,13 @@ export const RegisterForm = () => {
       );
 
       if (response.status === 201) {
-        openSnackbar(
+        showSnackbar(
           "Registration erfolgreich! Weiterleitung zum Login...",
           "success"
         );
         router.push("/login");
       } else {
-        openSnackbar(
+        showSnackbar(
           `Registrierung fehlgeschlagen: ${
             response.message || "Unbekannter Fehler"
           }`,
@@ -70,7 +70,7 @@ export const RegisterForm = () => {
       }
     } catch (error) {
       console.error("Fehler bei der Registrierung:", error);
-      openSnackbar(
+      showSnackbar(
         "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
         "error"
       );
