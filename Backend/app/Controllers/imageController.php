@@ -12,7 +12,7 @@ class ImageController
     public function show()
     {
         $user = Auth::user();
-        
+
         if ($user->avatar) {
             return response()->json([
                 'path' => Storage::url($user->avatar->path)
@@ -29,21 +29,24 @@ class ImageController
         ]);
 
         $user = Auth::user();
-        
-        // Altes Avatar löschen, falls vorhanden
+        $file = $request->file('file');
+        $uniqueFilename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Neues Avatar speichern
+        $userPath = 'uploads/' . $user->id;
+
         if ($user->avatar) {
             Storage::disk('public')->delete($user->avatar->path);
             $user->avatar->delete();
         }
 
-        // Neues Avatar speichern
-        $path = $request->file('file')->store('avatars', 'public');
-        
+        $path = Storage::disk('public')->putFileAs($userPath, $file, $uniqueFilename);
+
         $image = new Image([
             'path' => $path,
             'user_id' => $user->id
         ]);
-        
+
         $image->save();
 
         return response()->json([
@@ -55,7 +58,7 @@ class ImageController
     public function destroy()
     {
         $user = Auth::user();
-        
+
         if ($user->avatar) {
             Storage::disk('public')->delete($user->avatar->path);
             $user->avatar->delete();

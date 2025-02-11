@@ -14,12 +14,13 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import styles from "./profileBioCard.module.css";
 import { UserProfile } from "@/types/interfaces/userProfile";
-import { fetchUserData, fetchUserAvatar } from "@/utils/api";
+import { fetchUserData } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { useAvatar } from "@/context/avatar-context-provider";
 
 export default function ProfileBioCard() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const { avatarUrl } = useAvatar();
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -29,10 +30,6 @@ export default function ProfileBioCard() {
         try {
           const profileData = await fetchUserData(session.accessToken);
           setUserProfile(profileData);
-
-          // Lade das Avatar-Bild separat
-          const avatarData = await fetchUserAvatar(session.accessToken);
-          setAvatarUrl(avatarData.path);
         } catch (error) {
           console.log(error);
           return null;
@@ -44,7 +41,6 @@ export default function ProfileBioCard() {
   }, [session]);
 
   if (!userProfile) {
-    // Skeleton Loader grund Gerüst
     return (
       <Card className={styles.bioCard}>
         <CardContent>
