@@ -1,41 +1,61 @@
 "use client";
 
-import React from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Button, Box, Typography } from "@mui/material";
+import { Box, Button, Typography, Slide, Link } from "@mui/material";
 import styles from "./cookiebanner.module.css";
 
-const CookieConsent = () => {
-  const [cookies, setCookie] = useCookies(["cookieConsent"]);
+export default function Cookiebanner() {
+  const [cookies, setCookie] = useCookies(["cookie-consent"]);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const giveCookieConsent = () => {
-    setCookie("cookieConsent", true, { path: "/" });
+  useEffect(() => {
+    if (!cookies["cookie-consent"]) {
+      setIsVisible(true);
+    }
+  }, [cookies]);
+
+  const handleAccept = () => {
+    setCookie("cookie-consent", true, { path: "/" });
+    setIsVisible(false);
   };
 
-  if (cookies.cookieConsent) {
-    return null;
-  }
+  const handleDecline = () => {
+    setCookie("cookie-consent", false, { path: "/" });
+    setIsVisible(false);
+  };
+
+  if (!isVisible) return null;
 
   return (
-    <Box className={styles["cookie-banner"]}>
-      <div className={styles["cookie-content"]}>
-        <Typography variant="body2">
-          We use cookies to enhance your user experience. By using our website,
-          you agree to our use of cookies.{" "}
-          <a href={"/datenschutz"} className={styles["cookie-link"]}>
-            Learn more.
-          </a>
+    <Slide direction="up" in={isVisible}>
+      <Box className={styles.cookieBanner}>
+        <Typography variant="body1" className={styles.text}>
+          Wir verwenden Cookies, um Ihre Benutzerdaten und Einstellungen zu
+          speichern.{" "}
+          <Link href="/datenschutz" className={styles.link}>
+            Mehr Informationen in unserer Datenschutzerklärung
+          </Link>
         </Typography>
-        <Button
-          variant="contained"
-          onClick={giveCookieConsent}
-          className={styles["cookie-button"]}
-        >
-          Accept
-        </Button>
-      </div>
-    </Box>
+        <Box className={styles.buttonContainer}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleDecline}
+            className={styles.button}
+          >
+            Ablehnen
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAccept}
+            className={styles.button}
+          >
+            Akzeptieren
+          </Button>
+        </Box>
+      </Box>
+    </Slide>
   );
-};
-
-export default CookieConsent;
+}

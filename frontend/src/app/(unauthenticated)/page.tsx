@@ -1,13 +1,13 @@
 import SectionItems from "@/components/contentSectionItems/sectionItems";
-import CookieConsent from "@/components/cookiebanner/cookiebanner";
 import Hero from "@/components/homeHero/hero/hero";
+import Cookiebanner from "@/components/cookiebanner/cookiebanner";
 
 export default function Home() {
   return (
     <>
-      <CookieConsent />
       <Hero />
       <SectionItems pageKey="homePage" title="Über uns" />
+      <Cookiebanner />
     </>
   );
 }
