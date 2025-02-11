@@ -15,17 +15,16 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { MdMenu as MenuIcon } from "react-icons/md";
-
 import styles from "./authenticated-header.module.css";
-import { fetchUserData, fetchUserAvatar } from "@/utils/api";
+import { fetchUserData } from "@/utils/api";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { UserProfile } from "@/types/interfaces/userProfile";
 import AuthenticatedNav from "../authenticatedNav/authenticatedNav";
+import { useAvatar } from "@/context/avatar-context-provider";
 
 export default function AuthenticatedHeader() {
-  const [username, setUsername] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const { avatarUrl } = useAvatar(); // Use the context instead of local state
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const pathname = usePathname();
@@ -35,34 +34,14 @@ export default function AuthenticatedHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchUserData(token)
-        .then((userData) => setUser(userData))
-        .catch((error) =>
-          console.error("Fehler beim Laden der Benutzerdaten:", error)
-        );
-    }
-  }, []);
-
-  useEffect(() => {
     async function fetchData() {
       if (!session?.accessToken) return;
 
       try {
         const userData = await fetchUserData(session.accessToken);
         setUser(userData);
-        if (userData && userData.username) {
-          setUsername(userData.username);
-        }
-
-        // Lade das Avatar-Bild separat
-        const avatarData = await fetchUserAvatar(session.accessToken);
-        setAvatarUrl(avatarData.path);
       } catch (error) {
-        console.log(error);
-
-        return null;
+        console.error("Fehler beim Laden der Benutzerdaten:", error);
       }
     }
 
@@ -129,7 +108,7 @@ export default function AuthenticatedHeader() {
               <Box display="flex" alignItems="center">
                 <Avatar
                   className={styles.avatar}
-                  src={avatarUrl || undefined}
+                  src={avatarUrl}
                   style={{ cursor: "pointer" }}
                   onClick={handleMenuOpen}
                 >
@@ -141,7 +120,7 @@ export default function AuthenticatedHeader() {
                   onClick={handleMenuOpen}
                   style={{ cursor: "pointer", marginLeft: "8px" }}
                 >
-                  {username}
+                  {user?.username}
                 </Typography>
                 <Menu
                   anchorEl={anchorEl}

@@ -47,7 +47,7 @@ const useHeroStore = create<HeroStore>(() => ({
     },
   },
   heroText:
-    "Erlebe echte Motivation mit StepSync! Unsere Ziele und Challenges treiben dich an und zeigen deinen Fortschritt. Verfolge deine Verbesserungen genau und werde Teil einer engagierten Community. Kein leeres Gerede, sondern echte Fitnessziele – dokumentiere deinen Weg mit uns!",
+    "Stepsync ist eine Plattform für Menschen, die ihre Fitnessziele erreichen wollen. Geplant, Ergeiz und Motivation sind unsere drei Hauptmerkmale.",
 }));
 
 export default useHeroStore;

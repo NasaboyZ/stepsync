@@ -32,7 +32,7 @@ export default function SectionItems({
     <section className={Style["content-section"]}>
       {pageKey === "homePage" && (
         <div className={Style["hero-text-section"]}>
-          <Typography variant="body1">{heroText}</Typography>
+          <Typography variant="h2">{heroText}</Typography>
         </div>
       )}
       <Card className={Style.card}>

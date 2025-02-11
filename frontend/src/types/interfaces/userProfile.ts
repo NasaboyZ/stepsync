@@ -9,11 +9,6 @@ export interface UserProfile {
   weight?: number;
   goal?: string;
   date_of_birth?: string;
-  avatar?: {
-    id?: number;
-    url?: string;
-  };
-
   workouts?: number;
   memberSince?: string;
 }

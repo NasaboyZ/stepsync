@@ -1,14 +1,16 @@
 "use client";
+
 import { Avatar as MuiAvatar, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import styles from "./avatar.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchUserAvatar } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { uploadAvatar, deleteAvatar } from "@/services/servicesAvatar";
 import { useRouter } from "next/navigation";
 import { avatarSchema } from "@/validations/avatarShema";
 import { z } from "zod";
+import { useAvatar } from "@/context/avatar-context-provider";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -23,7 +25,7 @@ const VisuallyHiddenInput = styled("input")`
 `;
 
 export function Avatar() {
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const { avatarUrl, setAvatarUrl } = useAvatar(); // Use the context instead of local state
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -32,7 +34,7 @@ export function Avatar() {
       try {
         if (session?.accessToken) {
           const avatarData = await fetchUserAvatar(session.accessToken);
-          setAvatarUrl(avatarData.path);
+          setAvatarUrl(avatarData.path || undefined);
         }
       } catch (error) {
         console.log(error);
@@ -41,7 +43,7 @@ export function Avatar() {
     };
 
     loadAvatar();
-  }, [session]);
+  }, [session, setAvatarUrl]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -58,9 +60,6 @@ export function Avatar() {
         if (response?.path) {
           setAvatarUrl(response.path);
         }
-
-        const avatarData = await fetchUserAvatar(session.accessToken);
-        setAvatarUrl(avatarData.path);
       } catch (error) {
         if (error instanceof z.ZodError) {
           console.error("Validierungsfehler:", error.errors[0].message);
@@ -75,7 +74,7 @@ export function Avatar() {
     if (session?.accessToken) {
       try {
         await deleteAvatar(session.accessToken, router);
-        setAvatarUrl(null);
+        setAvatarUrl(undefined);
       } catch (error) {
         console.error("Fehler beim Löschen des Avatars:", error);
       }
