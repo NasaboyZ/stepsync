@@ -148,6 +148,11 @@ class UserController
 
     $token = $user->createToken('auth_token')->plainTextToken;
 
+    $avatarPath = null;
+    if ($user->avatar) {
+      $avatarPath = Storage::url($user->avatar->path);
+    }
+
     return response()->json([
       'message' => 'Login successful',
       'token' => $token,
@@ -157,6 +162,7 @@ class UserController
         'last_name' => $user->last_name,
         'email' => $user->email,
         'username' => $user->username,
+        'avatar' => $avatarPath
       ],
     ], 200);
   }

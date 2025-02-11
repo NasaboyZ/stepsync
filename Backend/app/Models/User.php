@@ -99,7 +99,7 @@ class User extends Model
 
   public function avatar(): HasOne
   {
-    return $this->hasOne(Image::class);
+    return $this->hasOne(Image::class, 'user_id');
   }
 
 
