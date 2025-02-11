@@ -4,6 +4,7 @@ import styles from "./layout.module.css";
 
 import { ReactNode } from "react";
 
+
 export default function UnauthenticatedLayout({
   children,
 }: {
@@ -12,6 +13,7 @@ export default function UnauthenticatedLayout({
   return (
     <div className={styles["unauthenticated-container"]}>
       <Header />
+ 
       {children}
       <FooterNav />
     </div>
