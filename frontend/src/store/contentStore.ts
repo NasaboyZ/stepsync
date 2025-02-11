@@ -21,13 +21,13 @@ interface ContentStore {
 const useContentStore = create<ContentStore>((set, get) => ({
   contentData: {
     homePage: {
-      text: "Bist du bereit, deine Fitnessziele zu rocken? Bei Stepsync geht es um mehr als nur Training,es geht um die beste Version von dir! Finde Workouts, die zu dir passen, teile deine Erfolge und stürze dich in aufregende Challenges. Werde Teil unserer Community und starte heute durch, dein neues Ich wartet!",
+      text: "Wir sind eine Online-Plattform, die du jederzeit einfach und unkompliziert nutzen kannst, um deine persönlichen Ziele zu erreichen. Die Motivation zum Aufstehen fällt manchmal schwer, das wissen wir auch, aber durch gezieltes Tracking, Planung und Ehrgeiz bleiben nicht nur wir auf Kurs, sondern auch deine Motivation.",
 
       imageSrc: aboutImage,
       imageAlt: "Ein Mann, der joggt und amputierte Beine hat",
     },
     aboutTeaser: {
-      text: "Die Geschichte von StepSync begann mit der Leidenschaft, Menschen dabei zu helfen, im Einklang mit ihren Zielen zu bleiben. Wir haben eine Plattform geschaffen, die Nutzer dabei unterstützt, ihre Fortschritte zu verfolgen und motiviert zu bleiben. Jede Funktion wurde entwickelt, um jeden Schritt bedeutungsvoll zu machen und eine nahtlose Reise zum Erfolg zu gewährleisten.",
+      text: "Josef, der Erfinder von Stepsync, dachte sich , dass wenn man seine Trainingseinheiten auf einer Notiz auf seinem Iphone festhält, dies meistens nicht den nötigen Motivationsschub gibt, um auch eine solche Notiz konstant weiter zu führen. Deshalb hat er diese Plattform erfunden, damit man auch beim 4. Gang ins Fitnessstudio, auch wenn die Veränderungen nicht sichtbar sind, einen Fortschritt sieht, um die Motivation zu steigern. ",
       imageSrc: runner,
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
