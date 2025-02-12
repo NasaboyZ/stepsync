@@ -37,12 +37,12 @@ const useContentStore = create<ContentStore>((set, get) => ({
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
     productTeaser: {
-      text: "Werde Teil unserer Community und verwandle jeden Schritt in Motivation! Verfolge deine Fortschritte, setze neue Ziele und bleib immer auf Kurs egal, wo du bist. Starte jetzt und erlebe Fitness neu.",
+      text: "Wir haben die Technologie und die Tabellen, du hast den Wert! Unsere Unkomplizierten und Persönlichen Trainingstabellen zeigen dir, wo du stehst. Sobald du deine Fitnessübungen aufschreibst, siehst du deine Fortschritte und kannst dich auf dein Traumziel freuen. Kostenlos und effektiv.",
       imageSrc: bauchmuskel,
       imageAlt: "Ein Mann, der auf einem Rollstuhl sitzt",
     },
     productPage: {
-      text: "StepSync ist mehr als nur eine Webapp es ist dein persönlicher Begleiter auf dem Weg zu deinen Zielen. Unsere einzigartige Technologie verbindet Motivation, Fortschrittsverfolgung und Gemeinschaft, um dir das Beste aus deinem Training zu bieten. Warum alleine kämpfen, wenn du mit StepSync smarter trainieren kannst?",
+      text: "StepSync ist mehr als nur eine Webapp, es ist sehr wichtig, sei es aus gesundheitlichen Gründen oder um sein Traumziel zu erreichen, Sport zu treiben. Es kann Stress reduzieren, sei es bei der Arbeit oder im Studium. Sich neue Gewohnheiten anzueignen ist manchmal sehr schwer, aber mit unseren Ergebnissen wird deine Motivation steigen und du wirst es lieben.",
       imageSrc: productImage,
       imageAlt: "Ein Mann stemmt Gewichte und hat eine athletische Figur",
     },

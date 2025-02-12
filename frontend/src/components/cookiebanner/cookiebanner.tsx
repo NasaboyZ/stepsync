@@ -20,11 +20,6 @@ export default function Cookiebanner() {
     setIsVisible(false);
   };
 
-  const handleDecline = () => {
-    setCookie("cookie-consent", false, { path: "/" });
-    setIsVisible(false);
-  };
-
   if (!isVisible) return null;
 
   return (
@@ -38,14 +33,6 @@ export default function Cookiebanner() {
           </Link>
         </Typography>
         <Box className={styles.buttonContainer}>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleDecline}
-            className={styles.button}
-          >
-            Ablehnen
-          </Button>
           <Button
             variant="contained"
             color="primary"
