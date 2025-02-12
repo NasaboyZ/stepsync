@@ -26,7 +26,8 @@ const usePrivacyStore = create<PrivacyStore>(() => ({
     {
       id: "responsible",
       title: "2. Verantwortliche Stelle",
-      content: "StepSync GmbH\nBahnhofstrasse 10\n8001 Zürich",
+      content:
+        "StepSync GmbH\nBahnhofstrasse 10\n8001 Zürich\njosef@step-sync.ch \n Josef  Leite  \n+41 79 999 99 99",
     },
     {
       id: "datacollection",
@@ -46,7 +47,7 @@ const usePrivacyStore = create<PrivacyStore>(() => ({
       id: "rights",
       title: "4. Ihre Rechte",
       content:
-        "Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten. Ausserdem haben Sie ein Widerspruchsrecht gegen die Verarbeitung sowie ein Recht auf Datenübertragbarkeit.",
+        "Gemäss den Bestimmungen der geltenden Datenschutzrichtlinie besteht für die Nutzer:innen die Möglichkeit, ihre Accounts zu löschen. Im Zuge dessen werden die persönlichen Daten der betreffenden Nutzer:innen gelöscht. Die Werte und Statistiken werden hingegen für weitere Studien konserviert, um die Generierung aussagekräftigerer Resultate zu ermöglichen.",
     },
   ],
 }));

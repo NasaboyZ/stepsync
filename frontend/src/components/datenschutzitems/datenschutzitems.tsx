@@ -11,6 +11,7 @@ import {
 import Typography from "@/components/typography/typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import usePrivacyStore from "@/store/privacyStore";
+import styles from "./datenschutzitems.module.css";
 
 function isStringContent(
   content: string | { title: string; text: string }[]
@@ -22,15 +23,15 @@ export default function DatenschutzItems() {
   const { sections } = usePrivacyStore();
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h2" align="center">
+    <Container maxWidth="lg" className={styles.container}>
+      <Paper elevation={3} className={styles.paper}>
+        <Box className={styles.titleContainer}>
+          <Typography variant="h2" align="center" color="white">
             Datenschutzerklärung
           </Typography>
         </Box>
 
-        <Box sx={{ mt: 4 }}>
+        <Box className={styles.accordionContainer}>
           {sections.map((section) => (
             <Accordion
               key={section.id}
@@ -42,11 +43,8 @@ export default function DatenschutzItems() {
               <AccordionDetails>
                 {Array.isArray(section.content) ? (
                   section.content.map((item, index) => (
-                    <Box
-                      key={index}
-                      sx={{ mb: index < section.content.length - 1 ? 2 : 0 }}
-                    >
-                      <Box sx={{ mb: 1 }}>
+                    <Box key={index} className={styles.contentItem}>
+                      <Box className={styles.itemTitle}>
                         <Typography variant="h4">{item.title}</Typography>
                       </Box>
                       <Typography variant="body1">{item.text}</Typography>

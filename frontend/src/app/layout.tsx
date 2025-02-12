@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SessionProvider from "@/providers/session-provider";
 import SnackbarComponent from "@/components/snackbarComponent/snackbarComponent";
+import Head from "next/head";
 
 const internItelic = localFont({
   src: "./fonts/intern/Inter-Italic-VariableFont_opsz,wght.ttf",
@@ -29,6 +30,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
+      <Head>
+        {/* Google Analytics */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-9LC8LMKHZX`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-9LC8LMKHZX);
+            `,
+          }}
+        />
+      </Head>
       <body
         className={`${internItelic.variable} ${internFont.variable} ${ibnsansBold.variable}`}
       >
