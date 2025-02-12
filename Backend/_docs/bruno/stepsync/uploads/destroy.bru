@@ -5,17 +5,11 @@ meta {
 }
 
 delete {
-  url: {{baseUrl}}/uploads/1
+  url: {{baseUrl}}/avatar
   body: json
   auth: none
 }
 
 headers {
   Authorization: Bearer {{token}}
-}
-
-body:json {
-  {
-    "filename": "avatar.jpg"
-  }
 }

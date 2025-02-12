@@ -1,11 +1,11 @@
 <?php
 
-use App\Controllers\BlogpostsController;
+
 use App\Controllers\AuthController;
 use App\Controllers\ChallengesController;
 
 use App\Controllers\MailsController;
-use App\Controllers\TagsController;
+
 
 use App\Controllers\UserController;
 use App\Controllers\WorkoutsController;
@@ -14,10 +14,10 @@ use App\Controllers\BmiController;
 use App\Controllers\ImageController;
 
 // guest endpoints
-Route::get('/blogpost', [BlogpostsController::class, 'index']);
+
 
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::get('/tags', [TagsController::class, 'index']);
+
 Route::get('/challenges', [ChallengesController::class, 'index']);
 Route::post('/user', [UserController::class, 'create']);
 Route::post('/auth/verify', [UserController::class, 'verifyEmail']);

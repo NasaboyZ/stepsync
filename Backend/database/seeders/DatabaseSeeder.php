@@ -40,35 +40,10 @@ class DatabaseSeeder extends Seeder
             'date_of_birth' => '1992-05-15',
         ]);
 
-        // Create blog posts for user 'Alpha'
-        $blogpost1 = Blogpost::create([
-            'title'   => 'Nulla suscipit',
-            'content' => 'Repellendus aut dolores minima et consequatur et.',
-            'user_id' => $alpha->id,
-        ]);
 
-        $blogpost2 = Blogpost::create([
-            'title'   => 'Sapiente quis',
-            'content' => 'Non quibusdam et aut id voluptatibus.',
-            'user_id' => $alpha->id,
-        ]);
 
-        // Create blog post for user 'Bravo'
-        $blogpost3 = Blogpost::create([
-            'title'   => 'Autem dolor',
-            'content' => 'Vel autem incidunt recusandae et voluptatibus.',
-            'user_id' => $bravo->id,
-        ]);
 
-        // Create tags
-        $tag1 = Tag::create(['name' => 'Fitness']);
-        $tag2 = Tag::create(['name' => 'Wellness']);
-        $tag3 = Tag::create(['name' => 'Health']);
 
-        // Assign tags to blog posts
-        $blogpost1->tags()->attach([$tag1->id, $tag2->id]);
-        $blogpost2->tags()->attach([$tag2->id]);
-        $blogpost3->tags()->attach([$tag1->id, $tag3->id]);
 
 
         // Create challenges

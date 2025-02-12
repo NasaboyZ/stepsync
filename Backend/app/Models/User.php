@@ -70,11 +70,7 @@ class User extends Model
     return $this->hasMany(Workout::class);
   }
 
-  public function blogposts(): HasMany
-  {
-    return $this->hasMany(Blogpost::class, 'user_id');
-  }
-
+ 
   public function bmi(): HasOne
   {
     return $this->hasOne(BMI::class, 'user_id');

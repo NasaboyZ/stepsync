@@ -1,30 +1,74 @@
 erDiagram
     User ||--o{ Workout : "logs"
-    User }o--o{ Challenge : "interacts"
-    Challenge }o--o{ User : "accepted or rejected"
+    User ||--o{ UserStats : "has"
+    User ||--o| Image : "has avatar"
     
-    %% Für das Dashboard %%
     User {
-        int completed_challenges
-        float current_bmi
-        int workouts_logged_in_month
+        string id PK
+        string first_name
+        string last_name
+        string username
+        string email
+        string password_hash
+        float weight
+        float height
+        string goal
+        enum gender "male,female,other"
+        date date_of_birth
+        string verification_token
+        timestamp email_verified_at
+        date created_at
+        date updated_at
     }
 
     Workout {
-        string type
+        string id PK
+        string user_id FK
+        string exercise_type
         int repetitions
+        float weight
+        int sets
         date date_logged
+        string notes
+        date created_at
+        date updated_at
     }
     
     Challenge {
-        string status "accepted, rejected, done, pass"
-        date date_assigned
+        string id PK
+        string title
+        string description
+        string challenge_type
+        int target_value
+        string target_unit
+        date start_date
+        date end_date
+        enum status "active,completed,cancelled"
+        date created_at
+        date updated_at
     }
     
-    Dashboard {
+    UserStats {
+        string id PK
+        string user_id FK
+        float height
+        float weight
+        float bmi
         int completed_challenges
-        float current_bmi
-        int workouts_logged_in_month
+        int monthly_workouts
+        date last_updated
     }
-    
-    User ||--o{ Dashboard : "has"
+
+    ChallengeParticipant {
+        string id PK
+        string user_id FK
+        string challenge_id FK
+        int current_progress
+        enum status "joined,in_progress,completed,dropped"
+        date joined_at
+        date completed_at
+        date last_progress_update
+    }
+
+    User ||--o{ ChallengeParticipant : "participates in"
+    Challenge ||--o{ ChallengeParticipant : "has participants"
