@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UpdateUserProfileData } from "@/types/interfaces/userProfile";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest): Promise<NextResponse> {
   try {
     const data: UpdateUserProfileData = await request.json();
+    const id = request.nextUrl.pathname.split("/").pop() || "";
 
     console.log("Received data:", data);
-    console.log("User ID:", params.id);
+    console.log("User ID:", id);
     console.log("Auth token:", request.headers.get("Authorization"));
 
     const response = await fetch(
