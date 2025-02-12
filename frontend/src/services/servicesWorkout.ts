@@ -8,8 +8,6 @@ export const createWorkout = async (
   router: AppRouterInstance,
   onSuccess: (data: WorkoutData) => void
 ) => {
-  console.log("Sending workout data:", workoutData);
-
   if (!workoutData || !accessToken) {
     useSnackbarStore.getState().showSnackbar("Keine Daten verfügbar", "error");
     return;
@@ -119,11 +117,13 @@ export const deleteWorkout = async (
   }
 
   try {
-    const response = await fetch(`/api/delete-workout/${workoutId}`, {
+    const response = await fetch(`/api/delete-workout`, {
       method: "DELETE",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
+      body: JSON.stringify({ id: workoutId }),
     });
 
     if (!response.ok) {
