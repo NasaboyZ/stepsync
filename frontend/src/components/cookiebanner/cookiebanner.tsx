@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Box, Button, Typography, Slide, Link } from "@mui/material";
+import { Box, Typography, Slide, Link } from "@mui/material";
 import styles from "./cookiebanner.module.css";
+import { Button, ButtonStyle } from "../button/Button";
 
 export default function Cookiebanner() {
   const [cookies, setCookie] = useCookies(["cookie-consent"]);
@@ -34,13 +35,10 @@ export default function Cookiebanner() {
         </Typography>
         <Box className={styles.buttonContainer}>
           <Button
-            variant="contained"
-            color="primary"
+            label="Akzeptieren"
+            style={ButtonStyle.SECONDARY}
             onClick={handleAccept}
-            className={styles.button}
-          >
-            Akzeptieren
-          </Button>
+          />
         </Box>
       </Box>
     </Slide>

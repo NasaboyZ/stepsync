@@ -3,7 +3,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
+  background-color: var(--brown-light);
   padding: 1rem 2rem;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -15,16 +15,25 @@
 .text {
   flex: 1;
   margin-right: 2rem;
-  color: black;
+  color: var(--white);
+}
+
+.link {
+  color: var(--white);
+  text-decoration: underline;
 }
 
 .buttonContainer {
   display: flex;
+
   gap: 1rem;
 }
 
 .button {
+  outline: var(--white);
+  border: 1px solid var(--white);
   min-width: 120px;
+  background-color: var(--brown-light);
 }
 
 @media (max-width: 600px) {
