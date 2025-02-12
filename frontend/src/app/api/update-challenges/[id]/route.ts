@@ -2,27 +2,18 @@ import { authConfig } from "@/auth";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  if (request.method !== "PATCH") {
-    return NextResponse.json(
-      { message: "Method not allowed" },
-      { status: 405 }
-    );
-  }
-
+export async function PATCH(request: NextRequest): Promise<NextResponse> {
   const session = await getServerSession(authConfig);
   if (!session || !session.accessToken) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   const challengeData = await request.json();
+  const id = request.nextUrl.pathname.split("/").pop() || "";
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/${params.id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/${id}`,
       {
         method: "PATCH",
         headers: {
