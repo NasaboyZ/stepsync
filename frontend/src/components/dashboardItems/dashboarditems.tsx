@@ -1,3 +1,5 @@
+"use client";
+
 import DashboardBmi from "../bmiCard/dashboardBmi";
 import ChallengeCounter from "../challengCounter/challengeCounter";
 

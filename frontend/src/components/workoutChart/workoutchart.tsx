@@ -68,11 +68,10 @@ const WorkoutChart: React.FC = () => {
           return;
         }
 
-        const statistics = await fetchWorkoutStatistics(
-          token,
+        const statistics = await fetchWorkoutStatistics(token, {
           timeframe,
-          category
-        );
+          category,
+        });
 
         setChartData({
           labels: statistics.map((item) => item.date),

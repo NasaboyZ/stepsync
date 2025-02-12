@@ -1,4 +1,3 @@
-import { dataFetch } from "@/utils/data-fetch";
 import {
   UpdateUserProfileData,
   UserProfile,
@@ -33,10 +32,14 @@ export const deleteAvatar = async (
   userId: string,
   accessToken: string
 ): Promise<void> => {
-  const response = await dataFetch(
-    `/api/delete-avatar/${userId}`,
-    accessToken,
-    "DELETE"
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/delete-avatar/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
   );
 
   if (!response.ok) {
