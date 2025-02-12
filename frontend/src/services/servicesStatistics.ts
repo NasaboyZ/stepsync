@@ -12,7 +12,7 @@ export const getWorkoutStatistics = async (
   if (!accessToken) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Keine Authentifizierung vorhanden", "error");
+      .showSnackbar("Keine Authentifizierung vorhanden", "error");
     return [];
   }
 
@@ -22,7 +22,7 @@ export const getWorkoutStatistics = async (
   } catch (error) {
     useSnackbarStore
       .getState()
-      .openSnackbar("Fehler beim Laden der Workout-Statistiken", "error");
+      .showSnackbar("Fehler beim Laden der Workout-Statistiken", "error");
     console.error("Fehler beim Laden der Statistiken:", error);
     return [];
   }

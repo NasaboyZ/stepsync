@@ -45,6 +45,11 @@ export interface WorkoutStatistics {
   frequency: number;
 }
 
+export interface WorkoutStatisticsParams {
+  timeframe?: string;
+  category?: string;
+}
+
 export const fetchUserData = async (token: string): Promise<UserProfile> => {
   const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
@@ -126,9 +131,10 @@ export const fetchUserAvatar = async (
 
 export const fetchWorkoutStatistics = async (
   token: string,
-  timeframe: string = "12_months",
-  category: string = "all"
+  params: WorkoutStatisticsParams = {}
 ): Promise<WorkoutStatistics[]> => {
+  const { timeframe = "12_months", category = "all" } = params;
+
   const data = await dataFetchWithToken(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/workouts/statistics?timeframe=${timeframe}&category=${category}`,
     token
