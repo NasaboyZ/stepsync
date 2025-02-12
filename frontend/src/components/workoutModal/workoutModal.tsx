@@ -76,6 +76,7 @@ export const WorkoutModal = ({
       repetitions: 0,
       distance: newType === "cardio" ? 0 : null,
       distance_unit: newType === "cardio" ? "kilometer" : null,
+      is_completed: false,
     });
 
     if (newType === "krafttraining") {
@@ -98,6 +99,7 @@ export const WorkoutModal = ({
       distance_unit: cardioData.distanceUnit,
       repetitions: cardioData.repetitions,
       weight: null,
+      is_completed: false,
     });
   };
 
@@ -185,6 +187,7 @@ export const WorkoutModal = ({
                 repetitions: 0,
                 distance: null,
                 distance_unit: null,
+                is_completed: false,
               }
             }
             isEditing={true}
