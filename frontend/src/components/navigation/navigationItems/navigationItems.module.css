@@ -8,6 +8,29 @@
   list-style: none;
 }
 
+.navItem_li a {
+  text-decoration: none;
+  position: relative;
+}
+
+.navItem_li a:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  bottom: -4px;
+  left: 0;
+  transition: width 0.3s ease;
+  color: var(--red);
+}
+
+.navItem_li a:hover:after,
+.navItem_li a.active:after {
+  width: 100%;
+  color: var(--red);
+}
+
 @media (max-width: 768px) {
   .navItem_ul {
     display: block;
