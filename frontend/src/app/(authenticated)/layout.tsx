@@ -20,14 +20,14 @@ export default function AuthenticatedLayout({
   return (
     <div className={styles.container}>
       <AuthenticatedNav isOpen={isOpen} onClose={handleClose} />
-      <div className={styles.contentWrapper}>
-        <AvatarProvider>
+      <AvatarProvider>
+        <div className={styles.contentWrapper}>
           <main className={styles.main}>
             <AuthenticatedHeader />
             {children}
           </main>
-        </AvatarProvider>
-      </div>
+        </div>
+      </AvatarProvider>
     </div>
   );
 }
