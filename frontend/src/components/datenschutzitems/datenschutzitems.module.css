@@ -1,0 +1,35 @@
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.paper {
+  padding: 2rem;
+  background-color: var(--brown-dark);
+  box-shadow: none;
+}
+
+.titleContainer {
+  margin-bottom: 2rem;
+}
+
+.accordionContainer {
+  margin-top: 2rem;
+}
+
+.accordionContainer :global(.MuiAccordion-root) {
+  background-color: var(--brown-light);
+  color: var(--white);
+}
+
+.contentItem {
+  margin-bottom: 1rem;
+}
+
+.contentItem:last-child {
+  margin-bottom: 0;
+}
+
+.itemTitle {
+  margin-bottom: 0.5rem;
+}

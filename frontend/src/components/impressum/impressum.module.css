@@ -1,0 +1,21 @@
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.paper {
+  padding: 2rem;
+  background-color: var(--brown-dark);
+  box-shadow: none;
+}
+
+.titleContainer {
+  margin-bottom: 2rem;
+}
+
+.contentContainer {
+  margin-top: 2rem;
+}
