@@ -86,7 +86,9 @@ export function ProfileSettings() {
   return (
     <Container maxWidth="lg" className={styles.profileContainer}>
       <Paper elevation={3} className={styles.paper}>
-        <Typography variant="h4">Profil bearbeiten</Typography>
+        <Typography className={styles.title} variant="h4">
+          Profil bearbeiten
+        </Typography>
 
         <div className={styles.mainGrid}>
           <div className={styles.formSection}>
@@ -108,7 +110,12 @@ export function ProfileSettings() {
                 />
               )
             )}
-            <Button variant="contained" fullWidth onClick={handleSave}>
+            <Button
+              className={styles.saveButton}
+              variant="contained"
+              fullWidth
+              onClick={handleSave}
+            >
               Speichern
             </Button>
           </div>

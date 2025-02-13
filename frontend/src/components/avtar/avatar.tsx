@@ -98,7 +98,7 @@ export function Avatar() {
           <VisuallyHiddenInput
             type="file"
             onChange={handleFileChange}
-            accept="image/png,image/jpeg,image/jpg"
+            accept="image/png,image/jpeg,image/jpg, image/webp"
           />
         </Button>
         {avatarUrl && (
@@ -113,7 +113,7 @@ export function Avatar() {
         )}
       </div>
       <Typography variant="caption" color="white" style={{ marginTop: "4px" }}>
-        Erlaubte Formate: PNG, JPEG
+        Erlaubte Formate: PNG, JPEG, WEBP
       </Typography>
     </div>
   );
