@@ -58,8 +58,8 @@ export const LoginForm = () => {
     });
 
     if (response?.error) {
-      setError("login fehlgeschlagen");
-      console.log(error);
+      form.setError("email", { message: "Ungültige Anmeldedaten" });
+      form.setError("password", { message: "Ungültige Anmeldedaten" });
     } else {
       const token = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,

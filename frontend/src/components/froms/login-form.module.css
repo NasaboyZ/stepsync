@@ -46,7 +46,7 @@
 }
 
 .input-container:focus-within {
-  border-color: red;
+  border-color: var(--white);
 }
 
 .input-container .icon {
@@ -147,6 +147,16 @@
 
 .text-field :global(.MuiOutlinedInput-input) {
   color: black;
+}
+
+.text-field :global(.MuiFormHelperText-root) {
+  color: var(--red);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.text-field :global(.Mui-error) .MuiOutlinedInput-notchedOutline {
+  border-color: var(--red);
 }
 
 .submit-button {
