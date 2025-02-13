@@ -23,7 +23,6 @@ interface HeroStore {
       animate: { opacity: number; y: number };
     };
   };
-  heroText: string;
 }
 
 const useHeroStore = create<HeroStore>(() => ({
@@ -46,8 +45,6 @@ const useHeroStore = create<HeroStore>(() => ({
       animate: { opacity: 1, y: 0 },
     },
   },
-  heroText:
-    "Stepsync ist eine Plattform für Menschen, die ihre Fitnessziele erreichen wollen. Geplant, Ergeiz und Motivation sind unsere drei Hauptmerkmale.",
 }));
 
 export default useHeroStore;

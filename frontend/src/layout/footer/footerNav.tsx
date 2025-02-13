@@ -1,8 +1,7 @@
-import { Box, Container,  Typography, IconButton, Stack } from '@mui/material';
-import Logo from "@/components/logo/logo";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import Link from "next/link";
-import styles from './footerNav.module.css';
+import Logo from "@/components/logo/logo";
+import styles from "./footerNav.module.css";
 
 const NavigationItem = () => {
   const navItems = [
@@ -12,15 +11,13 @@ const NavigationItem = () => {
   ];
 
   return (
-    <Stack direction="row" spacing={3} className={styles.navigationContainer}>
+    <nav className={styles.navigationContainer}>
       {navItems.map((item, index) => (
         <Link key={index} href={item.href} className={styles.navigationItem}>
-          <Typography>
-            {item.label}
-          </Typography>
+          {item.label}
         </Link>
       ))}
-    </Stack>
+    </nav>
   );
 };
 
@@ -31,55 +28,53 @@ export default function FooterNav() {
   ];
 
   return (
-    <Box component="footer" className={styles.footer}>
-      <Container maxWidth="lg">
+    <footer className={styles.footer}>
+      <div className={styles.container}>
         <div className={styles.footerGrid}>
           <div className={styles.logoSection}>
             <Logo className={styles.logo} />
           </div>
-          
+
           <div className={styles.navSection}>
             <NavigationItem />
           </div>
 
           <div className={styles.socialSection}>
-            <Stack direction="row" spacing={1} className={styles.socialIcons}>
-              <IconButton
+            <div className={styles.socialIcons}>
+              <a
                 href="https://instagram.com"
                 target="_blank"
                 aria-label="instagram"
                 className={styles.iconButton}
               >
                 <FaInstagram />
-              </IconButton>
-              <IconButton
+              </a>
+              <a
                 href="https://github.com/NasaboyZ"
                 target="_blank"
                 aria-label="github"
                 className={styles.iconButton}
               >
                 <FaGithub />
-              </IconButton>
-            </Stack>
+              </a>
+            </div>
           </div>
         </div>
 
-        <Box className={styles.footerBottom}>
-          <Typography className={styles.copyright}>
+        <div className={styles.footerBottom}>
+          <p className={styles.copyright}>
             © Copyright 2024, All Rights Reserved
-          </Typography>
+          </p>
 
-          <Stack direction="row" className={styles.legalLinks}>
+          <div className={styles.legalLinks}>
             {legalItems.map((item, index) => (
               <Link key={index} href={item.href} className={styles.legalLink}>
-                <Typography>
-                  {item.label}
-                </Typography>
+                {item.label}
               </Link>
             ))}
-          </Stack>
-        </Box>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
