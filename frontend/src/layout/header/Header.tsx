@@ -9,11 +9,9 @@ const headerItem = [
 ];
 
 export function Header() {
-  // Use the custom client-only media query hook
   const isSmallDevice = useClientMediaQuery(
     "only screen and (max-width: 768px)"
   );
-
 
   return (
     <>

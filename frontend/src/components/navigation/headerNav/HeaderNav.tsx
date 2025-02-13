@@ -1,12 +1,13 @@
 import Logo from "@/components/logo/logo";
 import Style from "./headerNav.module.css";
 import NavigationItem from "../navigationItems/navigationItems";
-import SwitchLoginComponent from "@/components/switchlogin/switchlogincomponents";
-
+import { Button, ButtonStyle } from "@/components/button/Button";
+import { useSession } from "next-auth/react";
 interface NavigationItemProps {
   items: { href: string; label: string }[];
 }
 export default function HeaderNav({ items }: NavigationItemProps) {
+  const { status } = useSession();
   return (
     <div className={Style["contentwrapper"]}>
       <div className={Style["navWrapper"]}>
@@ -15,7 +16,17 @@ export default function HeaderNav({ items }: NavigationItemProps) {
         </div>
         <NavigationItem items={items} />
       </div>
-      <SwitchLoginComponent />
+      <div className={Style["loginButton"]}>
+        {status === "unauthenticated" ? (
+          <Button label="Anmelden" style={ButtonStyle.PRIMARY} href="/login" />
+        ) : (
+          <Button
+            label="Dashboard"
+            style={ButtonStyle.PRIMARY}
+            href="/dashboard"
+          />
+        )}
+      </div>
     </div>
   );
 }

@@ -3,11 +3,11 @@
   align-items: center;
   justify-content: center;
   gap: 2rem;
+  position: relative;
 }
 .navWrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 1rem 3rem;
   background: var(--brown-light);
   width: fit-content;
@@ -16,11 +16,15 @@
   border-bottom-left-radius: 50px;
 }
 
+.loginButton {
+  position: absolute;
+  right: 0;
+
+  width: fit-content;
+}
+
 .logo h2 {
   color: var(--white);
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
 }
 
 .navList {

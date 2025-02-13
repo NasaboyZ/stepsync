@@ -1,4 +1,4 @@
-import { Drawer, IconButton, Box } from "@mui/material";
+import { Drawer, IconButton } from "@mui/material";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import BurgerIcon from "@/assets/svg/burger-menu-right-svgrepo-com.svg";
@@ -7,7 +7,9 @@ import Style from "./mobileNav.module.css";
 import { useState } from "react";
 import Logo from "@/components/logo/logo";
 import NavigationItem from "../navigationItems/navigationItems";
-import SwitchLoginComponent from "@/components/switchlogin/switchlogincomponents";
+
+import { Button, ButtonStyle } from "@/components/button/Button";
+import { useSession } from "next-auth/react";
 
 interface MobileNavProps {
   items: { href: string; label: string }[];
@@ -15,7 +17,7 @@ interface MobileNavProps {
 
 export default function MobileNav({ items }: MobileNavProps) {
   const [isMenuOpen, setMenuOpen] = useState(false);
-
+  const { status } = useSession();
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
   const handleNavItemClick = () => {
@@ -45,31 +47,12 @@ export default function MobileNav({ items }: MobileNavProps) {
         anchor="right"
         open={isMenuOpen}
         onClose={toggleMenu}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: "100%",
-            backgroundColor: "var(--brown-light)",
-            borderRadius: "0",
-          },
+        classes={{
+          paper: Style.drawer,
         }}
       >
-        <Box
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            padding: "2rem",
-            position: "relative",
-          }}
-        >
-          <IconButton
-            onClick={toggleMenu}
-            sx={{
-              position: "absolute",
-              top: "1rem",
-              right: "1rem",
-            }}
-          >
+        <div className={Style.drawerContent}>
+          <IconButton onClick={toggleMenu} className={Style.closeButton}>
             <Image
               src={closingBurger}
               width={30}
@@ -78,23 +61,29 @@ export default function MobileNav({ items }: MobileNavProps) {
             />
           </IconButton>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "2rem",
-              marginTop: "4rem",
-            }}
-          >
+          <div className={Style.navigationContainer}>
             {items.map((item) => (
               <div key={item.href} onClick={handleNavItemClick}>
                 <NavigationItem items={[item]} />
               </div>
             ))}
-            <SwitchLoginComponent onNavigate={handleNavItemClick} />
-          </Box>
-        </Box>
+            <div className={Style.loginButton}>
+              {status === "unauthenticated" ? (
+                <Button
+                  label="Anmelden"
+                  style={ButtonStyle.PRIMARY}
+                  href="/login"
+                />
+              ) : (
+                <Button
+                  label="Dashboard"
+                  style={ButtonStyle.PRIMARY}
+                  href="/dashboard"
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </Drawer>
     </div>
   );
