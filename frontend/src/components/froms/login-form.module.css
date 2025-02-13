@@ -130,19 +130,19 @@
 }
 
 .text-field :global(.MuiOutlinedInput-root) fieldset {
-  border-color: black;
+  border-color: var(--white);
 }
 
 .text-field :global(.MuiOutlinedInput-root:hover) fieldset {
-  border-color: black;
+  border-color: var(--white);
 }
 
 .text-field :global(.MuiOutlinedInput-root.Mui-focused) fieldset {
-  border-color: black;
+  border-color: var(--white);
 }
 
 .text-field :global(.MuiInputLabel-root) {
-  color: black;
+  color: var(--white);
 }
 
 .text-field :global(.MuiOutlinedInput-input) {
