@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import styles from "./workoutitems.module.css";
 import { WorkoutModal } from "../workoutModal/workoutModal";
 import { Button, ButtonStyle } from "../button/Button";
+import EmptyStateComponent from "../emptystate/emptystateComponent";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
@@ -197,9 +198,7 @@ export default function WorkoutItems() {
             </div>
           ))
         ) : (
-          <div className={styles.noWorkouts}>
-            <p>Keine Workouts gefunden</p>
-          </div>
+          <EmptyStateComponent onButtonClick={() => setIsModalOpen(true)} />
         )}
       </div>
 

@@ -15,6 +15,7 @@ import { createChallenge, updateChallenge } from "@/services/servicesChallenge";
 import { useSnackbarStore } from "@/store/snackbarStore";
 import { Button, ButtonStyle } from "../button/Button";
 import { useChallenges } from "@/context/challenges-context-proivder";
+import EmptyState from "../emptystate/emptystateComponent";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -96,7 +97,7 @@ export default function ChallengesItems() {
           }
         );
       } else {
-        // Create new challenge
+    
         await createChallenge(
           {
             title: newChallenge.title,
@@ -108,7 +109,7 @@ export default function ChallengesItems() {
           () => {
             setIsModalOpen(false);
             showSnackbar("Neue Challenge erstellt! 🎯", "success");
-            refreshChallenges(); // Refresh the list after creating new challenge
+            refreshChallenges();
           }
         );
       }
@@ -151,8 +152,39 @@ export default function ChallengesItems() {
     }
   };
 
-  if (loading) return <div>Lädt...</div>;
-  if (error) return <div>Fehler: {error}</div>;
+  const renderContent = () => {
+    if (loading) return <div>Lädt...</div>;
+    if (error) return <div>Fehler: {error}</div>;
+
+    if (getFilteredChallenges().length === 0) {
+      return (
+        <EmptyState
+          title="Keine Challenges vorhanden"
+          description={
+            selectedTab === 0
+              ? "Erstelle deine Persönliche Challenge und beginne deine Fitness-Reise!"
+              : "Du hast noch keine laufenden Challenges. Nimm eine Challenge an und leg los!"
+          }
+          buttonText="Challenge erstellen"
+          onButtonClick={handleOpenModal}
+        />
+      );
+    }
+
+    return (
+      <div className={styles.challengesList}>
+        {getFilteredChallenges().map((challenge) => (
+          <div className={styles.challengeItem} key={challenge.id}>
+            <ChallengesCard
+              variant="primary"
+              challenge={challenge}
+              onEdit={() => handleEditChallenge(challenge)}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -192,25 +224,7 @@ export default function ChallengesItems() {
         </div>
       </div>
 
-      <div className={styles.challengesList}>
-        {getFilteredChallenges().length === 0 ? (
-          <Typography className={styles.noChallenge}>
-            {selectedTab === 0
-              ? "Keine offenen Challenges verfügbar"
-              : "Keine laufenden Challenges verfügbar"}
-          </Typography>
-        ) : (
-          getFilteredChallenges().map((challenge) => (
-            <div className={styles.challengeItem} key={challenge.id}>
-              <ChallengesCard
-                variant="primary"
-                challenge={challenge}
-                onEdit={() => handleEditChallenge(challenge)}
-              />
-            </div>
-          ))
-        )}
-      </div>
+      {renderContent()}
 
       <AnimatePresence>
         {isModalOpen && (
