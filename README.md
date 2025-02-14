@@ -1,9 +1,18 @@
 # Stepsync
 
-1. installation von frontend und backend here und login daten einfügen.
+1. Installation von Frontend und Backend ([Link zum Repository](https://github.com/NasaboyZ/stepsync/tree/main))
+
+## Login Daten für Testzwecke:
+
+- **Lehrer Test-Account:**
+
+  - E-Mail: laa@mailinator.com
+  - Passwort: Password_9!
+
+
 2. npm run dev
-3. npm run dev --prefix backend
-   MIT License
+
+MIT License
 
 Copyright (c) 2025 Stepsync
 

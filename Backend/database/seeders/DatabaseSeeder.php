@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-// TODO: User erstellen damit lehrer auch sieht wie alles geht Password umbedingt denn in read.me schreiben
+
 use App\Models\Blogpost;
 use App\Models\Challenges;
 use App\Models\Tag;
@@ -13,13 +13,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        // Create users
+       
         $alpha = User::create([
             'first_name'    => 'Alpha',
             'last_name'     => 'User',
             'username'      => 'alphauser',
             'email'         => 'alpha@mailinator.com',
-            'password'      => Hash::make('password'),
+            'password'      => Hash::make('Pizzaria123_!'),
             'weight'        => 70.0,
             'height'        => 1.75,
             'goal'          => 'Increase Muscle Size',
@@ -32,12 +32,26 @@ class DatabaseSeeder extends Seeder
             'last_name'     => 'User',
             'username'      => 'bravouser',
             'email'         => 'bravo@mailinator.com',
-            'password'      => Hash::make('password'),
+            'password'      => Hash::make('Pizzaria123_!'),
             'weight'        => 80.0,
             'height'        => 1.80,
             'goal'          => 'Lose Weight',
             'gender'        => 'female',
             'date_of_birth' => '1992-05-15',
+        ]);
+
+        
+        $teacher = User::create([
+            'first_name'    => 'Test',
+            'last_name'     => 'Lehrer',
+            'username'      => 'testlehrer',
+            'email'         => 'laa@mailinator.com',
+            'password'      => Hash::make('Password_9!'),
+            'weight'        => 75.0,
+            'height'        => 1.78,
+            'goal'          => 'Maintain Fitness',
+            'gender'        => 'male',
+            'date_of_birth' => '1985-03-20',
         ]);
     }
 }
