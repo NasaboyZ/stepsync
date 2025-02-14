@@ -9,6 +9,7 @@ import {
   FormState,
 } from "react-hook-form";
 import styles from "../register.module.css";
+import { step3Schema } from "@/validations/register-form-schema";
 
 interface Step3Props {
   form: {
@@ -30,6 +31,33 @@ export const Step3: React.FC<Step3Props> = ({
   const weight = watch("weight") || 70;
   const height = watch("height") || 170;
 
+  const validateAndSetHeight = (value: number) => {
+    try {
+      step3Schema.pick({ height: true }).parse({ height: value });
+      setValue("height", value, { shouldValidate: true });
+    } catch (error) {
+      console.error("Validierungsfehler:", error);
+    }
+  };
+
+  const validateAndSetWeight = (value: number) => {
+    try {
+      step3Schema.pick({ weight: true }).parse({ weight: value });
+      setValue("weight", value, { shouldValidate: true });
+    } catch (error) {
+      console.error("Validierungsfehler:", error);
+    }
+  };
+
+  const validateAndSetGoal = (value: string) => {
+    try {
+      step3Schema.pick({ goal: true }).parse({ goal: value });
+      setValue("goal", value, { shouldValidate: true });
+    } catch (error) {
+      console.error("Validierungsfehler:", error);
+    }
+  };
+
   return (
     <Box className={styles.stepContainer}>
       <Box>
@@ -41,10 +69,8 @@ export const Step3: React.FC<Step3Props> = ({
           <Typography gutterBottom>Grösse</Typography>
           <Slider
             value={height}
-            onChange={(_, value) =>
-              setValue("height", value as number, { shouldValidate: true })
-            }
-            min={50}
+            onChange={(_, value) => validateAndSetHeight(value as number)}
+            min={100}
             max={300}
             className={styles.slider}
           />
@@ -60,11 +86,9 @@ export const Step3: React.FC<Step3Props> = ({
           <Typography gutterBottom>Gewicht</Typography>
           <Slider
             value={weight}
-            onChange={(_, value) =>
-              setValue("weight", value as number, { shouldValidate: true })
-            }
+            onChange={(_, value) => validateAndSetWeight(value as number)}
             min={20}
-            max={500}
+            max={290}
             className={styles.slider}
           />
           <Box className={styles.sliderValueContainer}>
@@ -98,7 +122,7 @@ export const Step3: React.FC<Step3Props> = ({
         ].map((goal) => (
           <Card
             key={goal.id}
-            onClick={() => setValue("goal", goal.id, { shouldValidate: true })}
+            onClick={() => validateAndSetGoal(goal.id)}
             className={`${styles.goalCard} ${
               selectedGoal === goal.id ? styles.selected : styles.unselected
             }`}

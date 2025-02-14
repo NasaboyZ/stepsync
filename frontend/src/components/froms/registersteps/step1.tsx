@@ -12,6 +12,8 @@ interface Step1Props {
       errors: Partial<Record<keyof RegisterFormSchema, { message?: string }>>;
     };
     setValue: UseFormSetValue<RegisterFormSchema>;
+    getValues: (fieldName: keyof RegisterFormSchema) => string;
+    watch: (fieldName: keyof RegisterFormSchema) => string;
   };
   showPassword: boolean;
   setShowPassword: (show: boolean) => void;
@@ -21,60 +23,94 @@ export const Step1: React.FC<Step1Props> = ({
   form,
   showPassword,
   setShowPassword,
-}) => (
-  <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-    <Typography variant="h5" gutterBottom>
-      Lass uns deine Reise beginnen
-    </Typography>
-    <CustomTextField
-      fullWidth
-      label="Vorname"
-      {...form.register("first_name")}
-      error={!!form.formState.errors.first_name}
-      helperText={form.formState.errors.first_name?.message || ""}
-    />
-    <CustomTextField
-      fullWidth
-      label="Nachname"
-      {...form.register("last_name")}
-      error={!!form.formState.errors.last_name}
-      helperText={form.formState.errors.last_name?.message || ""}
-    />
-    <CustomTextField
-      fullWidth
-      label="E-Mail"
-      type="email"
-      {...form.register("email")}
-      error={!!form.formState.errors.email}
-      helperText={form.formState.errors.email?.message || ""}
-    />
-    <CustomTextField
-      fullWidth
-      label="Benutzername"
-      {...form.register("username")}
-      error={!!form.formState.errors.username}
-      helperText={form.formState.errors.username?.message || ""}
-    />
-    <CustomTextField
-      fullWidth
-      label="Passwort"
-      type={showPassword ? "text" : "password"}
-      {...form.register("password")}
-      error={!!form.formState.errors.password}
-      helperText={form.formState.errors.password?.message || ""}
-      slotProps={{
-        input: {
-          endAdornment: (
-            <IconButton
-              onClick={() => setShowPassword(!showPassword)}
-              edge="end"
-              sx={{ color: "#fff" }}
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          ),
-        },
-      }}
-    />
-  </Box>
-);
+}) => {
+  const password = form.watch("password");
+  const passwordConfirm = form.watch("password_confirm");
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        Lass uns deine Reise beginnen
+      </Typography>
+      <CustomTextField
+        fullWidth
+        label="Vorname"
+        {...form.register("first_name")}
+        error={!!form.formState.errors.first_name}
+        helperText={form.formState.errors.first_name?.message || ""}
+      />
+      <CustomTextField
+        fullWidth
+        label="Nachname"
+        {...form.register("last_name")}
+        error={!!form.formState.errors.last_name}
+        helperText={form.formState.errors.last_name?.message || ""}
+      />
+      <CustomTextField
+        fullWidth
+        label="E-Mail"
+        type="email"
+        {...form.register("email")}
+        error={!!form.formState.errors.email}
+        helperText={form.formState.errors.email?.message || ""}
+      />
+      <CustomTextField
+        fullWidth
+        label="Benutzername"
+        {...form.register("username")}
+        error={!!form.formState.errors.username}
+        helperText={form.formState.errors.username?.message || ""}
+      />
+      <CustomTextField
+        fullWidth
+        label="Passwort"
+        type={showPassword ? "text" : "password"}
+        {...form.register("password")}
+        error={!!form.formState.errors.password}
+        helperText={form.formState.errors.password?.message || ""}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+                sx={{ color: "#fff" }}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          },
+        }}
+      />
+      <CustomTextField
+        fullWidth
+        label="Passwort wiederholen"
+        type={showPassword ? "text" : "password"}
+        {...form.register("password_confirm", {
+          onChange: () => {
+            if (passwordConfirm && password !== passwordConfirm) {
+              form.formState.errors.password_confirm = {
+                message: "Die Passwörter stimmen nicht überein",
+              };
+            }
+          },
+        })}
+        error={!!form.formState.errors.password_confirm}
+        helperText={form.formState.errors.password_confirm?.message || ""}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+                sx={{ color: "#fff" }}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          },
+        }}
+      />
+    </Box>
+  );
+};

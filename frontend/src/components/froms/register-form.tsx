@@ -30,6 +30,7 @@ export const RegisterForm = () => {
       last_name: "",
       email: "",
       password: "",
+      password_confirm: "",
       username: "",
       goal: "",
       gender: "",
@@ -89,11 +90,14 @@ export const RegisterForm = () => {
           values.email &&
           values.username &&
           values.password &&
+          values.password_confirm &&
+          values.password === values.password_confirm &&
           !errors.first_name &&
           !errors.last_name &&
           !errors.email &&
           !errors.username &&
-          !errors.password
+          !errors.password &&
+          !errors.password_confirm
         );
       case 2:
         return (
@@ -123,16 +127,23 @@ export const RegisterForm = () => {
     }
   };
 
-  const getFieldsForStep = (step: number): Array<keyof RegisterFormSchema> => {
+  const getFieldsForStep = (step: number) => {
     switch (step) {
       case 1:
-        return ["first_name", "last_name", "email", "username", "password"];
+        return [
+          "first_name",
+          "last_name",
+          "email",
+          "username",
+          "password",
+          "password_confirm",
+        ] as const;
       case 2:
-        return ["gender", "date_of_birth"];
+        return ["gender", "date_of_birth"] as const;
       case 3:
-        return ["height", "weight", "goal"];
+        return ["height", "weight", "goal"] as const;
       default:
-        return [];
+        return [] as const;
     }
   };
 
@@ -145,6 +156,8 @@ export const RegisterForm = () => {
               register: form.register,
               formState: form.formState,
               setValue: form.setValue,
+              getValues: form.getValues,
+              watch: form.watch,
             }}
             showPassword={showPassword}
             setShowPassword={setShowPassword}

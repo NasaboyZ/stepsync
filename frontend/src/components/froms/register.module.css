@@ -112,6 +112,24 @@
   gap: 1rem;
 }
 
+@media (max-width: 600px) {
+  .goalCardsContainer {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 320px) {
+  .goalCardsContainer {
+    max-width: 100%;
+  }
+
+  .goalCard {
+    min-width: 0;
+  }
+}
+
 .goalCard {
   cursor: pointer;
   color: white;

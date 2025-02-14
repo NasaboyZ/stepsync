@@ -1,7 +1,10 @@
 "use client";
 
 import { Box, Typography, Button } from "@mui/material";
-import { RegisterFormSchema } from "@/validations/register-form-schema";
+import {
+  RegisterFormSchema,
+  step2Schema,
+} from "@/validations/register-form-schema";
 import {
   type FormState,
   type UseFormSetValue,
@@ -27,6 +30,24 @@ export const Step2 = ({
 }: Step2Props) => {
   const selectedGender = watch("gender");
 
+  const validateAndSetGender = (value: string) => {
+    try {
+      step2Schema.pick({ gender: true }).parse({ gender: value });
+      setValue("gender", value, { shouldValidate: true });
+    } catch (error) {
+      console.error("Validierungsfehler:", error);
+    }
+  };
+
+  const validateAndSetDate = (value: string) => {
+    try {
+      step2Schema.pick({ date_of_birth: true }).parse({ date_of_birth: value });
+      setValue("date_of_birth", value, { shouldValidate: true });
+    } catch (error) {
+      console.error("Validierungsfehler:", error);
+    }
+  };
+
   return (
     <Box className={styles.stepContainer}>
       <Typography variant="h5" gutterBottom>
@@ -46,9 +67,7 @@ export const Step2 = ({
           <Button
             key={option.id}
             variant={selectedGender === option.id ? "contained" : "outlined"}
-            onClick={() =>
-              setValue("gender", option.id, { shouldValidate: true })
-            }
+            onClick={() => validateAndSetGender(option.id)}
             className={`${styles.genderButton} ${
               selectedGender === option.id ? styles.selected : styles.unselected
             }`}
@@ -59,7 +78,7 @@ export const Step2 = ({
       </Box>
       {errors.gender && (
         <Typography color="error" variant="caption">
-          {errors.gender.message}
+          {errors.gender.message?.toString() || "Ungültige Eingabe"}
         </Typography>
       )}
 
@@ -70,17 +89,15 @@ export const Step2 = ({
         <TextField
           type="date"
           value={watch("date_of_birth") || ""}
-          onChange={(e) => {
-            setValue("date_of_birth", e.target.value, {
-              shouldValidate: true,
-            });
-          }}
+          onChange={(e) => validateAndSetDate(e.target.value)}
           error={!!errors.date_of_birth}
-          helperText={errors.date_of_birth?.message}
+          helperText={errors.date_of_birth?.message?.toString() || ""}
           fullWidth
           className={styles.dateField}
-          InputLabelProps={{
-            shrink: true,
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
           }}
         />
       </Box>

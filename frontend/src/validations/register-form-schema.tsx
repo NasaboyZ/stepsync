@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const step1Schema = z.object({
+const baseStep1Schema = z.object({
   first_name: z.string().min(1, "Vorname ist erforderlich"),
   last_name: z.string().min(1, "Nachname ist erforderlich"),
   email: z.string().email("Ungültige E-Mail-Adresse"),
@@ -17,7 +17,16 @@ export const step1Schema = z.object({
       /[@$!%*#?&_-]/,
       "Passwort muss mindestens ein Sonderzeichen enthalten"
     ),
+  password_confirm: z.string(),
 });
+
+export const step1Schema = baseStep1Schema.refine(
+  (data) => data.password === data.password_confirm,
+  {
+    message: "Passwörter stimmen nicht überein",
+    path: ["password_confirm"],
+  }
+);
 
 export const step2Schema = z.object({
   gender: z
@@ -58,7 +67,7 @@ export const step3Schema = z.object({
 });
 
 export const registerFormSchema = z.object({
-  ...step1Schema.shape,
+  ...baseStep1Schema.shape,
   ...step2Schema.shape,
   ...step3Schema.shape,
 });
