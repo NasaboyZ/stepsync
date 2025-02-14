@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 400px;
+  text-align: center;
+}
+
+.iconContainer {
+  background-color: var(--brown-light);
+  border-radius: 50px;
+
+  padding: 1rem;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--white);
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--brown-dark);
+  margin: 0;
+}
+
+.description {
+  color: var(--brown-dark);
+  margin: 0;
+}
