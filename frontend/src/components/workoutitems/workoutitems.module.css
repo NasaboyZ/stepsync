@@ -27,14 +27,17 @@
 .tab {
   padding: 1rem 1.5rem;
   margin-left: 1rem;
-  color: black;
+  color: var(--brown-dark);
   text-transform: none;
   font-weight: 400;
 }
 
 .tab.selected {
-  color: var(--red);
+  color: var(--brown-dark);
   font-weight: 600;
+}
+.tabs :global(.MuiTabs-indicator) {
+  background-color: var(--red);
 }
 
 .buttonContainer {
@@ -42,7 +45,7 @@
 }
 
 .newWorkoutButton {
-  background-color: var(--brown-light);
+  background-color: var(--brown-dark);
   color: white;
   border-radius: 8px;
   padding: 12px 24px;
@@ -85,7 +88,6 @@
     width: 100%;
     margin-top: 0.5rem;
   }
-
 
   .workoutList {
     padding: 0;

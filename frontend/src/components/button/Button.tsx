@@ -11,6 +11,7 @@ interface ButtonProps {
 export enum ButtonStyle {
   PRIMARY = "primary",
   SECONDARY = "secondary",
+  PRIMARY_DARK = "primary-dark",
 }
 
 export function Button({

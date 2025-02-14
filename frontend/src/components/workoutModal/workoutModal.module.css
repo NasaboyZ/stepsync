@@ -24,14 +24,13 @@
 }
 
 .saveButton {
-  background-color: var(--brown-light);
+  background-color: var(--brown-dark);
   color: white;
   text-transform: none;
   border-radius: 8px;
   padding: 12px;
 }
 
-/* Für mobile Geräte */
 @media (max-width: 600px) {
   .distanceContainer {
     flex-direction: column;
@@ -44,7 +43,6 @@
   }
 }
 
-/* Für Tablets und Desktop */
 @media (max-width: 600px) {
   .distanceInput {
     flex: 2;

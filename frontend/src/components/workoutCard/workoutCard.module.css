@@ -54,8 +54,8 @@
 }
 
 .checkbox.completed {
-  border-color: var(--green, #4caf50);
-  color: var(--green, #4caf50);
+  border-color: var(--green, var(--green));
+  color: var(--green, var(--green));
 }
 
 .actions {
@@ -108,4 +108,5 @@
 .saveButton {
   margin-top: 16px;
   padding: 12px;
+  background-color: var(--brown-dark);
 }

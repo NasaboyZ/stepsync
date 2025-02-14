@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Tabs, Tab, Typography, Button } from "@mui/material";
+import { Tabs, Tab, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
@@ -15,14 +15,19 @@ import {
 import { useRouter } from "next/navigation";
 import styles from "./workoutitems.module.css";
 import { WorkoutModal } from "../workoutModal/workoutModal";
+import { Button, ButtonStyle } from "../button/Button";
 
 export default function WorkoutItems() {
   const { data: session } = useSession();
   const router = useRouter();
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(null);
-  const [modalType, setModalType] = useState<"krafttraining" | "cardio">("krafttraining");
+  const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
+    null
+  );
+  const [modalType, setModalType] = useState<"krafttraining" | "cardio">(
+    "krafttraining"
+  );
   const [selectedTab, setSelectedTab] = useState(0);
 
   const loadWorkouts = async () => {
@@ -57,7 +62,12 @@ export default function WorkoutItems() {
 
   const handleDelete = async (workoutId: number) => {
     try {
-      await deleteWorkout(workoutId, session?.accessToken ?? undefined, router, () => loadWorkouts());
+      await deleteWorkout(
+        workoutId,
+        session?.accessToken ?? undefined,
+        router,
+        () => loadWorkouts()
+      );
     } catch (error) {
       console.error("Fehler beim Löschen des Workouts:", error);
     }
@@ -67,9 +77,19 @@ export default function WorkoutItems() {
     try {
       if (editingWorkout?.id) {
         const updatedWorkoutData = { ...workoutData, id: editingWorkout.id };
-        await updateWorkout(updatedWorkoutData, session?.accessToken ?? undefined, router, () => loadWorkouts());
+        await updateWorkout(
+          updatedWorkoutData,
+          session?.accessToken ?? undefined,
+          router,
+          () => loadWorkouts()
+        );
       } else {
-        await createWorkout(workoutData, session?.accessToken ?? undefined, router, () => loadWorkouts());
+        await createWorkout(
+          workoutData,
+          session?.accessToken ?? undefined,
+          router,
+          () => loadWorkouts()
+        );
       }
 
       setIsModalOpen(false);
@@ -83,9 +103,17 @@ export default function WorkoutItems() {
     setSelectedTab(newValue);
   };
 
-  const handleStatusChange = async (workoutId: number, isCompleted: boolean) => {
+  const handleStatusChange = async (
+    workoutId: number,
+    isCompleted: boolean
+  ) => {
     try {
-      await updateWorkoutStatus(workoutId, isCompleted, session?.accessToken, () => loadWorkouts());
+      await updateWorkoutStatus(
+        workoutId,
+        isCompleted,
+        session?.accessToken,
+        () => loadWorkouts()
+      );
     } catch (error) {
       console.error("Fehler beim Aktualisieren des Status:", error);
     }
@@ -94,8 +122,10 @@ export default function WorkoutItems() {
   const memoizedFilteredWorkouts = React.useMemo(() => {
     return savedWorkouts.filter((workout) => {
       if (selectedTab === 0) return !workout.is_completed;
-      if (selectedTab === 1) return workout.category === "krafttraining" && !workout.is_completed;
-      if (selectedTab === 2) return workout.category === "cardio" && !workout.is_completed;
+      if (selectedTab === 1)
+        return workout.category === "krafttraining" && !workout.is_completed;
+      if (selectedTab === 2)
+        return workout.category === "cardio" && !workout.is_completed;
       if (selectedTab === 3) return workout.is_completed;
       return true;
     });
@@ -116,20 +146,38 @@ export default function WorkoutItems() {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="Alle" className={`${styles.tab} ${selectedTab === 0 ? styles.selected : ''}`} />
-          <Tab label="Krafttraining" className={`${styles.tab} ${selectedTab === 1 ? styles.selected : ''}`} />
-          <Tab label="Cardio" className={`${styles.tab} ${selectedTab === 2 ? styles.selected : ''}`} />
-          <Tab label="Erledigt" className={`${styles.tab} ${selectedTab === 3 ? styles.selected : ''}`} />
+          <Tab
+            label="Alle"
+            className={`${styles.tab} ${
+              selectedTab === 0 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Krafttraining"
+            className={`${styles.tab} ${
+              selectedTab === 1 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Cardio"
+            className={`${styles.tab} ${
+              selectedTab === 2 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Erledigt"
+            className={`${styles.tab} ${
+              selectedTab === 3 ? styles.selected : ""
+            }`}
+          />
         </Tabs>
 
         <div className={styles.buttonContainer}>
           <Button
-            variant="contained"
+            label="Neues Workout"
             onClick={() => setIsModalOpen(true)}
-            className={styles.newWorkoutButton}
-          >
-            Neues Workout
-          </Button>
+            style={ButtonStyle.PRIMARY_DARK}
+          />
         </div>
       </div>
 
