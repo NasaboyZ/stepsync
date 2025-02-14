@@ -48,14 +48,7 @@ export default function ChallengesItems() {
       try {
         if (!session?.accessToken) return;
         const challengesData = await fetchChallenges(session.accessToken);
-        const filteredChallenges = Array.isArray(challengesData)
-          ? challengesData.filter(
-              (challenge) =>
-                challenge.status === "pending" ||
-                challenge.status === "accepted"
-            )
-          : [];
-        setChallenges(filteredChallenges);
+        setChallenges(challengesData);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Ein Fehler ist aufgetreten"
@@ -118,14 +111,7 @@ export default function ChallengesItems() {
               const challengesData = await fetchChallenges(
                 session.accessToken!
               );
-              const filteredChallenges = Array.isArray(challengesData)
-                ? challengesData.filter(
-                    (challenge) =>
-                      challenge.status === "pending" ||
-                      challenge.status === "accepted"
-                  )
-                : [];
-              setChallenges(filteredChallenges);
+              setChallenges(challengesData);
             };
             loadChallenges();
           }
@@ -147,14 +133,7 @@ export default function ChallengesItems() {
               const challengesData = await fetchChallenges(
                 session.accessToken!
               );
-              const filteredChallenges = Array.isArray(challengesData)
-                ? challengesData.filter(
-                    (challenge) =>
-                      challenge.status === "pending" ||
-                      challenge.status === "accepted"
-                  )
-                : [];
-              setChallenges(filteredChallenges);
+              setChallenges(challengesData);
             };
             loadChallenges();
           }
@@ -187,16 +166,7 @@ export default function ChallengesItems() {
   };
 
   const getFilteredChallenges = () => {
-    switch (selectedTab) {
-      case 0: // Heute
-        return challenges.filter((challenge) => challenge.status === "pending");
-      case 1: // Laufende Challenges
-        return challenges.filter(
-          (challenge) => challenge.status === "accepted"
-        );
-      default:
-        return challenges;
-    }
+    return challenges.filter((challenge) => challenge.status === "pending");
   };
 
   if (loading) return <div>Lädt...</div>;
@@ -218,25 +188,11 @@ export default function ChallengesItems() {
           scrollButtons="auto"
         >
           <Tab
-            label="Heute"
+            label="Alle Challenges"
             className={`${styles.tab} ${
               selectedTab === 0 ? styles.selected : ""
             }`}
           />
-<<<<<<< HEAD
-          {/* <Tab
-=======
-          <Tab
->>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
-            label="Laufende Challenges"
-            className={`${styles.tab} ${
-              selectedTab === 1 ? styles.selected : ""
-            }`}
-<<<<<<< HEAD
-          /> */}
-=======
-          />
->>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
         </Tabs>
 
         <div className={styles.buttonContainer}>
@@ -249,11 +205,7 @@ export default function ChallengesItems() {
       </div>
 
       <div className={styles.challengesList}>
-<<<<<<< HEAD
-        {challenges.map((challenge) => (
-=======
         {getFilteredChallenges().map((challenge) => (
->>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
           <div className={styles.challengeItem} key={challenge.id}>
             <ChallengesCard
               variant="primary"
