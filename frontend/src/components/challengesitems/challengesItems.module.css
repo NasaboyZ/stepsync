@@ -1,60 +1,80 @@
-.challengesContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.container {
   width: 100%;
-  margin: 0 1rem;
-}
-
-@media (max-width: 600px) {
-  .challengesContainer {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-    gap: 1rem;
-  }
 }
 
 .challengeHeader {
   color: black;
   font-weight: bold;
   margin-left: 2rem;
+  font-size: 2rem;
 }
 
 .tabsContainer {
   margin-bottom: 1rem;
   padding: 0 2rem;
+  display: flex;
   flex-direction: row;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 1rem;
-  }
+  justify-content: space-between;
+  align-items: center;
 }
 
 .tabs {
   border-bottom: 2px solid var(--red);
   margin-top: 1rem;
   padding-bottom: 8px;
-
-  @media (max-width: 600px) {
-    max-width: 100%;
-    overflow-x: auto;
-  }
 }
 
 .tab {
-  padding: 6px 16px;
-  min-height: 35px;
-  font-size: 14px;
+  padding: 1rem 1.5rem;
+  margin-left: 1rem;
+  color: var(--brown-dark);
+  text-transform: none;
+  font-weight: 400;
 }
 
 .tab.selected {
-  color: black;
+  color: var(--brown-dark);
+  font-weight: 600;
 }
 
-.tabIndicator {
-  background-color: #e31e24;
-  height: 2px;
+.tabs :global(.MuiTabs-indicator) {
+  background-color: var(--red);
+}
+
+.buttonContainer {
+  width: auto;
+}
+
+.challengesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 2rem;
+}
+
+.challengeItem {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .tabsContainer {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .tabs {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .buttonContainer {
+    width: 100%;
+  }
+
+  .challengesList {
+    padding: 0 1rem;
+  }
 }
 
 .modalContent {
@@ -97,16 +117,12 @@
   }
 }
 
-.newChallengeButton {
-  background-color: var(--brown-light);
-  color: white;
-  border-radius: 8px;
-  padding: 12px 24px;
-  text-transform: none;
-  font-weight: 500;
+.newChallengeButtonContainer {
+  width: 100%;
+}
 
-  @media (max-width: 600px) {
-    width: 100%;
-    margin-top: 0.5rem;
+@media (min-width: 600px) {
+  .newChallengeButtonContainer {
+    width: auto;
   }
 }
