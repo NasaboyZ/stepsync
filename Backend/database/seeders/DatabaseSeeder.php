@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-       
+
         $alpha = User::create([
             'first_name'    => 'Alpha',
             'last_name'     => 'User',
@@ -38,20 +38,6 @@ class DatabaseSeeder extends Seeder
             'goal'          => 'Lose Weight',
             'gender'        => 'female',
             'date_of_birth' => '1992-05-15',
-        ]);
-
-        
-        $teacher = User::create([
-            'first_name'    => 'Test',
-            'last_name'     => 'Lehrer',
-            'username'      => 'testlehrer',
-            'email'         => 'laa@mailinator.com',
-            'password'      => Hash::make('Password_9!'),
-            'weight'        => 75.0,
-            'height'        => 1.78,
-            'goal'          => 'Maintain Fitness',
-            'gender'        => 'male',
-            'date_of_birth' => '1985-03-20',
         ]);
     }
 }

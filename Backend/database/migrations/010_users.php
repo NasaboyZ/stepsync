@@ -19,7 +19,7 @@ return new class extends Migration {
       $table->string('goal'); // Changed to string
       $table->enum('gender', ['male', 'female', 'other']);
       $table->date('date_of_birth');
-      
+
       $table->timestamps();
     });
   }
