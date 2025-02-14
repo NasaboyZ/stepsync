@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import styles from "./challengesCard.module.css";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import { Challenge } from "@/types/interfaces/challenges";
 import { MoreVert } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useSnackbarStore } from "@/store/snackbarStore";
+import { useChallenges } from "@/context/challenges-context-proivder";
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -21,14 +22,8 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [status, setStatus] = useState<
-    "pending" | "accepted" | "completed" | "failed"
-  >(challenge.status);
+  const { updateChallengeInState } = useChallenges();
   const { showSnackbar } = useSnackbarStore();
-
-  useEffect(() => {
-    setStatus(challenge.status);
-  }, [challenge.status]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,6 +44,11 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
     if (!session?.accessToken || !challenge.id) return;
 
     try {
+      const updatedChallenge = {
+        ...challenge,
+        status: newStatus,
+      };
+
       await updateChallenge(
         {
           id: challenge.id.toString(),
@@ -59,7 +59,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
         session.accessToken,
         router,
         () => {
-          setStatus(newStatus);
+          updateChallengeInState(updatedChallenge);
           handleClose();
 
           switch (newStatus) {
@@ -106,7 +106,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
         </div>
 
         <div className={styles.actions}>
-          {status === "pending" && (
+          {challenge.status === "pending" && (
             <>
               <Button
                 onClick={() => handleStatusUpdate("accepted")}
@@ -125,7 +125,7 @@ export function ChallengesCard({ challenge, onEdit }: ChallengeCardProps) {
             </>
           )}
 
-          {status === "accepted" && (
+          {challenge.status === "accepted" && (
             <>
               <Button
                 onClick={() => handleStatusUpdate("completed")}

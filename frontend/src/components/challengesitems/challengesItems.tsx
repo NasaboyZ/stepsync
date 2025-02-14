@@ -1,22 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useSession } from "next-auth/react";
-import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/interfaces/challenges";
 import { Modal, TextField, Typography, Tabs, Tab } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
 import { ChallengesCard } from "../challengersCard/challengesCard";
-
 import { challengesSchema } from "@/validations/challenges-shema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createChallenge, updateChallenge } from "@/services/servicesChallenge";
 import { useSnackbarStore } from "@/store/snackbarStore";
 import { Button, ButtonStyle } from "../button/Button";
+import { useChallenges } from "@/context/challenges-context-proivder";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -24,42 +22,29 @@ const emptyChallenge: CreateChallenge = {
 };
 
 export default function ChallengesItems() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    challenges,
+    loading,
+    error,
+    refreshChallenges,
+    updateChallengeInState,
+  } = useChallenges();
+
   const { data: session } = useSession();
   const router = useRouter();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newChallenge, setNewChallenge] = useState<Challenge | CreateChallenge>(
     emptyChallenge
   );
-
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
   }>({});
-
   const [selectedTab, setSelectedTab] = useState(0);
-
   const { showSnackbar } = useSnackbarStore();
 
   useEffect(() => {
-    const loadChallenges = async () => {
-      try {
-        if (!session?.accessToken) return;
-        const challengesData = await fetchChallenges(session.accessToken);
-        setChallenges(challengesData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Ein Fehler ist aufgetreten"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadChallenges();
-  }, [session]);
+    refreshChallenges();
+  }, [refreshChallenges]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -83,6 +68,7 @@ export default function ChallengesItems() {
       setValidationErrors({});
 
       if ("id" in newChallenge && newChallenge.id !== undefined) {
+        // Update existing challenge
         await updateChallenge(
           {
             id: newChallenge.id.toString(),
@@ -94,6 +80,7 @@ export default function ChallengesItems() {
           router,
           () => {
             setIsModalOpen(false);
+            updateChallengeInState(newChallenge as Challenge);
 
             if (newChallenge.status === "completed") {
               showSnackbar(
@@ -106,17 +93,10 @@ export default function ChallengesItems() {
                 "info"
               );
             }
-
-            const loadChallenges = async () => {
-              const challengesData = await fetchChallenges(
-                session.accessToken!
-              );
-              setChallenges(challengesData);
-            };
-            loadChallenges();
           }
         );
       } else {
+        // Create new challenge
         await createChallenge(
           {
             title: newChallenge.title,
@@ -128,14 +108,7 @@ export default function ChallengesItems() {
           () => {
             setIsModalOpen(false);
             showSnackbar("Neue Challenge erstellt! 🎯", "success");
-
-            const loadChallenges = async () => {
-              const challengesData = await fetchChallenges(
-                session.accessToken!
-              );
-              setChallenges(challengesData);
-            };
-            loadChallenges();
+            refreshChallenges(); // Refresh the list after creating new challenge
           }
         );
       }

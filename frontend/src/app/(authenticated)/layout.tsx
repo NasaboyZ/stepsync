@@ -5,6 +5,7 @@ import AuthenticatedNav from "@/layout/authenticatedNav/authenticatedNav";
 import styles from "./layout.module.css";
 import { useState } from "react";
 import { AvatarProvider } from "@/context/avatar-context-provider";
+import { ChallengesProvider } from "@/context/challenges-context-proivder";
 
 export default function AuthenticatedLayout({
   children,
@@ -21,12 +22,14 @@ export default function AuthenticatedLayout({
     <div className={styles.container}>
       <AuthenticatedNav isOpen={isOpen} onClose={handleClose} />
       <AvatarProvider>
-        <div className={styles.contentWrapper}>
-          <main className={styles.main}>
-            <AuthenticatedHeader />
-            {children}
-          </main>
-        </div>
+        <ChallengesProvider>
+          <div className={styles.contentWrapper}>
+            <main className={styles.main}>
+              <AuthenticatedHeader />
+              {children}
+            </main>
+          </div>
+        </ChallengesProvider>
       </AvatarProvider>
     </div>
   );
