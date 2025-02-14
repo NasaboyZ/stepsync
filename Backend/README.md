@@ -21,24 +21,23 @@ Dies ist das Backend für eine Fitness-Tracking-App, die es Benutzern ermöglich
 - SQLite (oder ein anderer unterstützter Datenbanktyp)
 - Composer
 
-### Schritte
+### Schritte zur Installation und Start
 
-1. **Repository klonen**:
+1. Installieren Sie alle erforderlichen Abhängigkeiten:
 
    ```bash
-   git clone https://github.com/dein-username/fitness-app-backend.git
-   cd fitness-app-backend
-
+   composer install
    ```
 
-2. **Composer install**:
+2. Erstellen Sie die Datenbank und führen Sie die Migrationen und Seeder aus:
 
-````bash
-composer install
-3. **Lets start**:
-php artisan serve
+   ```bash
+   npm run seed
+   ```
 
-4. **Starting Server**:
-```bash
-php artisan serve
-````
+3. Starten Sie den Entwicklungsserver:
+   ```bash
+   npm run serve
+   ```
+
+Die Anwendung sollte nun unter `http://localhost:8000` erreichbar sein.
