@@ -28,14 +28,14 @@ class Challenges extends Model
     {
         if ($request->has('status') && count($request->all()) === 1) {
             return $request->validate([
-                'status' => ['required', 'string', 'in:done,pending,pass']
+                'status' => ['required', 'string', 'in:done,pending,pass,accepted']
             ]);
         }
 
         return $request->validate([
             'title' => [$isPost ? 'required' : 'sometimes', 'string', 'max:255'],
             'description' => [$isPost ? 'required' : 'sometimes', 'string'],
-            'status' => [$isPost ? 'required' : 'sometimes', 'string', 'in:done,pending,pass'],
+            'status' => [$isPost ? 'required' : 'sometimes', 'string', 'in:done,pending,pass,accepted'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
         ]);

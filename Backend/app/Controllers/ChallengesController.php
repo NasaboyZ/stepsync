@@ -47,7 +47,7 @@ class ChallengesController
 
         if ($request->has('status') && count($request->all()) === 1) {
             $payload = $request->validate([
-                'status' => ['required', 'string', 'in:done,pending,pass']
+                'status' => ['required', 'string', 'in:done,pending,pass,accepted']
             ]);
 
             $challenge->update(['status' => $payload['status']]);
@@ -109,9 +109,12 @@ class ChallengesController
                 ->wherePivot('status', 'pass')
                 ->count(),
 
+            'accepted' => $user->challenges()
+                ->wherePivot('status', 'accepted')
+                ->count(),
+
             'total' => $user->challenges()->count(),
 
-            // Hier spezifizieren wir die Tabelle für created_at
             'new_challenges' => $user->challenges()
                 ->where('challenges.created_at', '>=', now()->subDays(7))
                 ->count()

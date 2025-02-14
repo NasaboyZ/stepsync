@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->enum('status', ['done', 'pending', 'pass'])->default('pending');
+            $table->string('status')->default('pending')->check("status in ('done', 'pending', 'pass', 'accepted')");
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->timestamps();
@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('challenge_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['done', 'pending', 'pass'])->default('pending');
+            $table->enum('status', ['done', 'pending', 'pass', 'accepted'])->default('pending');
             $table->timestamps();
         });
     }

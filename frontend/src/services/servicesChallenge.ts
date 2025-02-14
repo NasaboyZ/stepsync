@@ -14,7 +14,8 @@ export const createChallenge = async (
 
   const backendStatus =
     {
-      accepted: "pending",
+      pending: "pending",
+      accepted: "accepted",
       completed: "done",
       failed: "pass",
     }[challengeData.status as string] || "pending";
@@ -61,7 +62,8 @@ export const updateChallenge = async (
 
   const backendStatus =
     {
-      accepted: "pending",
+      pending: "pending",
+      accepted: "accepted",
       completed: "done",
       failed: "pass",
     }[challengeData.status as string] || "pending";

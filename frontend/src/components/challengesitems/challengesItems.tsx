@@ -166,7 +166,16 @@ export default function ChallengesItems() {
   };
 
   const getFilteredChallenges = () => {
-    return challenges.filter((challenge) => challenge.status === "pending");
+    switch (selectedTab) {
+      case 0: // Offene Challenges
+        return challenges.filter((challenge) => challenge.status === "pending");
+      case 1: // Laufende Challenges
+        return challenges.filter(
+          (challenge) => challenge.status === "accepted"
+        );
+      default:
+        return challenges;
+    }
   };
 
   if (loading) return <div>Lädt...</div>;
@@ -188,9 +197,15 @@ export default function ChallengesItems() {
           scrollButtons="auto"
         >
           <Tab
-            label="Alle Challenges"
+            label="Offene Challenges"
             className={`${styles.tab} ${
               selectedTab === 0 ? styles.selected : ""
+            }`}
+          />
+          <Tab
+            label="Laufende Challenges"
+            className={`${styles.tab} ${
+              selectedTab === 1 ? styles.selected : ""
             }`}
           />
         </Tabs>
@@ -205,15 +220,23 @@ export default function ChallengesItems() {
       </div>
 
       <div className={styles.challengesList}>
-        {getFilteredChallenges().map((challenge) => (
-          <div className={styles.challengeItem} key={challenge.id}>
-            <ChallengesCard
-              variant="primary"
-              challenge={challenge}
-              onEdit={() => handleEditChallenge(challenge)}
-            />
-          </div>
-        ))}
+        {getFilteredChallenges().length === 0 ? (
+          <Typography className={styles.noChallenge}>
+            {selectedTab === 0
+              ? "Keine offenen Challenges verfügbar"
+              : "Keine laufenden Challenges verfügbar"}
+          </Typography>
+        ) : (
+          getFilteredChallenges().map((challenge) => (
+            <div className={styles.challengeItem} key={challenge.id}>
+              <ChallengesCard
+                variant="primary"
+                challenge={challenge}
+                onEdit={() => handleEditChallenge(challenge)}
+              />
+            </div>
+          ))
+        )}
       </div>
 
       <AnimatePresence>
