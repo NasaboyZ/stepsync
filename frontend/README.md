@@ -1,37 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend-Projekt
+## Beschreibung
+Dies ist das Backend für eine Fitness-Tracking-App, die es Benutzern ermöglicht, verschiedene Fitness-Herausforderungen zu verfolgen, an diesen teilzunehmen und Fortschritte zu protokollieren. Benutzer können zufällige Herausforderungen erhalten, Herausforderungen annehmen oder ablehnen, und ihren Fortschritt als erledigt oder nicht erledigt markieren. Zudem können sie ihre Workouts protokollieren und ihren BMI überwachen.
 
-## Getting Started
+## Features
 
-First, run the development server:
+Challenges annehmen oder ablehnen: Benutzer können Herausforderungen annehmen, ablehnen oder als erledigt markieren.
+Workouts verfolgen: Benutzer können ihre Workouts und Fitnessaktivitäten protokollieren.
+BMI-Überwachung: Benutzer können ihren BMI überwachen, basierend auf ihren eingegebenen Körperdaten.
+Dashboard: Ein persönliches Dashboard für Benutzer, das Informationen wie abgeschlossene Challenges, Workouts und den BMI anzeigt.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Voraussetzungen
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js (Version 16 oder höher)
+- npm oder yarn
+- Git
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Repository klonen**
 
-## Learn More
+   ```sh
+   git clone https://github.com/NasaboyZ/stepsync.git
+   cd stepsync
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Umgebungsvariablen konfigurieren**
+   Erstellen oder öffnen Sie die Datei `.env.example` und passen Sie die Werte entsprechend an:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```ini
+   BACKEND_URL=<URL_Ihres_Backend-Servers>
+   AUTH_URL=<URL_Ihres_Auth-Servers>
+   NEXT_PUBLIC_BACKEND_URL=<Öffentliche_Backend-URL>
+   PUBLIC_GOOGLE_ANALYTICS_ID=<Google Analytics ID (optional)>
+   NEXTAUTH_URL=<URL Ihrer NextAuth-Anwendung>
+   NEXTAUTH_SECRET=<Ihr geheimer Schlüssel für NextAuth>
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Abhängigkeiten installieren**
 
-## Deploy on Vercel
+   ```sh
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Projekt starten**
+   ```sh
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# FrontendFallbackStepSync
+Das Projekt ist nun unter `http://localhost:3000` erreichbar (falls nicht anders konfiguriert).
