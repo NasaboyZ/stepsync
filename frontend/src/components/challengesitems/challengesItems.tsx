@@ -5,16 +5,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { fetchChallenges } from "@/utils/api";
 import { Challenge } from "@/types/interfaces/challenges";
-import {
-  Modal,
-  TextField,
-  Button,
-  Typography,
-  Grid,
-  Box,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Modal, TextField, Typography, Tabs, Tab } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./challengesItems.module.css";
 import { CreateChallenge } from "@/types/interfaces/challenges";
@@ -25,6 +16,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createChallenge, updateChallenge } from "@/services/servicesChallenge";
 import { useSnackbarStore } from "@/store/snackbarStore";
+import { Button, ButtonStyle } from "../button/Button";
 
 const emptyChallenge: CreateChallenge = {
   title: "",
@@ -56,7 +48,14 @@ export default function ChallengesItems() {
       try {
         if (!session?.accessToken) return;
         const challengesData = await fetchChallenges(session.accessToken);
-        setChallenges(Array.isArray(challengesData) ? challengesData : []);
+        const filteredChallenges = Array.isArray(challengesData)
+          ? challengesData.filter(
+              (challenge) =>
+                challenge.status === "pending" ||
+                challenge.status === "accepted"
+            )
+          : [];
+        setChallenges(filteredChallenges);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Ein Fehler ist aufgetreten"
@@ -119,9 +118,14 @@ export default function ChallengesItems() {
               const challengesData = await fetchChallenges(
                 session.accessToken!
               );
-              setChallenges(
-                Array.isArray(challengesData) ? challengesData : []
-              );
+              const filteredChallenges = Array.isArray(challengesData)
+                ? challengesData.filter(
+                    (challenge) =>
+                      challenge.status === "pending" ||
+                      challenge.status === "accepted"
+                  )
+                : [];
+              setChallenges(filteredChallenges);
             };
             loadChallenges();
           }
@@ -143,9 +147,14 @@ export default function ChallengesItems() {
               const challengesData = await fetchChallenges(
                 session.accessToken!
               );
-              setChallenges(
-                Array.isArray(challengesData) ? challengesData : []
-              );
+              const filteredChallenges = Array.isArray(challengesData)
+                ? challengesData.filter(
+                    (challenge) =>
+                      challenge.status === "pending" ||
+                      challenge.status === "accepted"
+                  )
+                : [];
+              setChallenges(filteredChallenges);
             };
             loadChallenges();
           }
@@ -181,24 +190,12 @@ export default function ChallengesItems() {
   if (error) return <div>Fehler: {error}</div>;
 
   return (
-    <>
-      <Typography
-        variant="h4"
-        component="h1"
-        className={styles.challengeHeader}
-      >
+    <div className={styles.container}>
+      <Typography component="h1" className={styles.challengeHeader}>
         Challenges
       </Typography>
 
-      <Box
-        className={styles.tabsContainer}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: { xs: "stretch", sm: "center" },
-          width: "100%",
-        }}
-      >
+      <div className={styles.tabsContainer}>
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
@@ -206,17 +203,6 @@ export default function ChallengesItems() {
           className={styles.tabs}
           variant="scrollable"
           scrollButtons="auto"
-          TabIndicatorProps={{
-            style: { backgroundColor: "#E31E24", height: "2px" },
-          }}
-          sx={{
-            minHeight: "35px",
-            "& .MuiTab-root": {
-              minHeight: "35px",
-              padding: "6px 16px",
-              fontSize: "14px",
-            },
-          }}
         >
           <Tab
             label="Heute"
@@ -227,51 +213,34 @@ export default function ChallengesItems() {
               minHeight: "35px",
             }}
           />
-          <Tab
-            label="Last 7 Days"
-            sx={{
-              color: selectedTab === 1 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 1 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
-          <Tab
-            label="Month"
-            sx={{
-              color: selectedTab === 2 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 2 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
+          {/* <Tab
+            label="Laufende Challenges"
+            className={`${styles.tab} ${
+              selectedTab === 1 ? styles.selected : ""
+            }`}
+          /> */}
         </Tabs>
 
-        <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+        <div className={styles.buttonContainer}>
           <Button
-            variant="contained"
+            label="Neue Challenge"
             onClick={handleOpenModal}
-            className={styles.newChallengeButton}
-            fullWidth={true}
-          >
-            Neue Challenge
-          </Button>
-        </Box>
-      </Box>
+            style={ButtonStyle.PRIMARY_DARK}
+          />
+        </div>
+      </div>
 
-      <Grid container spacing={2}>
-        {challenges
-          .filter((challenge) => challenge.status === "pending")
-          .map((challenge) => (
-            <Grid item xs={12} key={challenge.id}>
-              <ChallengesCard
-                variant="primary"
-                challenge={challenge}
-                onEdit={() => handleEditChallenge(challenge)}
-              />
-            </Grid>
-          ))}
-      </Grid>
+      <div className={styles.challengesList}>
+        {challenges.map((challenge) => (
+          <div className={styles.challengeItem} key={challenge.id}>
+            <ChallengesCard
+              variant="primary"
+              challenge={challenge}
+              onEdit={() => handleEditChallenge(challenge)}
+            />
+          </div>
+        ))}
+      </div>
 
       <AnimatePresence>
         {isModalOpen && (
@@ -318,17 +287,15 @@ export default function ChallengesItems() {
                   </div>
                 )}
                 <Button
-                  variant="contained"
-                  color="primary"
+                  label="Speichern"
+                  style={ButtonStyle.PRIMARY_DARK}
                   onClick={handleSaveChallenge}
-                >
-                  Speichern
-                </Button>
+                />
               </div>
             </motion.div>
           </Modal>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
