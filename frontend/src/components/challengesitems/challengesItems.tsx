@@ -186,6 +186,19 @@ export default function ChallengesItems() {
     setSelectedTab(newValue);
   };
 
+  const getFilteredChallenges = () => {
+    switch (selectedTab) {
+      case 0: // Heute
+        return challenges.filter((challenge) => challenge.status === "pending");
+      case 1: // Laufende Challenges
+        return challenges.filter(
+          (challenge) => challenge.status === "accepted"
+        );
+      default:
+        return challenges;
+    }
+  };
+
   if (loading) return <div>Lädt...</div>;
   if (error) return <div>Fehler: {error}</div>;
 
@@ -206,19 +219,24 @@ export default function ChallengesItems() {
         >
           <Tab
             label="Heute"
-            sx={{
-              color: selectedTab === 0 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 0 ? 600 : 400,
-              minHeight: "35px",
-            }}
+            className={`${styles.tab} ${
+              selectedTab === 0 ? styles.selected : ""
+            }`}
           />
+<<<<<<< HEAD
           {/* <Tab
+=======
+          <Tab
+>>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
             label="Laufende Challenges"
             className={`${styles.tab} ${
               selectedTab === 1 ? styles.selected : ""
             }`}
+<<<<<<< HEAD
           /> */}
+=======
+          />
+>>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
         </Tabs>
 
         <div className={styles.buttonContainer}>
@@ -231,7 +249,11 @@ export default function ChallengesItems() {
       </div>
 
       <div className={styles.challengesList}>
+<<<<<<< HEAD
         {challenges.map((challenge) => (
+=======
+        {getFilteredChallenges().map((challenge) => (
+>>>>>>> 02b31d525ec85765192efd8566bbc42b2ebc5bc0
           <div className={styles.challengeItem} key={challenge.id}>
             <ChallengesCard
               variant="primary"
