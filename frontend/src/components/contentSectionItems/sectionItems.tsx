@@ -3,7 +3,6 @@
 import Typography from "@/components/typography/typography";
 import useContentStore from "@/store/contentStore";
 import Style from "./sectionItems.module.css";
-import useHeroStore from "@/store/heroStore";
 import { Box, Card, CardMedia, CardContent } from "@mui/material";
 
 interface ContentSectionItemsProps {
@@ -16,7 +15,7 @@ export default function SectionItems({
   title,
 }: ContentSectionItemsProps) {
   const getContent = useContentStore((state) => state.getContent);
-  const heroText = useHeroStore((state) => state.heroText);
+
   const content = getContent(pageKey);
 
   if (!content)
@@ -30,11 +29,6 @@ export default function SectionItems({
 
   return (
     <section className={Style["content-section"]}>
-      {pageKey === "homePage" && (
-        <div className={Style["hero-text-section"]}>
-          <Typography variant="h2">{heroText}</Typography>
-        </div>
-      )}
       <Card className={Style.card}>
         <CardMedia
           component="img"
