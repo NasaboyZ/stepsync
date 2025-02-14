@@ -1,0 +1,19 @@
+.dashboardContainer {
+  margin: 16px 0;
+}
+
+.gridContainer {
+  display: grid;
+  gap: 16px;
+}
+
+.twoColumnGrid {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .twoColumnGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

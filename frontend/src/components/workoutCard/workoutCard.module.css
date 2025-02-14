@@ -1,11 +1,3 @@
-/* .workoutListItem {
-  margin: 1rem 0;
-  border-radius: 8px;
-  background: var(--brown-light);
-  transition: all 0.3s ease;
-  position: relative;
-} */
-
 .workoutInfo {
   background: var(--brown-light);
   border-radius: 8px;
@@ -13,7 +5,7 @@
   padding: 12px 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  position: relative;
 }
 
 .mainInfo {
@@ -31,8 +23,39 @@
 }
 
 .dateInfo {
-  margin: 0 16px;
   color: var(--white);
+  margin-left: auto;
+  padding: 0 16px;
+}
+
+/* Neue Struktur für die rechte Seite */
+.rightControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.checkbox.completed {
+  border-color: var(--green, #4caf50);
+  color: var(--green, #4caf50);
 }
 
 .actions {
@@ -42,57 +65,34 @@
 
 @media (max-width: 640px) {
   .workoutInfo {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    padding: 12px;
   }
 
   .mainInfo {
-    width: 100%;
+    flex: 1;
+    min-width: 0; /* Verhindert Überlauf */
   }
 
   .dateInfo {
-    margin: 4px 0;
-    font-size: 0.9rem;
+    padding: 0 8px;
   }
 
-  .actions {
-    align-self: flex-end;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-  }
-
-  .checkboxContainer {
-    position: absolute;
-    top: 70%;
-    right: 18px;
-    transform: translateY(-50%);
+  .rightControls {
+    gap: 4px;
   }
 }
 
 @media (max-width: 320px) {
-  .listCard {
-    margin: 0.2rem 0.5rem;
-    padding: 8px 12px;
+  .workoutInfo {
+    margin: 8px;
   }
 
-  .mainInfo .category {
-    font-size: 1rem;
-    margin-bottom: 2px;
+  .mainInfo {
+    font-size: 0.9rem;
   }
 
-  .mainInfo .details {
+  .dateInfo {
     font-size: 0.8rem;
-  }
-
-  .numberInputs {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .editForm {
-    gap: 8px;
   }
 }
 

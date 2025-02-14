@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Tabs, Tab, Typography, Button } from "@mui/material";
+import { Tabs, Tab, Typography, Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { WorkoutData } from "@/types/interfaces/workoutData";
 import { fetchWorkouts } from "@/utils/api";
@@ -19,19 +19,12 @@ import { WorkoutModal } from "../workoutModal/workoutModal";
 export default function WorkoutItems() {
   const { data: session } = useSession();
   const router = useRouter();
-
   const [savedWorkouts, setSavedWorkouts] = useState<WorkoutData[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(
-    null
-  );
-  const [modalType, setModalType] = useState<"krafttraining" | "cardio">(
-    "krafttraining"
-  );
+  const [editingWorkout, setEditingWorkout] = useState<WorkoutData | null>(null);
+  const [modalType, setModalType] = useState<"krafttraining" | "cardio">("krafttraining");
   const [selectedTab, setSelectedTab] = useState(0);
 
-  // Funktion zum Laden der Workouts
   const loadWorkouts = async () => {
     if (session?.accessToken) {
       const workoutsData = await fetchWorkouts(session.accessToken);
@@ -39,7 +32,6 @@ export default function WorkoutItems() {
     }
   };
 
-  // Workouts bei Session-Änderung laden
   useEffect(() => {
     const fetchData = async () => {
       const workoutsData = await fetchWorkouts(session?.accessToken ?? "");
@@ -65,12 +57,7 @@ export default function WorkoutItems() {
 
   const handleDelete = async (workoutId: number) => {
     try {
-      await deleteWorkout(
-        workoutId,
-        session?.accessToken ?? undefined,
-        router,
-        () => loadWorkouts() // onSuccess callback hinzugefügt
-      );
+      await deleteWorkout(workoutId, session?.accessToken ?? undefined, router, () => loadWorkouts());
     } catch (error) {
       console.error("Fehler beim Löschen des Workouts:", error);
     }
@@ -80,19 +67,9 @@ export default function WorkoutItems() {
     try {
       if (editingWorkout?.id) {
         const updatedWorkoutData = { ...workoutData, id: editingWorkout.id };
-        await updateWorkout(
-          updatedWorkoutData,
-          session?.accessToken ?? undefined,
-          router,
-          () => loadWorkouts() // onSuccess callback hinzugefügt
-        );
+        await updateWorkout(updatedWorkoutData, session?.accessToken ?? undefined, router, () => loadWorkouts());
       } else {
-        await createWorkout(
-          workoutData,
-          session?.accessToken ?? undefined,
-          router,
-          () => loadWorkouts() // onSuccess callback auch hier hinzugefügt
-        );
+        await createWorkout(workoutData, session?.accessToken ?? undefined, router, () => loadWorkouts());
       }
 
       setIsModalOpen(false);
@@ -106,17 +83,9 @@ export default function WorkoutItems() {
     setSelectedTab(newValue);
   };
 
-  const handleStatusChange = async (
-    workoutId: number,
-    isCompleted: boolean
-  ) => {
+  const handleStatusChange = async (workoutId: number, isCompleted: boolean) => {
     try {
-      await updateWorkoutStatus(
-        workoutId,
-        isCompleted,
-        session?.accessToken,
-        () => loadWorkouts()
-      );
+      await updateWorkoutStatus(workoutId, isCompleted, session?.accessToken, () => loadWorkouts());
     } catch (error) {
       console.error("Fehler beim Aktualisieren des Status:", error);
     }
@@ -125,30 +94,20 @@ export default function WorkoutItems() {
   const memoizedFilteredWorkouts = React.useMemo(() => {
     return savedWorkouts.filter((workout) => {
       if (selectedTab === 0) return !workout.is_completed;
-      if (selectedTab === 1)
-        return workout.category === "krafttraining" && !workout.is_completed;
-      if (selectedTab === 2)
-        return workout.category === "cardio" && !workout.is_completed;
+      if (selectedTab === 1) return workout.category === "krafttraining" && !workout.is_completed;
+      if (selectedTab === 2) return workout.category === "cardio" && !workout.is_completed;
       if (selectedTab === 3) return workout.is_completed;
       return true;
     });
   }, [savedWorkouts, selectedTab]);
 
   return (
-    <>
-      <Typography variant="h4" component="h1" className={styles.workoutHeader}>
+    <div className={styles.container}>
+      <Typography component="h1" className={styles.workoutHeader}>
         Workouts
       </Typography>
 
-      <Box
-        className={styles.tabsContainer}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: { xs: "stretch", sm: "center" },
-          width: "100%",
-        }}
-      >
+      <div className={styles.tabsContainer}>
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
@@ -156,72 +115,28 @@ export default function WorkoutItems() {
           className={styles.tabs}
           variant="scrollable"
           scrollButtons="auto"
-          TabIndicatorProps={{
-            style: { backgroundColor: "#E31E24", height: "2px" },
-          }}
-          sx={{
-            minHeight: "35px",
-            "& .MuiTab-root": {
-              minHeight: "35px",
-              padding: "6px 16px",
-              fontSize: "14px",
-            },
-          }}
         >
-          <Tab
-            label="Alle"
-            sx={{
-              color: selectedTab === 0 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 0 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
-          <Tab
-            label="Krafttraining"
-            sx={{
-              color: selectedTab === 1 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 1 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
-          <Tab
-            label="Cardio"
-            sx={{
-              color: selectedTab === 2 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 2 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
-          <Tab
-            label="Erledigt"
-            sx={{
-              color: selectedTab === 3 ? "#E31E24" : "#000",
-              textTransform: "none",
-              fontWeight: selectedTab === 3 ? 600 : 400,
-              minHeight: "35px",
-            }}
-          />
+          <Tab label="Alle" className={`${styles.tab} ${selectedTab === 0 ? styles.selected : ''}`} />
+          <Tab label="Krafttraining" className={`${styles.tab} ${selectedTab === 1 ? styles.selected : ''}`} />
+          <Tab label="Cardio" className={`${styles.tab} ${selectedTab === 2 ? styles.selected : ''}`} />
+          <Tab label="Erledigt" className={`${styles.tab} ${selectedTab === 3 ? styles.selected : ''}`} />
         </Tabs>
 
-        <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+        <div className={styles.buttonContainer}>
           <Button
             variant="contained"
             onClick={() => setIsModalOpen(true)}
             className={styles.newWorkoutButton}
-            fullWidth={true}
           >
             Neues Workout
           </Button>
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      <Grid container spacing={2}>
+      <div className={styles.workoutList}>
         {memoizedFilteredWorkouts && memoizedFilteredWorkouts.length > 0 ? (
           memoizedFilteredWorkouts.map((workout, index) => (
-            <Grid item xs={12} key={`${workout.id}-${index}`}>
+            <div className={styles.workoutItem} key={`${workout.id}-${index}`}>
               <WorkoutCard
                 variant="primary"
                 initialData={workout}
@@ -231,14 +146,14 @@ export default function WorkoutItems() {
                   workout.id && handleStatusChange(workout.id, isCompleted)
                 }
               />
-            </Grid>
+            </div>
           ))
         ) : (
-          <Grid item xs={12}>
+          <div className={styles.noWorkouts}>
             <p>Keine Workouts gefunden</p>
-          </Grid>
+          </div>
         )}
-      </Grid>
+      </div>
 
       <WorkoutModal
         isOpen={isModalOpen}
@@ -247,6 +162,6 @@ export default function WorkoutItems() {
         editingWorkout={editingWorkout}
         modalType={modalType}
       />
-    </>
+    </div>
   );
 }

@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-  Button,
-  Box,
-} from "@mui/material";
+import { Typography, IconButton, Menu, MenuItem, Button } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
 import { WorkoutCardProps, WorkoutData } from "@/types/interfaces/workoutData";
@@ -200,42 +193,33 @@ export function WorkoutCard({
         )}
       </div>
 
-      <div className={styles.checkboxContainer} onClick={handleToggleComplete}>
-        <Box
-          sx={{
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            border: "2px solid",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: isCompleted ? "var(--green, #4CAF50)" : "#fff",
-            borderColor: isCompleted ? "var(--green, #4CAF50)" : "#fff",
-            backgroundColor: "transparent",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
-              borderColor: isCompleted ? "var(--green, #4CAF50)" : "#e0e0e0",
-            },
-          }}
+      <div className={styles.rightControls}>
+        <div
+          className={styles.checkboxContainer}
+          onClick={handleToggleComplete}
         >
-          ✓
-        </Box>
-      </div>
+          <div
+            className={`${styles.checkbox} ${
+              isCompleted ? styles.completed : ""
+            }`}
+          >
+            ✓
+          </div>
+        </div>
 
-      <div className={styles.actions}>
-        <IconButton onClick={handleClick}>
-          <MoreVert />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleEdit}>Bearbeiten</MenuItem>
-          <MenuItem onClick={handleDelete}>Löschen</MenuItem>
-        </Menu>
+        <div className={styles.actions}>
+          <IconButton onClick={handleClick}>
+            <MoreVert />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleEdit}>Bearbeiten</MenuItem>
+            <MenuItem onClick={handleDelete}>Löschen</MenuItem>
+          </Menu>
+        </div>
       </div>
     </div>
   );
