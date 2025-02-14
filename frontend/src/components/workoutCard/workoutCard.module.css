@@ -28,7 +28,9 @@
   padding: 0 16px;
 }
 
-/* Neue Struktur für die rechte Seite */
+.repsInput {
+  margin-bottom: 1rem;
+}
 .rightControls {
   display: flex;
   align-items: center;

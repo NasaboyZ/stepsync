@@ -1,7 +1,6 @@
 import {
   Modal,
   Box,
-  Button,
   Select,
   MenuItem,
   InputLabel,
@@ -12,6 +11,7 @@ import { WorkoutData } from "@/types/interfaces/workoutData";
 import styles from "./workoutModal.module.css";
 import { useState, useEffect } from "react";
 import { CustomTextField } from "../ui/customTextField";
+import { Button, ButtonStyle } from "../button/Button";
 
 type DistanceUnit = "meter" | "kilometer";
 
@@ -288,13 +288,10 @@ export const WorkoutModal = ({
               sx={{ mt: 2, mb: 2 }}
             />
             <Button
-              variant="contained"
+              label="Speichern"
               onClick={handleCardioSave}
-              className={styles.saveButton}
-              fullWidth
-            >
-              Speichern
-            </Button>
+              style={ButtonStyle.PRIMARY_DARK}
+            />
           </div>
         )}
       </Box>

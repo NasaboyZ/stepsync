@@ -97,7 +97,6 @@ export default function ChallengesItems() {
           }
         );
       } else {
-    
         await createChallenge(
           {
             title: newChallenge.title,

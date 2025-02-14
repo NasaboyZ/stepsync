@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Typography, IconButton, Menu, MenuItem, Button } from "@mui/material";
+import { Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import styles from "./workoutCard.module.css";
 import { WorkoutCardProps, WorkoutData } from "@/types/interfaces/workoutData";
 import { CustomTextField } from "../ui/customTextField";
+import { Button, ButtonStyle } from "../button/Button";
 
 const formatDistanceUnit = (unit: string | null | undefined): string => {
   if (!unit) return "";
@@ -155,15 +156,10 @@ export function WorkoutCard({
           </div>
 
           <Button
-            variant="contained"
-            color="primary"
+            label="Speichern"
+            style={ButtonStyle.PRIMARY_DARK}
             onClick={handleSave}
-            fullWidth
-            className={styles.saveButton}
-            sx={{ mt: 2 }}
-          >
-            Speichern
-          </Button>
+          />
         </div>
       </div>
     );
