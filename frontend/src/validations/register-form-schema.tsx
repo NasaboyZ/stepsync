@@ -17,7 +17,9 @@ const baseStep1Schema = z.object({
       /[@$!%*#?&_-]/,
       "Passwort muss mindestens ein Sonderzeichen enthalten"
     ),
-  password_confirm: z.string(),
+  password_confirm: z
+    .string()
+    .min(8, "Passwort muss mindestens 8 Zeichen lang sein"),
 });
 
 export const step1Schema = baseStep1Schema.refine(

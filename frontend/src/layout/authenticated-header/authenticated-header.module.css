@@ -1,6 +1,6 @@
 .appBar {
   background-color: #837c6ad6;
-  position: sticky !important;
+  position: sticky;
   top: 0;
   z-index: 1000;
   margin-bottom: 24px;
@@ -26,13 +26,6 @@
   align-items: center;
   margin-left: auto;
   gap: 8px;
-}
-
-.separator {
-  width: 2px;
-  height: 29px;
-  background-color: #121010;
-  margin: 0 8px;
 }
 
 .avatar {

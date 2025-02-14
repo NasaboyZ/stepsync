@@ -103,7 +103,7 @@ export default function AuthenticatedHeader() {
             {getTitle()}
           </Typography>
           <Box className={styles.userSection}>
-            <span className={styles.separator}></span>
+           
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box display="flex" alignItems="center">
                 <Avatar
