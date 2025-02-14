@@ -8,11 +8,7 @@ import {
   type UseFormWatch,
 } from "react-hook-form";
 import styles from "../register.module.css";
-import { DateField } from "@mui/x-date-pickers/DateField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import "dayjs/locale/de";
+import { TextField } from "@mui/material";
 
 interface Step2Props {
   form: {
@@ -71,30 +67,22 @@ export const Step2 = ({
         <Typography variant="body1" sx={{ mb: 1 }}>
           Geburtsdatum
         </Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
-          <DateField
-            value={
-              watch("date_of_birth") ? dayjs(watch("date_of_birth")) : null
-            }
-            onChange={(newValue) => {
-              if (newValue && newValue.isValid()) {
-                setValue("date_of_birth", newValue.format("YYYY-MM-DD"), {
-                  shouldValidate: true,
-                });
-              } else {
-                setValue("date_of_birth", "", { shouldValidate: true });
-              }
-            }}
-            slotProps={{
-              textField: {
-                error: !!errors.date_of_birth,
-                helperText: errors.date_of_birth?.message,
-                fullWidth: true,
-                className: styles.dateField,
-              },
-            }}
-          />
-        </LocalizationProvider>
+        <TextField
+          type="date"
+          value={watch("date_of_birth") || ""}
+          onChange={(e) => {
+            setValue("date_of_birth", e.target.value, {
+              shouldValidate: true,
+            });
+          }}
+          error={!!errors.date_of_birth}
+          helperText={errors.date_of_birth?.message}
+          fullWidth
+          className={styles.dateField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
       </Box>
     </Box>
   );
