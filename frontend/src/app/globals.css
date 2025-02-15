@@ -4,6 +4,7 @@
   --brown-light: #837c6a;
   --grey: #d9d9d9;
   --red: #e03e29;
+  --fehlermeldung-rot: #ad1d1d;
   --green: #04d820;
   --lieniargradiant: var(
     --fade-red,
@@ -51,8 +52,6 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-
 
 h1 {
   color: var(--white);

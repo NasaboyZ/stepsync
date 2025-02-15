@@ -15,6 +15,9 @@
   font-size: 1rem;
   transition: color 0.3s ease;
 }
+.logo {
+  width: 5rem;
+}
 
 .navigationItem:after {
   content: "";

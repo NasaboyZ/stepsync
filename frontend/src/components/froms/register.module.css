@@ -48,7 +48,16 @@
   color: white;
 }
 
-/* Step 2 Styles */
+.textField :global(.MuiFormHelperText-root) {
+  color: var(--fehlermeldung-rot);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.textField :global(.Mui-error) .MuiOutlinedInput-notchedOutline {
+  border-color: var(--fehlermeldung-rot);
+}
+
 .genderButtonContainer {
   display: flex;
   gap: 1rem;
@@ -88,7 +97,6 @@
   border-color: var(--brown-light);
 }
 
-/* Step 3 Styles */
 .slider {
   color: var(--brown-light);
 }

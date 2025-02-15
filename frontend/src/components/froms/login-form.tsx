@@ -14,6 +14,7 @@ import { Box, Typography, Container, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "./login-form.module.css";
 import { CustomTextField } from "@/components/ui/customTextField";
+import Link from "next/link";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -181,7 +182,8 @@ export const LoginForm = () => {
                 className={styles["login-links"]}
               >
                 <Typography variant="body2">
-                  Noch kein Konto? <a href="/registration">Hier registrieren</a>
+                  Noch kein Konto?
+                  <Link href="/registration">Hier registrieren</Link>
                 </Typography>
               </motion.div>
             </Box>
