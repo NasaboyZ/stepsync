@@ -17,12 +17,7 @@
   --h1-font-size: clamp(30px, 5vw, 60px);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
+
 
 html,
 body {

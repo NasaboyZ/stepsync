@@ -54,6 +54,10 @@ const WorkoutChart: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  {/* 
+     returns:  useEffect-Hook zum Laden der Workout-Statistiken.
+      - Kein direkter Rückgabewert, aktualisiert jedoch den `chartData`-State mit den geladenen Statistiken.
+  */}
   useEffect(() => {
     const loadStatistics = async () => {
       try {

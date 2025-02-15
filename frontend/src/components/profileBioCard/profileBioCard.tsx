@@ -132,3 +132,4 @@ export default function ProfileBioCard() {
     </motion.div>
   );
 }
+// TODO: Grid entferne und ins css machen 

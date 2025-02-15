@@ -71,6 +71,11 @@ export function WorkoutCard({
     }
   };
 
+  {/* 
+      returns:
+     - Kein Rückgabewert, löst aber die Speicherung des Workouts aus.  
+  */}
+
   const handleSave = () => {
     if (typeof onSave === "function" && initialData) {
       const workoutData: WorkoutData = {
@@ -87,6 +92,10 @@ export function WorkoutCard({
     }
   };
 
+  {/* 
+   returns:
+  - Kein Rückgabewert, aktualisiert jedoch den Status des Workouts.
+  */}
   const handleToggleComplete = async () => {
     try {
       if (initialData.id && onStatusChange) {
@@ -99,7 +108,11 @@ export function WorkoutCard({
     }
   };
 
-  // Formatierte Details für die Anzeige
+  {/*   
+    returns:
+    - Eine formatierte Zeichenkette mit relevanten Workout-Details, abhängig von der Workout-Kategorie.
+  */}
+
   const getWorkoutDetails = () => {
     if (initialData.category === "cardio") {
       const distanceUnit = formatDistanceUnit(initialData.distance_unit);

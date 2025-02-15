@@ -36,6 +36,17 @@
   color: var(--brown-dark);
   font-weight: 600;
 }
+.labeltextfield :global(.MuiFormLabel-root) {
+  color: white;
+}
+
+.labeltextfield :global(.MuiInputBase-input) {
+  color: white;
+}
+
+.labeltextfield :global(.MuiFormLabel-root.Mui-focused) {
+  color: white;
+}
 
 .tabs :global(.MuiTabs-indicator) {
   background-color: var(--red);
@@ -92,8 +103,6 @@
     margin: 10px;
   }
 }
-
-
 
 .modalContent h2 {
   color: black;

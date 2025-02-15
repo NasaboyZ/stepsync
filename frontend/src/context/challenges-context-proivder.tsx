@@ -1,4 +1,3 @@
-// challengesContext.tsx
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Challenge } from '@/types/interfaces/challenges';
 import { fetchChallenges } from '@/utils/api';

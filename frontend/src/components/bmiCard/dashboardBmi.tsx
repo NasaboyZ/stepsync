@@ -37,6 +37,13 @@ export default function DashboardBmi() {
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
 
+  {
+    /*
+     returns:
+      - Setzt `bmiHistory` mit den geladenen und sortierten Daten.
+      - Falls ein Fehler auftritt, wird dieser im `error`-State gespeichert und `loading` deaktiviert.
+    */
+  }
   useEffect(() => {
     async function fetchData() {
       if (session?.accessToken) {

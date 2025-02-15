@@ -12,9 +12,12 @@ import styles from "./dashboarditems.module.css";
   */
 }
 
-const DashboardBmi = dynamic(() => import("../bmiCard/dashboardBmi"), {
-  ssr: false,
-});
+const DashboardBmi = dynamic(
+  () => import("@/components/bmiCard/dashboardBmi"),
+  {
+    ssr: false,
+  }
+);
 const ProfileBioCard = dynamic(
   () => import("../profileBioCard/profileBioCard"),
   {

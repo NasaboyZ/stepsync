@@ -69,7 +69,6 @@ export default function ChallengesItems() {
       setValidationErrors({});
 
       if ("id" in newChallenge && newChallenge.id !== undefined) {
-        // Update existing challenge
         await updateChallenge(
           {
             id: newChallenge.id.toString(),
@@ -140,9 +139,9 @@ export default function ChallengesItems() {
 
   const getFilteredChallenges = () => {
     switch (selectedTab) {
-      case 0: // Offene Challenges
+      case 0:
         return challenges.filter((challenge) => challenge.status === "pending");
-      case 1: // Laufende Challenges
+      case 1:
         return challenges.filter(
           (challenge) => challenge.status === "accepted"
         );
@@ -248,10 +247,17 @@ export default function ChallengesItems() {
                   onChange={(e) => handleInputChange("title", e.target.value)}
                   margin="normal"
                   error={!!validationErrors.title}
-                  InputLabelProps={{
-                    style: { color: "white" },
-                  }}
+                  className={styles.labeltextfield}
                   sx={{
+                    "& .MuiFormLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiFormLabel-root.Mui-focused": {
+                      color: "white",
+                    },
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
                         borderColor: "white",
@@ -279,9 +285,7 @@ export default function ChallengesItems() {
                   }
                   margin="normal"
                   error={!!validationErrors.description}
-                  InputLabelProps={{
-                    style: { color: "white" },
-                  }}
+                  className={styles.labeltextfield}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {

@@ -2,13 +2,13 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  // get the token from the request ehader (JWT from cookies via NextAuth)
+
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
-  // get the current request pathname
+  
   const { pathname } = req.nextUrl;
 
-  // 2. if there is a token, and we are on the session page, redirect to the dashboard page
+  
   if (pathname === "/login" && token) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/dashboard";
@@ -28,11 +28,9 @@ export async function middleware(req: NextRequest) {
 
   //TODO: Addd workout page and challenge page
 
-  // 5. continue with the request, if no other condition is met
   return NextResponse.next();
 }
 
-// Configuration to match all paths except API routes, static files, images, etc.
 export const config = {
   matcher: [
     /*

@@ -23,7 +23,7 @@
   flex-wrap: wrap;
 }
 
-/* Media Queries für verschiedene Bildschirmgrößen */
+
 @media (max-width: 640px) {
   .chartContainer {
     height: 280px;

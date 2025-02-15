@@ -57,7 +57,7 @@ export const Step2 = ({
         Lass uns deine Erfahrung besser machen. Erzähl uns mehr über dich.
       </Typography>
 
-      {/* Gender Selection */}
+   
       <Box className={styles.genderButtonContainer}>
         {[
           { id: "female", label: "Weiblich" },

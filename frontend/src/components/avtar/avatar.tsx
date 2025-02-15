@@ -25,10 +25,18 @@ const VisuallyHiddenInput = styled("input")`
 `;
 
 export function Avatar() {
-  const { avatarUrl, setAvatarUrl } = useAvatar(); // Use the context instead of local state
+  const { avatarUrl, setAvatarUrl } = useAvatar();
   const { data: session } = useSession();
   const router = useRouter();
 
+  {
+    /*
+      returns: Lädt das Benutzeravatar-Bild, falls eine aktive Session mit einem accessToken vorhanden ist.
+      - Wenn ein accessToken existiert, ruft die Funktion `fetchUserAvatar` die Avatar-URL vom Server ab.
+      - Falls erfolgreich, wird die `avatarUrl` mit dem Pfad des Avatars aktualisiert.
+      - Falls ein Fehler auftritt, wird dieser in der Konsole ausgegeben, und die Funktion gibt `null` zurück.
+    */
+  }
   useEffect(() => {
     const loadAvatar = async () => {
       try {
@@ -45,6 +53,13 @@ export function Avatar() {
     loadAvatar();
   }, [session, setAvatarUrl]);
 
+  {
+    /*
+     returns:
+      - Aktualisiert die `avatarUrl`, wenn der Upload erfolgreich ist.
+      - Gibt eine Fehlermeldung in der Konsole aus, falls ein Fehler auftritt.
+    */
+  }
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -70,6 +85,13 @@ export function Avatar() {
     }
   };
 
+  {
+    /*
+    returns:
+    - Setzt `avatarUrl` auf `undefined`, wenn das Löschen erfolgreich war.
+    - Gibt eine Fehlermeldung in der Konsole aus, falls ein Fehler auftritt.
+    */
+  }
   const handleDeleteAvatar = async () => {
     if (session?.accessToken) {
       try {

@@ -32,14 +32,14 @@
   width: 100%;
 }
 
-/* Gemeinsame Styles für Steps */
+
 .stepContainer {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* Step 1 Styles */
+
 .textField {
   background-color: var(--brown-light);
 }

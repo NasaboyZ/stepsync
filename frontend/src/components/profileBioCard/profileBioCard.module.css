@@ -70,7 +70,7 @@
 }
 
 .editButton {
-  background-color: var(--white) !important;
-  color: var(--font-dark) !important;
-  text-transform: none !important;
+  background-color: var(--white);
+  color: var(--font-dark);
+  text-transform: none;
 }

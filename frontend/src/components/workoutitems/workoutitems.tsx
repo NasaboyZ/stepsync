@@ -38,6 +38,10 @@ export default function WorkoutItems() {
     }
   };
 
+  {/* 
+   returns:
+    - Hält die gespeicherten Workouts aktuell, wenn sich die Benutzersitzung ändert.
+  */}
   useEffect(() => {
     const fetchData = async () => {
       const workoutsData = await fetchWorkouts(session?.accessToken ?? "");

@@ -5,10 +5,10 @@ import { JWT } from "next-auth/jwt";
 export const authConfig: AuthOptions = {
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt" as SessionStrategy, // using JWT as session strategy / management
+    strategy: "jwt" as SessionStrategy, 
   },
   pages: {
-    signIn: "/auth/sign-in", // custom sign-in page
+    signIn: "/auth/sign-in", 
   },
   providers: [
     CredentialsProvider({
