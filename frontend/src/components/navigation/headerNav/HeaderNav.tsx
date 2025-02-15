@@ -17,7 +17,7 @@ export default function HeaderNav({ items }: NavigationItemProps) {
         <NavigationItem items={items} />
       </div>
       <div className={Style["loginButton"]}>
-        {status === "unauthenticated" ? (
+        {status === "loading" ? null : status === "unauthenticated" ? (
           <Button label="Anmelden" style={ButtonStyle.PRIMARY} href="/login" />
         ) : (
           <Button
