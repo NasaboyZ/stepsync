@@ -93,6 +93,8 @@
   }
 }
 
+
+
 .modalContent h2 {
   color: black;
 }
@@ -124,5 +126,22 @@
 @media (min-width: 600px) {
   .newChallengeButtonContainer {
     width: auto;
+  }
+}
+
+.textField {
+  & label {
+    color: white;
+  }
+  & .MuiOutlinedInput-root {
+    & fieldset {
+      border-color: white;
+    }
+    &:hover fieldset {
+      border-color: white;
+    }
+    &.Mui-focused fieldset {
+      border-color: white;
+    }
   }
 }

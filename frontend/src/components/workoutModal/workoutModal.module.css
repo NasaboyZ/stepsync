@@ -53,3 +53,66 @@
     min-width: 120px;
   }
 }
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background-color: var(--brown-light);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 90%;
+  width: 500px;
+}
+
+.formControl {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.select {
+  color: white;
+}
+
+.select fieldset {
+  border-color: white;
+}
+
+.select:hover fieldset {
+  border-color: white;
+}
+
+.select .Mui-focused fieldset {
+  border-color: white;
+}
+
+.menuPaper {
+  background-color: var(--brown-light);
+}
+
+.menuItem {
+  color: white;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menuItem.Mui-selected {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menuItem.Mui-selected:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.inputLabel {
+  color: white;
+}
+
+.textField {
+  margin-bottom: 16px;
+}

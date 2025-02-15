@@ -19,7 +19,13 @@ const baseStep1Schema = z.object({
     ),
   password_confirm: z
     .string()
-    .min(8, "Passwort muss mindestens 8 Zeichen lang sein"),
+    .min(8, "Passwort muss mindestens 8 Zeichen lang sein")
+    .regex(/[a-z]/, "Passwort muss mindestens einen Kleinbuchstaben enthalten")
+    .regex(/[0-9]/, "Passwort muss mindestens eine Ziffer enthalten")
+    .regex(
+      /[@$!%*#?&_-]/,
+      "Passwort muss mindestens ein Sonderzeichen enthalten"
+    ),
 });
 
 export const step1Schema = baseStep1Schema.refine(
@@ -37,13 +43,7 @@ export const step2Schema = z.object({
       message: "Bitte wählen Sie ein Geschlecht aus",
     }),
   date_of_birth: z.string().min(1, "Bitte geben Sie Ihr Geburtsdatum ein"),
-  // .refine((val) => {
-  //   const date = new Date(val);
-  //   const today = new Date();
-  //   const minDate = new Date();
-  //   minDate.setFullYear(today.getFullYear() - 100);
-  //   return date <= today && date >= minDate;
-  // }, "Das Geburtsdatum darf nicht in der Zukunft liegen und muss realistisch sein"),
+ 
 });
 
 export const step3Schema = z.object({

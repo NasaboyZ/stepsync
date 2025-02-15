@@ -108,65 +108,24 @@ export const WorkoutModal = ({
       open={isOpen}
       onClose={onClose}
       aria-labelledby="workout-modal"
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={styles.modal}
     >
-      <Box
-        sx={{
-          backgroundColor: "var(--brown-light)",
-          borderRadius: "8px",
-          padding: "24px",
-          maxWidth: "90%",
-          width: "500px",
-        }}
-      >
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel sx={{ color: "white" }}>Trainingsart</InputLabel>
+      <Box className={styles.modalContent}>
+        <FormControl className={styles.formControl}>
+          <InputLabel className={styles.inputLabel}>Trainingsart</InputLabel>
           <Select
             value={selectedType}
             label="Trainingsart"
             onChange={(e) =>
               handleTypeChange(e.target.value as "krafttraining" | "cardio")
             }
+            className={styles.select}
             MenuProps={{
               PaperProps: {
-                sx: {
-                  backgroundColor: "var(--brown-light)",
-                  "& .MuiMenuItem-root": {
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    },
-                    "&.Mui-selected": {
-                      backgroundColor: "rgba(255, 255, 255, 0.2)",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
-                      },
-                    },
-                  },
-                },
+                className: styles.menuPaper,
               },
-            }}
-            sx={{
-              "& fieldset": {
-                borderColor: "white",
-              },
-              "&:hover fieldset": {
-                borderColor: "white ",
-              },
-              "& .Mui-focused fieldset": {
-                borderColor: "white ",
-              },
-              "& .MuiInputLabel-root": {
-                color: "white",
-              },
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
+              classes: {
+                root: styles.menuItem,
               },
             }}
           >
@@ -202,8 +161,7 @@ export const WorkoutModal = ({
               onChange={(e) =>
                 setCardioData((prev) => ({ ...prev, title: e.target.value }))
               }
-              className={styles.inputField}
-              sx={{ mb: 2 }}
+              className={`${styles.inputField} ${styles.textField}`}
             />
             <CustomTextField
               fullWidth
@@ -217,8 +175,7 @@ export const WorkoutModal = ({
               }
               multiline
               rows={3}
-              className={styles.inputField}
-              sx={{ mb: 2 }}
+              className={`${styles.inputField} ${styles.textField}`}
             />
             <div className={styles.distanceContainer}>
               <CustomTextField
@@ -231,10 +188,13 @@ export const WorkoutModal = ({
                     distance: Number(e.target.value),
                   }))
                 }
-                className={styles.distanceInput}
+                className={`${styles.distanceInput} ${styles.textField}`}
               />
               <FormControl className={styles.unitSelect}>
-                <InputLabel id="distance-unit-label" sx={{ color: "white" }}>
+                <InputLabel
+                  id="distance-unit-label"
+                  className={styles.inputLabel}
+                >
                   Einheit
                 </InputLabel>
                 <Select
@@ -247,6 +207,7 @@ export const WorkoutModal = ({
                       distanceUnit: e.target.value as DistanceUnit,
                     }))
                   }
+                  className={styles.select}
                   sx={{
                     "& .MuiInputLabel-root": {
                       color: "white",
@@ -284,8 +245,7 @@ export const WorkoutModal = ({
                   repetitions: Number(e.target.value),
                 }))
               }
-              className={styles.inputField}
-              sx={{ mt: 2, mb: 2 }}
+              className={`${styles.inputField} ${styles.textField}`}
             />
             <Button
               label="Speichern"

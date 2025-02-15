@@ -248,6 +248,22 @@ export default function ChallengesItems() {
                   onChange={(e) => handleInputChange("title", e.target.value)}
                   margin="normal"
                   error={!!validationErrors.title}
+                  InputLabelProps={{
+                    style: { color: "white" },
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                  }}
                 />
                 {validationErrors.title && (
                   <div className={styles.errorMessage}>
@@ -263,6 +279,22 @@ export default function ChallengesItems() {
                   }
                   margin="normal"
                   error={!!validationErrors.description}
+                  InputLabelProps={{
+                    style: { color: "white" },
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                  }}
                 />
                 {validationErrors.description && (
                   <div className={styles.errorMessage}>
