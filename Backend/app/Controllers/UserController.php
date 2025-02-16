@@ -55,25 +55,13 @@ class UserController
     $payload = User::validate($request);
     $user = User::create($payload);
 
-
     $bmi = new BMI();
     $bmi->height = $payload['height'];
     $bmi->weight = $payload['weight'];
     $bmi->user_id = $user->id;
     $bmi->save();
 
-
     $challengesController = new ChallengesController();
-
-
-    $token = Str::random(64);
-    $user->verification_token = $token;
-    $user->save();
-
-    Mail::raw(
-      'Please verify your email using this token: ' . $token,
-      fn($mail) => $mail->to($user->email)->subject('Email Verification')
-    );
 
     return response()->json([
       'message' => 'User created successfully',
@@ -142,10 +130,6 @@ class UserController
       return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    if (is_null($user->email_verified_at)) {
-      return response()->json(['message' => 'Please verify your email address'], 403);
-    }
-
     $token = $user->createToken('auth_token')->plainTextToken;
 
     $avatarPath = null;
@@ -178,69 +162,5 @@ class UserController
     }
 
     return response()->json(['message' => 'Username is available'], 200);
-  }
-
-  public function forgotPassword(Request $request)
-  {
-    $request->validate([
-      'email' => 'required|email|exists:users',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-    $token = Str::random(64);
-
-    DB::table('password_reset_tokens')->where('email', $request->email)->delete();
-    DB::table('password_reset_tokens')->insert([
-      'email' => $request->email,
-      'token' => $token,
-      'created_at' => now()
-    ]);
-
-    // E-Mail mit Reset-Link senden
-    Mail::raw(
-      'Klicken Sie hier, um Ihr Passwort zurückzusetzen: ' .
-        config('app.frontend_url') . '/reset-password?token=' . $token,
-      fn($mail) => $mail->to($request->email)->subject('Password Reset')
-    );
-
-    return response()->json(['message' => 'Password reset link sent']);
-  }
-
-  public function resetPassword(Request $request)
-  {
-    $request->validate([
-      'token' => 'required',
-      'email' => 'required|email',
-      'password' => [
-        'required',
-        'min:8',
-        'regex:/[a-z]/',
-        'regex:/[A-Z]/',
-        'regex:/[0-9]/',
-        'regex:/[@$!%*#?&]/',
-        'not_regex:/\s/'
-      ],
-    ]);
-
-    $resetRecord = DB::table('password_reset_tokens')
-      ->where('email', $request->email)
-      ->where('token', $request->token)
-      ->first();
-
-    if (!$resetRecord) {
-      return response()->json(['message' => 'Invalid token'], 400);
-    }
-
-    if (now()->diffInMinutes($resetRecord->created_at) > config('auth.passwords.timeout', 60)) {
-      return response()->json(['message' => 'Token expired'], 400);
-    }
-
-    $user = User::where('email', $request->email)->first();
-    $user->password = $request->password;
-    $user->save();
-
-    DB::table('password_reset_tokens')->where('email', $request->email)->delete();
-
-    return response()->json(['message' => 'Password has been reset']);
   }
 }

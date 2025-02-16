@@ -135,7 +135,7 @@ export function Avatar() {
         )}
       </div>
       <Typography variant="caption" color="white" style={{ marginTop: "4px" }}>
-        Erlaubte Formate: PNG, JPEG, WEBP
+        Erlaubte Formate: PNG, JPEG, JPG, WEBP
       </Typography>
     </div>
   );

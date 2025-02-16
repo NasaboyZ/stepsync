@@ -10,22 +10,21 @@ use Illuminate\Support\Facades\DB;
 class WorkoutsController
 {
 
-  // Gibt alle Workouts des angemeldeten Benutzers zurück
+
   function index(Request $request)
   {
     return \Auth::user()->workouts()->get();
   }
 
-  // Erstellt ein neues Workout für den angemeldeten Benutzer
   function create(Request $request)
   {
     $payload = Workout::validate($request);
 
-    // Füge automatisch is_completed = false hinzu
+
     $payload['is_completed'] = false;
     $payload['completed_at'] = null;
 
-    // Erstelle das Workout und verknüpfe es automatisch mit dem User
+   
     $workout = \Auth::user()->workouts()->create($payload);
 
     return $workout;
@@ -49,7 +48,7 @@ class WorkoutsController
     $payload = $request->validate($rules);
     $workout = \Auth::user()->workouts()->findOrFail($request->input('id'));
 
-    // Wenn sich die Kategorie ändert, setze die nicht mehr relevanten Felder auf NULL
+
     if (isset($payload['category']) && $payload['category'] !== $workout->category) {
       if ($payload['category'] === 'cardio') {
         $payload['weight'] = null;
@@ -59,7 +58,7 @@ class WorkoutsController
       }
     }
 
-    // Setze completed_at basierend auf is_completed
+
     if (isset($payload['is_completed'])) {
       $payload['completed_at'] = $payload['is_completed'] ? now() : null;
     }
@@ -68,7 +67,7 @@ class WorkoutsController
     return $workout;
   }
 
-  // Löscht ein Workout
+
   function destroy(Request $request)
   {
     $workout = \Auth::user()->workouts()->findOrFail($request->input("id"));
@@ -76,7 +75,7 @@ class WorkoutsController
     return response()->json(['message' => 'Workout deleted successfully']);
   }
 
-  // Neue Methode für Workout-Statistiken
+ 
   public function getStatistics(Request $request)
   {
     $user = \Auth::user();
@@ -87,12 +86,12 @@ class WorkoutsController
       ->where('is_completed', true)
       ->where('completed_at', '!=', null);
 
-    // Kategorie-Filter anpassen
+
     if ($category !== 'all') {
       $query->where('category', $category);
     }
 
-    // Zeitraum-Filter und Gruppierung
+
     switch ($timeframe) {
       case '7_days':
         $query->where('completed_at', '>=', now()->subDays(6))
@@ -127,13 +126,13 @@ class WorkoutsController
 
     $statistics = $query->get();
 
-    // Fehlende Datenpunkte mit 0 auffüllen
+ 
     $filledData = $this->fillMissingDataPoints($statistics, $timeframe);
 
     return response()->json($filledData);
   }
 
-  // Neue Hilfsmethode zum Auffüllen fehlender Datenpunkte
+
   private function fillMissingDataPoints($statistics, $timeframe)
   {
     $filledData = [];
@@ -191,7 +190,6 @@ class WorkoutsController
     return $filledData;
   }
 
-  // Neue Methode für Workout-Status-Update
   public function updateStatus(Request $request, $id)
   {
     $workout = \Auth::user()->workouts()->findOrFail($id);

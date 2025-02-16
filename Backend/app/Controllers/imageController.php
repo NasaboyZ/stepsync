@@ -32,7 +32,7 @@ class ImageController
         $file = $request->file('file');
         $uniqueFilename = uniqid() . '.' . $file->getClientOriginalExtension();
 
-        // Neues Avatar speichern
+       
         $userPath = 'uploads/' . $user->id;
 
         if ($user->avatar) {

@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Blogpost;
-use App\Models\Challenges;
-use App\Models\Tag;
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

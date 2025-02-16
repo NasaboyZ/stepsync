@@ -56,21 +56,12 @@ class User extends Model
   #[Hidden]
   public string $date_of_birth;
 
-  #[Column]
-  #[Hidden]
-  public string $verification_token;
-
-  #[Column]
-  #[Hidden]
-  public ?string $email_verified_at = null;
-
-
   public function workouts(): HasMany
   {
     return $this->hasMany(Workout::class);
   }
 
- 
+
   public function bmi(): HasOne
   {
     return $this->hasOne(BMI::class, 'user_id');
@@ -133,23 +124,5 @@ class User extends Model
         $user->setAttribute('password', \Hash::make($plain));
       }
     });
-  }
-
-  public function generateVerificationToken()
-  {
-    $this->verification_token = Str::random(64);
-    $this->save();
-  }
-
-  public function markEmailAsVerified()
-  {
-    $this->email_verified_at = now();
-    $this->verification_token = null;
-    $this->save();
-  }
-
-  public function isVerified(): bool
-  {
-    return !is_null($this->email_verified_at);
   }
 }

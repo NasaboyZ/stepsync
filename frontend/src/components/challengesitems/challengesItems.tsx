@@ -239,7 +239,7 @@ export default function ChallengesItems() {
               transition={{ duration: 0.3 }}
             >
               <div className={styles.modalContent}>
-                <h2>Challenge bearbeiten</h2>
+                <h2 className={styles.modalTitle}>Challenge bearbeiten</h2>
                 <TextField
                   label="Titel"
                   fullWidth

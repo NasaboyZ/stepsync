@@ -7,7 +7,10 @@ export const avatarSchema = z.object({
       message: "Die Datei darf nicht größer als 2MB sein",
     })
     .refine(
-      (file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type),
+      (file) =>
+        ["image/jpeg", "image/png", "image/jpg", "image/webp"].includes(
+          file.type
+        ),
       {
         message: "Nur JPEG, JPG und PNG Dateien sind erlaubt",
       }

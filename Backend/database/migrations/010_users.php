@@ -16,10 +16,9 @@ return new class extends Migration {
       $table->float('weight');
       $table->float('height');
       $table->string('password');
-      $table->string('goal'); // Changed to string
+      $table->string('goal');
       $table->enum('gender', ['male', 'female', 'other']);
       $table->date('date_of_birth');
-
       $table->timestamps();
     });
   }

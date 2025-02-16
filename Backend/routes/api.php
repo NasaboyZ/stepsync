@@ -4,27 +4,19 @@
 use App\Controllers\AuthController;
 use App\Controllers\ChallengesController;
 
-use App\Controllers\MailsController;
-
-
 use App\Controllers\UserController;
 use App\Controllers\WorkoutsController;
 use Illuminate\Support\Facades\Route;
 use App\Controllers\BmiController;
 use App\Controllers\ImageController;
 
-// guest endpoints
 
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::get('/challenges', [ChallengesController::class, 'index']);
 Route::post('/user', [UserController::class, 'create']);
-Route::post('/auth/verify', [UserController::class, 'verifyEmail']);
-Route::post('/forgot-password', [MailsController::class, 'sendResetLinkEmail']);
-Route::post('/reset-password', [MailsController::class, 'resetPassword']);
 
-// user endpoints
 Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/auth/logout', [AuthController::class, 'logout']);
 
@@ -45,9 +37,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-
-
-  Route::post('/mails/send', [MailsController::class, 'send']);
 
 
   Route::get('/workouts', [WorkoutsController::class, 'index']);
