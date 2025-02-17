@@ -2,12 +2,6 @@
 
 1. Installation von Frontend und Backend ([Link zum Repository](https://github.com/NasaboyZ/stepsync/tree/main))
 
-## Login Daten für Testzwecke:
-
-- **Lehrer Test-Account:**
-
-  - E-Mail: laa@mailinator.com
-  - Passwort: Password_9!
 
 
 2. npm run dev
